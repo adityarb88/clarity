@@ -564,7 +564,7 @@ exports = module.exports = __webpack_require__(34)(false);
 
 
 // module
-exports.push([module.i, ".clrweb-error-block {\n    margin: 0 auto;\n    text-align: center;\n    padding-top: 24px;\n}\n\n.clrweb-error-block .logo-block {\n    width: 100%;\n    max-width: 380px;\n    background-image: url(/test-app/assets/images/clarity_logo.svg);\n    background-repeat: no-repeat;\n    background-size: contain;\n    background-position: center center;\n    height: 286px;\n    opacity: 0.28;\n}\n\n.clrweb-error-block p.error-code {\n    font-size: 60px;\n    font-weight: 200;\n    line-height: 1em;\n    opacity: 0.5;\n    margin-top: 0;\n}", ""]);
+exports.push([module.i, ".clrweb-error-block {\n    margin: 0 auto;\n    text-align: center;\n    padding-top: 24px;\n}\n\n.clrweb-error-block .logo-block {\n    width: 100%;\n    max-width: 380px;\n    background-image: url(/clarity/assets/images/clarity_logo.svg);\n    background-repeat: no-repeat;\n    background-size: contain;\n    background-position: center center;\n    height: 286px;\n    opacity: 0.28;\n}\n\n.clrweb-error-block p.error-code {\n    font-size: 60px;\n    font-weight: 200;\n    line-height: 1em;\n    opacity: 0.5;\n    margin-top: 0;\n}", ""]);
 
 // exports
 
