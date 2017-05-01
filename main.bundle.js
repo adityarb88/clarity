@@ -123,7 +123,7 @@ UtilsModule = __decorate([
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home_component__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__page_not_found_page_not_found_component__ = __webpack_require__(96);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoutingModule; });
@@ -140,19 +140,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var appRoutes = [
     {
         path: "get-started",
-        loadChildren: 'app/get-started/get-started.module#GetStartedModule',
+        loadChildren: "app/get-started/get-started.module#GetStartedModule",
     },
     {
-        path: 'documentation',
-        loadChildren: 'app/documentation/documentation.module#DocumentationModule',
+        path: "documentation",
+        loadChildren: "app/documentation/documentation.module#DocumentationModule",
     },
     {
         path: "community",
-        loadChildren: 'app/community/community.module#CommunityModule',
+        loadChildren: "app/community/community.module#CommunityModule",
     },
     {
         path: "news",
-        loadChildren: 'app/news/news.module#NewsModule',
+        loadChildren: "app/news/news.module#NewsModule",
     },
     {
         path: "",
@@ -162,7 +162,7 @@ var appRoutes = [
         }
     },
     {
-        path: '**',
+        path: "**",
         component: __WEBPACK_IMPORTED_MODULE_3__page_not_found_page_not_found_component__["a" /* PageNotFoundComponent */],
         data: {
             bodyClass: "layout-error",
@@ -178,7 +178,7 @@ var AppRoutingModule = (function () {
 AppRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forRoot(appRoutes, { preloadingStrategy: __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* PreloadAllModules */] })
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forRoot(appRoutes, { preloadingStrategy: __WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* PreloadAllModules */] })
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
@@ -272,7 +272,7 @@ AppModule = __decorate([
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(47);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HashListener; });
 /*
  * Hack while waiting for https://github.com/angular/angular/issues/6595 to be fixed.
@@ -323,7 +323,7 @@ HashListener = __decorate([
             "[style.position]": "'relative'"
         }
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* ActivatedRoute */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* ActivatedRoute */]) === "function" && _a || Object])
 ], HashListener);
 
 var _a;
@@ -336,7 +336,7 @@ var _a;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(47);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ScrollSpy; });
 /*
  * Hack while waiting for https://github.com/angular/angular/issues/6595 to be fixed.
@@ -361,9 +361,9 @@ var ScrollSpy = (function () {
     Object.defineProperty(ScrollSpy.prototype, "links", {
         set: function (routerLinks) {
             var _this = this;
-            this.anchors = routerLinks.map(function (routerLink) { return '#' + routerLink.fragment; });
+            this.anchors = routerLinks.map(function (routerLink) { return "#" + routerLink.fragment; });
             this.sub = routerLinks.changes.subscribe(function () {
-                _this.anchors = routerLinks.map(function (routerLink) { return '#' + routerLink.fragment; });
+                _this.anchors = routerLinks.map(function (routerLink) { return "#" + routerLink.fragment; });
             });
         },
         enumerable: true,
@@ -386,16 +386,16 @@ var ScrollSpy = (function () {
     ScrollSpy.prototype.findCurrentAnchor = function () {
         for (var i = this.anchors.length - 1; i >= 0; i--) {
             var anchor = this.anchors[i];
-            if (this.scrollable.querySelector(anchor).offsetTop <= this.scrollPosition) {
+            if (this.scrollable.querySelector(anchor) && this.scrollable.querySelector(anchor).offsetTop <= this.scrollPosition) {
                 return i;
             }
         }
     };
     ScrollSpy.prototype.ngOnInit = function () {
-        this.scrollable.addEventListener('scroll', this);
+        this.scrollable.addEventListener("scroll", this);
     };
     ScrollSpy.prototype.ngOnDestroy = function () {
-        this.scrollable.removeEventListener('scroll', this);
+        this.scrollable.removeEventListener("scroll", this);
         if (this.sub) {
             this.sub.unsubscribe();
         }
@@ -407,12 +407,12 @@ __decorate([
     __metadata("design:type", Object)
 ], ScrollSpy.prototype, "scrollable", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* RouterLinkWithHref */], { descendants: true }),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_1__angular_router__["e" /* RouterLinkWithHref */], { descendants: true }),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _a || Object),
     __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _b || Object])
 ], ScrollSpy.prototype, "links", null);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* RouterLinkWithHref */], { descendants: true, read: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] }),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_1__angular_router__["e" /* RouterLinkWithHref */], { descendants: true, read: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] }),
     __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _c || Object)
 ], ScrollSpy.prototype, "linkElements", void 0);
 ScrollSpy = __decorate([
@@ -584,7 +584,7 @@ module.exports = "<clr-main-container>\n    <clr-header class=\"header-6\">\n   
 /***/ 344:
 /***/ (function(module, exports) {
 
-module.exports = "<main class=\"content-area\" style=\"overflow-y: hidden\">\n  <section class=\"home-hero\">\n    <div class=\"home-hero-content\">\n      <h1>Clarity Design System</h1>\n      <p class=\"head\">\n        UX guidelines, HTML/CSS framework, and Angular components\n        working together to craft exceptional experiences\n      </p>\n      <div class=\"home-hero-btn\">\n        <a routerLink=\"get-started\" class=\"btn btn-primary\">Get Started</a>\n        <a routerLink=\"documentation\" class=\"btn btn-secondary btn-outline\">Documentation</a>\n      </div>\n      <p class=\"subtext\">\n        View the <a href=\"https://github.com/vmware/clarity\">source</a> on GitHub\n      </p>\n    </div>\n    <div class=\"bg-img\"></div>\n  </section>\n\n  <section class=\"home-cards\">\n    <div class=\"home-cards-container clearfix\">\n      <h1>Designed for designers and built for developers</h1>\n      <div class=\"home-card-wrapper row\">\n        <div class=\"home-card home-card-sketch col-xs-3\">\n          <div class=\"home-card-bug\">\n            <img src=\"assets/images/home/sketch.svg\" alt=\"Sketch logo\">\n          </div>\n          <h3 class=\"home-card-title\">Sketch Template</h3>\n          <p>\n            Jumpstart your project using our\n            <a sketchTemplateLink>Sketch template</a>\n            with ready-to-use components.\n          </p>\n        </div>\n\n        <div class=\"home-card home-card-ux col-xs-3\">\n          <div class=\"home-card-bug\">\n            <img src=\"assets/images/home/ux.svg\" alt=\"UX guidelines\">\n          </div>\n          <h3 class=\"home-card-title\">UX guidelines</h3>\n          <p>\n            Reference UX guidelines that stem from ongoing research\n            and exploration, making it easy to design cohesive experiences.\n          </p>\n        </div>\n\n        <div class=\"home-card home-card-html col-xs-3\">\n          <div class=\"home-card-bug\">\n            <img src=\"assets/images/home/html.svg\" alt=\"HTML/CSS\">\n          </div>\n          <h3 class=\"home-card-title\">HTML/CSS</h3>\n          <p>\n            Start building with our HTML/CSS framework and rapidly\n            go from prototype to production.\n          </p>\n        </div>\n\n        <div class=\"home-card home-card-angular col-xs-3\">\n          <div class=\"home-card-bug\">\n            <img src=\"assets/images/home/angular.svg\" alt=\"Angular logo\">\n          </div>\n          <h3 class=\"home-card-title\">Angular</h3>\n          <p>\n            Use our set of data-bound and performant components\n            on top of Angular to add interactivity\n          </p>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"home-process\">\n    <h1>From prototype to product, faster and better</h1>\n\n    <div class=\"row\">\n      <div class=\"home-process-block col-xs-6\">\n        <div class=\"home-process-block__title\">\n          <div class=\"img bulb\"></div>\n          <!-- <img src=\"assets/images/home/ic-bulb.svg\" alt=\"Product-Based Approach\"> -->\n          <h3>Product-based</h3>\n        </div>\n        <p>\n          We work closely with product teams to understand and\n          solve the vast array of challenges they face. These\n          solutions are built into Clarity and contributed\n          back to the community.\n        </p>\n      </div>\n      <div class=\"home-process-block col-xs-6\">\n        <div class=\"home-process-block__title\">\n          <div class=\"img rapid\"></div>\n          <!-- <img src=\"assets/images/home/ic_rapid.svg\" alt=\"Rapid development\"> -->\n          <h3>Rapid development</h3>\n        </div>\n        <p>\n          Clarity’s shared foundation of design and development\n          makes communication and collaboration between different\n          areas of expertise easier than ever.\n        </p>\n      </div>\n      <div class=\"home-process-block col-xs-6\">\n        <div class=\"home-process-block__title\">\n          <div class=\"img evolving\"></div>\n          <!-- <img src=\"assets/images/home/ic_evolving.svg\" alt=\"Evolving\"> -->\n          <h3>Evolving</h3>\n        </div>\n        <p>\n          Design patterns and technology change quickly. Clarity\n          is built to anticipate and adopt to changes quickly\n          and easily.\n        </p>\n      </div>\n      <div class=\"home-process-block col-xs-6\">\n        <div class=\"home-process-block__title\">\n          <div class=\"img reliable\"></div>\n          <!-- <img src=\"assets/images/home/ic_reliable.svg\" alt=\"Reliable\"> -->\n          <h3>Reliable</h3>\n        </div>\n        <p>\n          We have a dedicated team focused on shipping frequently,\n          with a high bar of quality standard.\n        </p>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"home-contact\">\n    <div class=\"row home-contact-container\">\n      <div class=\"home-contact-block col-xs-6\">\n        <a href=\"//opensource.org/licenses/MIT\" class=\"mit-link home-contact_link\" target=\"_blank\">\n          <span class=\"img\"></span>\n          Clarity is licensed under the MIT License. <span class=\"xtra\">Read more here.</span>\n        </a>\n      </div>\n      <div class=\"home-contact-block col-xs-6\">\n        <a href=\"//twitter.com/VMwareClarity\" class=\"twr-link home-contact_link\" target=\"_blank\">\n          <span class=\"img\"></span>\n          @VMwareClarity\n        </a>\n      </div>\n    </div>\n  </section>\n</main>\n"
+module.exports = "<main class=\"content-area\" style=\"overflow-y: hidden\">\n    <section class=\"home-hero\">\n        <div class=\"home-hero-content\">\n            <h1>Clarity Design System</h1>\n            <p class=\"head\">\n                UX guidelines, HTML/CSS framework, and Angular components\n                working together to craft exceptional experiences\n            </p>\n            <div class=\"home-hero-btn\">\n                <a routerLink=\"get-started\" class=\"btn btn-primary\">Get Started</a>\n                <a routerLink=\"documentation\" class=\"btn btn-secondary btn-outline\">Documentation</a>\n            </div>\n            <p class=\"subtext\">\n                View the <a href=\"https://github.com/vmware/clarity\" target=\"_blank\">source</a> on GitHub\n            </p>\n        </div>\n        <div class=\"bg-img\"></div>\n    </section>\n\n    <section class=\"home-cards\">\n        <div class=\"home-cards-container clearfix\">\n            <h1>Designed for designers and built for developers</h1>\n            <div class=\"home-card-wrapper row\">\n                <div class=\"home-card home-card-sketch col-xs-3\">\n                    <div class=\"home-card-bug\">\n                        <img src=\"assets/images/home/sketch.svg\" alt=\"Sketch logo\">\n                    </div>\n                    <h3 class=\"home-card-title\">Sketch Template</h3>\n                    <p>\n                        Jumpstart your project using our\n                        <a sketchTemplateLink>Sketch template</a>\n                        with ready-to-use components.\n                    </p>\n                </div>\n\n                <div class=\"home-card home-card-ux col-xs-3\">\n                    <div class=\"home-card-bug\">\n                        <img src=\"assets/images/home/ux.svg\" alt=\"UX guidelines\">\n                    </div>\n                    <h3 class=\"home-card-title\">UX guidelines</h3>\n                    <p>\n                        Reference UX guidelines that stem from ongoing research\n                        and exploration, making it easy to design cohesive experiences.\n                    </p>\n                </div>\n\n                <div class=\"home-card home-card-html col-xs-3\">\n                    <div class=\"home-card-bug\">\n                        <img src=\"assets/images/home/html.svg\" alt=\"HTML/CSS\">\n                    </div>\n                    <h3 class=\"home-card-title\">HTML/CSS</h3>\n                    <p>\n                        Start building with our HTML/CSS framework and rapidly\n                        go from prototype to production.\n                    </p>\n                </div>\n\n                <div class=\"home-card home-card-angular col-xs-3\">\n                    <div class=\"home-card-bug\">\n                        <img src=\"assets/images/home/angular.svg\" alt=\"Angular logo\">\n                    </div>\n                    <h3 class=\"home-card-title\">Angular</h3>\n                    <p>\n                        Use our set of data-bound and performant components\n                        on top of Angular to add interactivity\n                    </p>\n                </div>\n            </div>\n        </div>\n    </section>\n\n    <section class=\"home-process\">\n        <h1>From prototype to product, faster and better</h1>\n\n        <div class=\"row\">\n            <div class=\"home-process-block col-xs-6\">\n                <div class=\"home-process-block__title\">\n                    <div class=\"img bulb\"></div>\n                    <!-- <img src=\"assets/images/home/ic-bulb.svg\" alt=\"Product-Based Approach\"> -->\n                    <h3>Product-based</h3>\n                </div>\n                <p>\n                    We work closely with product teams to understand and\n                    solve the vast array of challenges they face. These\n                    solutions are built into Clarity and contributed\n                    back to the community.\n                </p>\n            </div>\n            <div class=\"home-process-block col-xs-6\">\n                <div class=\"home-process-block__title\">\n                    <div class=\"img rapid\"></div>\n                    <!-- <img src=\"assets/images/home/ic_rapid.svg\" alt=\"Rapid development\"> -->\n                    <h3>Rapid development</h3>\n                </div>\n                <p>\n                    Clarity’s shared foundation of design and development\n                    makes communication and collaboration between different\n                    areas of expertise easier than ever.\n                </p>\n            </div>\n            <div class=\"home-process-block col-xs-6\">\n                <div class=\"home-process-block__title\">\n                    <div class=\"img evolving\"></div>\n                    <!-- <img src=\"assets/images/home/ic_evolving.svg\" alt=\"Evolving\"> -->\n                    <h3>Evolving</h3>\n                </div>\n                <p>\n                    Design patterns and technology change quickly. Clarity\n                    is built to anticipate and adopt to changes quickly\n                    and easily.\n                </p>\n            </div>\n            <div class=\"home-process-block col-xs-6\">\n                <div class=\"home-process-block__title\">\n                    <div class=\"img reliable\"></div>\n                    <!-- <img src=\"assets/images/home/ic_reliable.svg\" alt=\"Reliable\"> -->\n                    <h3>Reliable</h3>\n                </div>\n                <p>\n                    We have a dedicated team focused on shipping frequently,\n                    with a high bar of quality standard.\n                </p>\n            </div>\n        </div>\n    </section>\n\n    <section class=\"home-contact\">\n        <div class=\"row home-contact-container\">\n            <div class=\"home-contact-block col-xs-6\">\n                <a href=\"//opensource.org/licenses/MIT\" class=\"mit-link home-contact_link\" target=\"_blank\">\n                    <span class=\"img\"></span>\n                    Clarity is licensed under the MIT License. <span class=\"xtra\">Read more here.</span>\n                </a>\n            </div>\n            <div class=\"home-contact-block col-xs-6\">\n                <a href=\"//twitter.com/VMwareClarity\" class=\"twr-link home-contact_link\" target=\"_blank\">\n                    <span class=\"img\"></span>\n                    @VMwareClarity\n                </a>\n            </div>\n        </div>\n    </section>\n</main>\n"
 
 /***/ }),
 
@@ -608,7 +608,7 @@ module.exports = __webpack_require__(149);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(27);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -638,7 +638,7 @@ var AppComponent = (function () {
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.router.events.subscribe(function (change) {
-            if (change instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["e" /* NavigationEnd */]) {
+            if (change instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* NavigationEnd */]) {
                 _this.bodyClasses.forEach(function (className) { return _this.renderer.setElementClass(_this.el.nativeElement, className, false); });
                 _this.updateBodyClasses();
                 _this.bodyClasses.forEach(function (className) { return _this.renderer.setElementClass(_this.el.nativeElement, className, true); });
@@ -689,7 +689,7 @@ AppComponent = __decorate([
         selector: 'body',
         template: __webpack_require__(343)
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["Title"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["Title"]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["Title"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["Title"]) === "function" && _d || Object])
 ], AppComponent);
 
 var _a, _b, _c, _d;

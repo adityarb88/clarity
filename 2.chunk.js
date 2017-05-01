@@ -5,11 +5,11 @@ webpackJsonp([2,8],{
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_module__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__community_component__ = __webpack_require__(423);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__community_component__ = __webpack_require__(442);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(47);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CommunityModule", function() { return CommunityModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -55,7 +55,7 @@ CommunityModule = __decorate([
 
 /***/ }),
 
-/***/ 423:
+/***/ 442:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68,8 +68,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var CLARITYTEAM = __webpack_require__(709);
-var CONTRIBUTORS = __webpack_require__(708);
+var CLARITYTEAM = __webpack_require__(674);
+var CONTRIBUTORS = __webpack_require__(673);
 var CommunityComponent = (function () {
     function CommunityComponent() {
         this.team = CLARITYTEAM.members;
@@ -81,7 +81,7 @@ var CommunityComponent = (function () {
 CommunityComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'community',
-        template: __webpack_require__(710),
+        template: __webpack_require__(675),
         host: {
             "[class.content-container]": "true"
         }
@@ -92,7 +92,7 @@ CommunityComponent = __decorate([
 
 /***/ }),
 
-/***/ 708:
+/***/ 673:
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -114,7 +114,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 709:
+/***/ 674:
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -229,7 +229,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 710:
+/***/ 675:
 /***/ (function(module, exports) {
 
 module.exports = "<main class=\"content-area\">\n    <section class=\"community-top-section\">\n        <h1 id=\"community\">Community</h1>\n\n        <p>We’re passionate about making Clarity the best it can be.&nbsp;Although each team member has a specific role and area of responsibility, we’re all actively engaged in every aspect of the framework.</p>\n\n    </section>\n\n    <section class=\"community-social-cards\">\n        <h3>Engaging with the Clarity Team</h3>\n\n        <div class=\"hidden-sm-up\">\n            <ul class=\"list-unstyled indent bump-down\">\n\n                <li><a target=\"_blank\" href=\"https://twitter.com/VMwareClarity\">Talk with us on Twitter</a></li>\n\n                <li><a target=\"_blank\" href=\"https://github.com/vmware/clarity/issues\">Report an issue</a></li>\n\n                <li><a target=\"_blank\" href=\"https://medium.com/claritydesignsystem\">Read our blog</a></li>\n\n            </ul>\n        </div>\n        <div class=\"hidden-xs-down row\">\n\n            <div class=\"col-sm-4\">\n                <a target=\"_blank\" href=\"https://twitter.com/VMwareClarity\" class=\"social-card social-card-twitter\">\n                    <div class=\"card clickable\">\n                        <div class=\"card-block\">\n                            <div class=\"community-social-icon\">\n                                <img src=\"assets/images/team/social/twitter.png\" alt=\"twitter\">\n                            </div>\n                            <p class=\"card-text\">Talk with us on Twitter</p>\n                        </div>\n                    </div>\n                </a>\n\n            </div>\n\n            <div class=\"col-sm-4\">\n                <a target=\"_blank\" href=\"https://github.com/vmware/clarity/issues\" class=\"social-card social-card-github\">\n                    <div class=\"card clickable\">\n                        <div class=\"card-block\">\n                            <div class=\"community-social-icon\">\n                                <img src=\"assets/images/team/social/github.png\" alt=\"github\">\n                            </div>\n                            <p class=\"card-text\">Report an issue</p>\n                        </div>\n                    </div>\n                </a>\n\n            </div>\n\n            <div class=\"col-sm-4\">\n                <a target=\"_blank\" href=\"https://medium.com/claritydesignsystem\" class=\"social-card social-card-medium\">\n                    <div class=\"card clickable\">\n                        <div class=\"card-block\">\n                            <div class=\"community-social-icon\">\n                                <img src=\"assets/images/team/social/medium.png\" alt=\"medium\">\n                            </div>\n                            <p class=\"card-text\">Read our blog</p>\n                        </div>\n                    </div>\n                </a>\n\n            </div>\n\n        </div>\n    </section>\n\n\n    <section class=\"community-team-cards\">\n        <h3>Clarity Team</h3>\n\n        <div class=\"row\">\n            <div *ngFor=\"let member of team\" class=\"card col-xs-12 col-sm-12 col-md-4\">\n                <div class=\"card-block\">\n\n                    <img src=\"{{teamImgUrl}}{{member.img}}\" alt=\"Picture of {{member.name}}\">\n\n                    <div class=\"card-text\">\n                        <p class=\"community-team-name\" [ngSwitch]=\"member.twitter\">\n                            <span *ngSwitchCase=\"undefined\">{{member.name}}</span>\n                            <a href=\"https://twitter.com/{{member.twitter}}\" target=\"_blank\" *ngSwitchDefault>{{member.name}}</a>\n                        </p>\n                        <p class=\"community-team-role\">{{member.role}}</p>\n                        <p class=\"community-team-blurb\">{{member.blurb}}</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </section>\n\n    <section class=\"community-contributors\">\n        <h3>Contributors</h3>\n        <ul class=\"list-unstyled\">\n            <li *ngFor=\"let name of contributors\">{{name}}</li>\n        </ul>\n    </section>\n\n</main>\n"
