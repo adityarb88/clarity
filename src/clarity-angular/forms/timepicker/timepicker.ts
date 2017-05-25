@@ -53,8 +53,24 @@ export class Timepicker {
             [clrPopoverPopoverPoint]="popoverPoint"
         >
             <div class="clr-timepicker">
-                <clr-spinner-button [clrMin]="0" [clrMax]="12" [clrRotate]="true"></clr-spinner-button>
-                <clr-spinner-button [clrMin]="0" [clrMax]="60" [clrRotate]="true"></clr-spinner-button>
+                <clr-spinner-button 
+                    [clrSpinValue]="getInitialHour()"
+                    [clrMin]="0" 
+                    [clrMax]="12" 
+                    [clrRotate]="true">
+                </clr-spinner-button>
+                <clr-spinner-button 
+                    [clrSpinValue]="getInitialMinute()"
+                    [clrMin]="0" 
+                    [clrMax]="59" 
+                    [clrRotate]="true">
+                </clr-spinner-button>
+                <!--div class="clr-meridiem-switch">
+                    <input id="am" type="radio" name="meriem-switch">
+                    <label for="am">AM</label>
+                    <input id="pm" type="radio" name="meriem-switch">
+                    <label for="pm">PM</label>
+                </div-->
             </div>
         </ng-template>
     `
@@ -68,7 +84,6 @@ export class TimepickerWrapper {
     constructor(public elementRef: ElementRef, private timepickerService: TimepickerService) {
         this.anchor = elementRef.nativeElement;
         this.timepickerService.change.subscribe((value: boolean) => {
-            console.log("Received", value);
             this._open = value;
         });
     }
@@ -77,6 +92,14 @@ export class TimepickerWrapper {
 
     get open(): boolean {
         return this._open;
+    }
+
+    getInitialHour(): number {
+        return this.timepickerService.getHours();
+    }
+
+    getInitialMinute(): number {
+        return this.timepickerService.getMinutes();
     }
 
     //called on mouse clicks anywhere in the DOM.
@@ -94,7 +117,11 @@ export class TimepickerWrapper {
                 }
                 current = current.parentNode;
             }
-            this._open = false; //Remove .open from the dropdown
+
+            //is this stupid? going through a service to change a variable within the class?
+            //i just wanted the service to manage everything because others subscribe to these
+            //events too
+            this.timepickerService.close();
         }
     }
 }

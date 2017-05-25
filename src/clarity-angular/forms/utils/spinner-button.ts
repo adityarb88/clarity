@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, EventEmitter, HostListener, Input, Output} from "@angular/core";
 
 @Component({
     selector: "clr-spinner-button",
@@ -16,16 +16,30 @@ import {Component, Input} from "@angular/core";
 })
 export class SpinnerButton {
 
-    @Input("clrSpinValue") spinValue: number = 0;
+    private _spinValue: number = 0;
 
-    @Input("clrMin") min: number;
+    get spinValue(): number {
+        return this._spinValue;
+    }
+
+    @Input("clrSpinValue")
+    set spinValue(value: number) {
+        if (value !== this._spinValue) {
+            this._spinValue = value;
+            this._spinValueChange.emit(value);
+        }
+    }
+
+    @Output("clrSpinValueChange") _spinValueChange: EventEmitter<number> = new EventEmitter<number>(false);
+
+    @Input("clrMin") private _min: number;
     @Input("clrMax") max: number;
     @Input("clrRotate") rotate: boolean = false;
 
     increment(): void {
-        if ((!!this.max || this.max === 0) && this.spinValue === this.max) {
-            if (this.rotate && (!!this.min || this.min === 0)) {
-                this.spinValue = this.min;
+        if ((!!this.max || this.max === 0) && this._spinValue === this.max) {
+            if (this.rotate && (!!this._min || this._min === 0)) {
+                this.spinValue = this._min;
                 return;
             }
             return;
@@ -34,7 +48,7 @@ export class SpinnerButton {
     }
 
     decrement() {
-        if ((!!this.min || this.min === 0) && this.spinValue === this.min) {
+        if ((!!this._min || this._min === 0) && this._spinValue === this._min) {
             if (this.rotate && (!!this.max || this.max === 0)) {
                 this.spinValue = this.max;
                 return;
@@ -42,5 +56,14 @@ export class SpinnerButton {
             return;
         }
         this.spinValue--;
+    }
+
+    @HostListener("mousewheel", ["$event"])
+    onMouseScroll(ev: any) {
+        if (ev.deltaY > 0) {
+            this.decrement();
+        } else if (ev.deltaY < 0) {
+            this.increment();
+        }
     }
 }

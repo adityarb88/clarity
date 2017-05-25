@@ -19,14 +19,15 @@ export class TimepickerService {
         this._change.next(true);
     }
 
+    close(): void {
+        this._change.next(false);
+    }
+
     getHours(): number {
-        const date = new Date();
-        return date.getHours();
+        return (new Date()).getHours();
     }
 
     getMinutes(): number {
-        const date = new Date();
-        return date.getMinutes();
+        return (new Date()).getMinutes();
     }
-
 }
