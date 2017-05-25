@@ -65,12 +65,12 @@ export class Timepicker {
                     [clrMax]="59" 
                     [clrRotate]="true">
                 </clr-spinner-button>
-                <!--div class="clr-meridiem-switch">
-                    <input id="am" type="radio" name="meriem-switch">
+                <div class="clr-meridiem-switch">
+                    <input id="am" type="radio" name="meriem-switch" [checked]="getInitialMeridiem() === 'AM'">
                     <label for="am">AM</label>
-                    <input id="pm" type="radio" name="meriem-switch">
+                    <input id="pm" type="radio" name="meriem-switch" [checked]="getInitialMeridiem() === 'PM'">
                     <label for="pm">PM</label>
-                </div-->
+                </div>
             </div>
         </ng-template>
     `
@@ -100,6 +100,10 @@ export class TimepickerWrapper {
 
     getInitialMinute(): number {
         return this.timepickerService.getMinutes();
+    }
+
+    getInitialMeridiem(): string {
+        return (this.timepickerService.getHours() < 12) ? "AM" : "PM";
     }
 
     //called on mouse clicks anywhere in the DOM.
