@@ -1,0 +1,28 @@
+// Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+// This software is released under MIT license.
+// The full license information can be found in LICENSE in the root directory of this project.
+
+@include exports('spinner-button.clarity') {
+    clr-spinner-button {
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        button {
+            $button-size: 36px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            height: $button-size;
+            width: $button-size;
+            line-height: $button-size;
+            padding: 0;
+        }
+
+        .clr-spinner-value {
+            font-size: 16px;
+        }
+    }
+}

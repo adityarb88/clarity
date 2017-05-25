@@ -7,10 +7,20 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CHECKBOX_DIRECTIVES } from "./checkbox/index";
+import {ClrCommonPopoverModule} from "../popover/common/popover.module";
+import {ClrIconModule} from "../icon/icon.module";
 
 @NgModule({
-    imports: [CommonModule],
-    declarations: [CHECKBOX_DIRECTIVES],
-    exports: [CHECKBOX_DIRECTIVES]
+    imports: [
+        CommonModule,
+        ClrCommonPopoverModule,
+        ClrIconModule
+    ],
+    declarations: [
+        CHECKBOX_DIRECTIVES
+    ],
+    exports: [
+        CHECKBOX_DIRECTIVES
+    ]
 })
 export class ClrFormsModule {}

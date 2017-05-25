@@ -18,6 +18,7 @@ import {ClrPopoverModule} from "./popover/popover.module";
 import {ClrWizardModule} from "./wizard/wizard.module";
 import {ClrIfExpandModule} from "./utils/expand/if-expand.module";
 import {ClrConditionalModule} from "./utils/conditional/conditional.module";
+import {ClrLabsModule} from "./labs/labs.module";
 
 @NgModule({
     exports: [
@@ -34,7 +35,8 @@ import {ClrConditionalModule} from "./utils/conditional/conditional.module";
         ClrFormsModule,
         ClrLayoutModule,
         ClrPopoverModule,
-        ClrWizardModule
+        ClrWizardModule,
+        ClrLabsModule
     ]
 })
 export class ClarityModule {
