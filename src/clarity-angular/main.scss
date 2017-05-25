@@ -84,6 +84,7 @@
 @import "button/button-group/button-group.clarity"; // depends on variables.clarity, mixins.clarity
 @import "./button/toggles.clarity"; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
 @import "utils/close.clarity"; //depends on variables.clarity, mixins.clarity
+@import "./forms/utils/_spinner-button.clarity";
 
 //Alerts
 //depends on variables.clarity, mixins.clarity, color.clarity, icons.clarity, buttons.clarity
@@ -156,8 +157,9 @@
 //Forms
 @import "./forms/utils/form-variables.clarity";
 @import "./forms/utils/mixins.clarity";
+@import "./forms/timepicker/timepicker.clarity"; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
 @import "./forms/inputs.clarity"; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
-@import "forms/checkbox/checkbox.clarity"; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
+@import "./forms/checkbox/checkbox.clarity"; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
 @import "./forms/radio.clarity"; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
 @import "./forms/select.clarity"; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, layers.clarity, icons.clarity, images.clarity
 @import "./forms/forms.clarity"; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity

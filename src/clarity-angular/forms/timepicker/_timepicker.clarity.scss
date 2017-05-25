@@ -1,0 +1,29 @@
+// Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+// This software is released under MIT license.
+// The full license information can be found in LICENSE in the root directory of this project.
+
+@include exports('timepicker.clarity') {
+    input[clrTimepicker] {
+        width: $clr_baselineRem_4;
+    }
+
+    .clr-timepicker {
+        display: flex;
+        border: 1px solid clr-getColor(light-midtone);
+        border-radius: $clr-default-borderradius;
+        box-shadow: 0 1px 3px rgba(clr-getColor(dark), 0.25);
+        margin-top: $clr_baselineRem_0_5;
+        background: $clr-white;
+
+        //Temp
+        padding: $clr-baselineRem_1;
+
+        clr-spinner-button {
+            margin-right: 24px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}
