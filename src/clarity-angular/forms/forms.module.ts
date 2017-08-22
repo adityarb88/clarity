@@ -8,6 +8,12 @@ import {CommonModule} from "@angular/common";
 import {NgModule} from "@angular/core";
 
 import {CHECKBOX_DIRECTIVES} from "./checkbox/index";
+import {ClrDatepickerModule} from "./datepicker/datepicker.module";
 
-@NgModule({imports: [CommonModule], declarations: [CHECKBOX_DIRECTIVES], exports: [CHECKBOX_DIRECTIVES]})
-export class ClrFormsModule {}
+@NgModule({
+    imports: [CommonModule],
+    declarations: [CHECKBOX_DIRECTIVES],
+    exports: [CHECKBOX_DIRECTIVES, ClrDatepickerModule]
+})
+export class ClrFormsModule {
+}
