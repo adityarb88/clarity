@@ -13,5 +13,4 @@ import {Component} from "@angular/core";
     templateUrl: "./basic-datepicker.html"
 })
 export class BasicDatepickerDemo {
-
 }
