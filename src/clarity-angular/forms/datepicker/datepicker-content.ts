@@ -8,13 +8,15 @@ import {
     getDay, getLocaleDaysShort,
     getNumberOfDaysInTheMonth
 } from "../../utils/date/date";
+import {CalendarDate} from "./calendar-date";
 
 const DAYS_SHORT = getLocaleDaysShort();
+const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
 
 @Component({
     selector: "clr-datepicker-content",
     template: `
-        <div class="datepicker-days-container">
+        <!--div class="datepicker-days-container">
             <span *ngFor="let day of daysShort" class="datepicker-day">
                 {{day}}
             </span>
@@ -29,7 +31,19 @@ const DAYS_SHORT = getLocaleDaysShort();
             <span *ngFor="let nDate of nextDates" class="datepicker-date disabled">
                 {{nDate}}
             </span>
-        </div>
+        </div-->
+        <table class="datepicker-table">
+            <tr class="datepicker-row">
+                <td *ngFor="let day of daysShort" class="datepicker-cell">
+                    {{day}}
+                </td>
+            </tr>
+            <tr *ngFor="let row of calendarDates" class="datepicker-row">
+                <td *ngFor="let date of row" class="datepicker-cell"  [class.disabled]="!date.currentMonth">
+                    {{date.date}}
+                </td>
+            </tr>
+        </table>
     `,
     host: {
         "[class.datepicker-content]": "true",
@@ -39,9 +53,7 @@ export class DatepickerContent {
 
     currentDate: Date = new Date();
 
-    dates: number[] = [];
-    prevDates: number[] = [];
-    nextDates: number[] = [];
+    calendarDates: CalendarDate[][] = [];
 
     get noOfDaysInTheMonth(): number {
         return getNumberOfDaysInTheMonth(this.currentDate.getFullYear(), this.currentDate.getMonth());
@@ -56,13 +68,44 @@ export class DatepickerContent {
     }
 
     constructor() {
-        this.constructDatesArray();
+        this.constructDates();
     }
 
     get daysShort(): string[] {
         return DAYS_SHORT;
     }
 
+    constructDates(): void {
+        let calendarDates: CalendarDate[]
+            = Array(this.noOfDaysInTheMonth)
+            .fill(null)
+            .map((date, index) => new CalendarDate(index + 1, true));
+
+        let prevDates: CalendarDate[]
+            = Array(this.firstDayOfTheMonth)
+            .fill(null)
+            .map((date, index) => new CalendarDate(this.noOfDaysInThePreviousMonth - index, false))
+            .reverse();
+
+        let leftDatesLength: number = TOTAL_DAYS_IN_ONE_MONTH - (calendarDates.length + prevDates.length);
+
+        let nextDates: CalendarDate[]
+            = Array(leftDatesLength)
+            .fill(null)
+            .map((date, index) => new CalendarDate(index + 1, false));
+
+        let finalArray: CalendarDate[] = [...prevDates, ...calendarDates, ...nextDates];
+
+        for (let i = 0; i < 6; i++) {
+            let tempArr: CalendarDate[] = [];
+            for (let j = 0; j < 7; j++) {
+                tempArr.push(finalArray.shift());
+            }
+            this.calendarDates.push(tempArr);
+        }
+    }
+
+    /*
     constructDatesArray(): void {
         //new Array(42); //7 days * 6 rows for the dates to cover all possibilities
         this.dates
@@ -74,12 +117,12 @@ export class DatepickerContent {
             .fill(this.noOfDaysInThePreviousMonth)
             .map((currentValue, index) => this.noOfDaysInThePreviousMonth - index)
             .reverse();
-        let leftDatesLength: number = 42 - (this.dates.length + this.prevDates.length);
+        let leftDatesLength: number = TOTAL_DAYS_IN_ONE_MONTH - (this.dates.length + this.prevDates.length);
         this.nextDates
             = Array(leftDatesLength)
             .fill(0)
             .map((currentValue, index) => index + 1);
-    }
+    }*/
 
     /*
     export class DatepickerContent extends AbstractPopover {

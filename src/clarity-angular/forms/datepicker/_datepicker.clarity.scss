@@ -14,25 +14,20 @@
         margin-top: 6px;
     }
 
-    .datepicker-days-container,
-    .datepicker-dates-container {
-        display: flex;
+    .datepicker-table {
+        width: 100%;
     }
 
-    .datepicker-dates-container {
-        flex-wrap: wrap;
-    }
-
-    .datepicker-day,
-    .datepicker-date {
-        display: block;
-        flex: 0 0 36px;
-        height: 36px;
-        line-height: 36px;
+    .datepicker-row {
         text-align: center;
     }
 
-    .datepicker-date.disabled {
+    .datepicker-cell {
+        width: 36px;
+        height: 36px;
+    }
+
+    .datepicker-cell.disabled {
         opacity: 0.25;
     }
 }
