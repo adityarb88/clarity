@@ -106,25 +106,6 @@ export class DatepickerContent {
     }
 
     /*
-    constructDatesArray(): void {
-        //new Array(42); //7 days * 6 rows for the dates to cover all possibilities
-        this.dates
-            = Array(this.noOfDaysInTheMonth)
-            .fill(0)
-            .map((currentValue, index) => index + 1);
-        this.prevDates
-            = Array(this.firstDayOfTheMonth)
-            .fill(this.noOfDaysInThePreviousMonth)
-            .map((currentValue, index) => this.noOfDaysInThePreviousMonth - index)
-            .reverse();
-        let leftDatesLength: number = TOTAL_DAYS_IN_ONE_MONTH - (this.dates.length + this.prevDates.length);
-        this.nextDates
-            = Array(leftDatesLength)
-            .fill(0)
-            .map((currentValue, index) => index + 1);
-    }*/
-
-    /*
     export class DatepickerContent extends AbstractPopover {
         constructor(injector: Injector, @SkipSelf() parentHost: ElementRef) {
             super(injector, parentHost);
