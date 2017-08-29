@@ -14,6 +14,11 @@
         margin-top: 6px;
     }
 
+    .datepicker-month-year-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
     .datepicker-table {
         width: 100%;
     }

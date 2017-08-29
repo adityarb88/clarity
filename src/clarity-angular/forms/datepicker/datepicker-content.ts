@@ -5,7 +5,7 @@
  */
 import {Component} from "@angular/core";
 import {
-    getDay, getLocaleDaysShort,
+    getDay, getLocaleDaysShort, getLocaleMonthsLong,
     getNumberOfDaysInTheMonth
 } from "../../utils/date/date";
 import {CalendarDate} from "./calendar-date";
@@ -16,22 +16,14 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
 @Component({
     selector: "clr-datepicker-content",
     template: `
-        <!--div class="datepicker-days-container">
-            <span *ngFor="let day of daysShort" class="datepicker-day">
-                {{day}}
-            </span>
+        <div class="datepicker-month-year-container">
+            <div class="datepicker-month">
+                {{currentMonth}}
+            </div>
+            <div class="datepicker-year">
+                {{currentYear}}
+            </div>
         </div>
-        <div class="datepicker-dates-container">
-            <span *ngFor="let pDate of prevDates" class="datepicker-date disabled">
-                {{pDate}}
-            </span>
-            <span *ngFor="let date of dates" class="datepicker-date">
-                {{date}}
-            </span>
-            <span *ngFor="let nDate of nextDates" class="datepicker-date disabled">
-                {{nDate}}
-            </span>
-        </div-->
         <table class="datepicker-table">
             <tr class="datepicker-row">
                 <td *ngFor="let day of daysShort" class="datepicker-cell">
@@ -73,6 +65,14 @@ export class DatepickerContent {
 
     get daysShort(): string[] {
         return DAYS_SHORT;
+    }
+
+    get currentYear(): number {
+        return this.currentDate.getFullYear();
+    }
+
+    get currentMonth(): string {
+        return getLocaleMonthsLong()[this.currentDate.getMonth()];
     }
 
     constructDates(): void {
