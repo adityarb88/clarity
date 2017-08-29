@@ -3,12 +3,14 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Component} from "@angular/core";
+import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
 import {
     getDay, getLocaleDaysShort, getLocaleMonthsLong,
     getNumberOfDaysInTheMonth
 } from "../../utils/date/date";
 import {CalendarDate} from "./calendar-date";
+import {Point} from "../../popover/common/popover";
+import {AbstractPopover} from "../../popover/common/abstract-popover";
 
 const DAYS_SHORT = getLocaleDaysShort();
 const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
@@ -41,7 +43,7 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
         "[class.datepicker-content]": "true",
     }
 })
-export class DatepickerContent {
+export class DatepickerContent extends AbstractPopover {
 
     currentDate: Date = new Date();
 
@@ -59,7 +61,13 @@ export class DatepickerContent {
         return getDay(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
     }
 
-    constructor() {
+    constructor(injector: Injector, @SkipSelf() parentHost: ElementRef) {
+        super(injector, parentHost);
+        this.anchorPoint = Point.BOTTOM_LEFT;
+        this.popoverPoint = Point.LEFT_TOP;
+    }
+
+    ngOnInit() {
         this.constructDates();
     }
 
