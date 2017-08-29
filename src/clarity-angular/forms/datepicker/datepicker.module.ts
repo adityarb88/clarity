@@ -5,11 +5,12 @@ import {Datepicker} from "./datepicker";
 import {DatepickerContainer} from "./datepicker-container";
 import {ClrConditionalModule} from "../../utils/conditional/conditional.module";
 import {DatepickerContent} from "./datepicker-content";
+import {MonthPicker} from "./month-picker";
 
 @NgModule({
     imports: [CommonModule, ClrHostWrappingModule, ClrConditionalModule],
-    declarations: [Datepicker, DatepickerContainer, DatepickerContent],
-    exports: [Datepicker, DatepickerContainer, DatepickerContent],
+    declarations: [Datepicker, DatepickerContainer, DatepickerContent, MonthPicker],
+    exports: [Datepicker, DatepickerContainer, DatepickerContent, MonthPicker],
     entryComponents: [DatepickerContainer]
 })
 export class ClrDatepickerModule {}

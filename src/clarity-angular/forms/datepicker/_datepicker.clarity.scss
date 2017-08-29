@@ -12,6 +12,7 @@
         padding: 12px;
         margin-top: 6px;
         width: 278px;
+        height: 314px;
     }
 
     .datepicker-month-year-container {
@@ -47,5 +48,30 @@
 
     .datepicker-cell.disabled {
         opacity: 0.25;
+    }
+
+    .monthpicker-content {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    .month-cell {
+        height: 48px;
+        line-height: 48px;
+        width: 126px;
+        padding: 0 12px;
+        font-size: 18px;
+        border-radius: $clr-default-borderradius;
+        cursor: pointer;
+        color: $action-blues-light-midtone;
+        font-weight: 200;
+        background: none;
+        border: none;
+        text-align: left;
+
+        &:hover {
+            background: $gray-light
+        }
     }
 }

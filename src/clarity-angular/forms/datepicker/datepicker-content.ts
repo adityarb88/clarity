@@ -6,39 +6,61 @@
 import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
 import {CalendarDate} from "./calendar-date";
 import {DateUtilsService} from "./providers/date-utils.service";
+import {DateViewService} from "./providers/date-view.service";
 
 const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
 
 @Component({
     selector: "clr-datepicker-content",
     template: `
-        <div class="datepicker-month-year-container">
-            <button class="datepicker-btn datepicker-month">
-                {{currentMonth}}
-            </button>
-            <button class="datepicker-btn datepicker-year">
-                {{currentYear}}
-            </button>
-        </div>
-        <table class="datepicker-table">
-            <tr class="datepicker-row">
-                <td *ngFor="let day of daysShort" class="datepicker-cell">
-                    {{day}}
-                </td>
-            </tr>
-            <tr *ngFor="let row of calendarDates" class="datepicker-row">
-                <td *ngFor="let date of row" class="datepicker-cell" [class.disabled]="!date.currentMonth">
-                    {{date.date}}
-                </td>
-            </tr>
-        </table>
+        <ng-container *ngIf="monthView">
+            <clr-monthpicker></clr-monthpicker>
+        </ng-container>
+        <ng-container *ngIf="!monthView">
+            <div class="datepicker-month-year-container">
+                <button class="datepicker-btn datepicker-month" (click)="monthView = true">
+                    {{currentMonth}}
+                </button>
+                <button class="datepicker-btn datepicker-year">
+                    {{currentYear}}
+                </button>
+            </div>
+            <table class="datepicker-table">
+                <tr class="datepicker-row">
+                    <td *ngFor="let day of daysShort" class="datepicker-cell">
+                        {{day}}
+                    </td>
+                </tr>
+                <tr *ngFor="let row of calendarDates" class="datepicker-row">
+                    <td *ngFor="let date of row" class="datepicker-cell" [class.disabled]="!date.currentMonth">
+                        {{date.date}}
+                    </td>
+                </tr>
+            </table>
+        </ng-container>
     `,
     host: {
         "[class.datepicker-content]": "true",
     },
-    providers: [DateUtilsService]
+    providers: [DateUtilsService, DateViewService]
 })
 export class DatepickerContent {
+
+    get monthView(): boolean {
+        return this.dateViewService.monthView;
+    }
+
+    set monthView(value: boolean) {
+        this.dateViewService.monthView = value;
+    }
+
+    get yearView(): boolean {
+        return this.dateViewService.yearView;
+    }
+
+    set yearView(value: boolean) {
+        this.dateViewService.yearView = value;
+    }
 
     calendarDates: CalendarDate[][] = [];
 
@@ -70,7 +92,8 @@ export class DatepickerContent {
     }
 
     constructor(@SkipSelf() parentHost: ElementRef,
-                private dateUtilsService: DateUtilsService) {
+                private dateUtilsService: DateUtilsService,
+                private dateViewService: DateViewService) {
         //super(injector, parentHost);
         //this.anchorPoint = Point.BOTTOM_LEFT;
         //this.popoverPoint = Point.LEFT_TOP;
