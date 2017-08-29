@@ -27,7 +27,7 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
                 </td>
             </tr>
             <tr *ngFor="let row of calendarDates" class="datepicker-row">
-                <td *ngFor="let date of row" class="datepicker-cell"  [class.disabled]="!date.currentMonth">
+                <td *ngFor="let date of row" class="datepicker-cell" [class.disabled]="!date.currentMonth">
                     {{date.date}}
                 </td>
             </tr>
@@ -40,31 +40,37 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
 })
 export class DatepickerContent {
 
-    currentDate: Date = new Date();
-
     calendarDates: CalendarDate[][] = [];
 
     get noOfDaysInTheMonth(): number {
         return this
             .dateUtilsService
-            .getNumberOfDaysInTheMonth(this.currentDate.getFullYear(), this.currentDate.getMonth());
+            .getNumberOfDaysInTheMonth(
+                this.dateUtilsService.currentDate.getFullYear(),
+                this.dateUtilsService.currentDate.getMonth()
+            );
     }
 
     get noOfDaysInThePreviousMonth(): number {
         return this
             .dateUtilsService
-            .getNumberOfDaysInTheMonth(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
+            .getNumberOfDaysInTheMonth(
+                this.dateUtilsService.currentDate.getFullYear(),
+                this.dateUtilsService.currentDate.getMonth() - 1
+            );
     }
 
     get firstDayOfTheMonth(): number {
         return this
             .dateUtilsService
-            .getDay(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
+            .getDay(
+                this.dateUtilsService.currentDate.getFullYear(),
+                this.dateUtilsService.currentDate.getMonth(), 1
+            );
     }
 
-    constructor(
-        @SkipSelf() parentHost: ElementRef,
-        private dateUtilsService: DateUtilsService) {
+    constructor(@SkipSelf() parentHost: ElementRef,
+                private dateUtilsService: DateUtilsService) {
         //super(injector, parentHost);
         //this.anchorPoint = Point.BOTTOM_LEFT;
         //this.popoverPoint = Point.LEFT_TOP;
@@ -80,38 +86,38 @@ export class DatepickerContent {
     }
 
     get currentYear(): number {
-        return this.currentDate.getFullYear();
+        return this.dateUtilsService.currentDate.getFullYear();
     }
 
     get currentMonth(): string {
         return this
             .dateUtilsService
-            .getLocaleMonthsLong()[this.currentDate.getMonth()];
+            .getLocaleMonthsLong()[this.dateUtilsService.currentDate.getMonth()];
     }
 
     constructDates(): void {
-        let calendarDates: CalendarDate[]
+        const calendarDates: CalendarDate[]
             = Array(this.noOfDaysInTheMonth)
             .fill(null)
             .map((date, index) => new CalendarDate(index + 1, true));
 
-        let prevDates: CalendarDate[]
+        const prevDates: CalendarDate[]
             = Array(this.firstDayOfTheMonth)
             .fill(null)
             .map((date, index) => new CalendarDate(this.noOfDaysInThePreviousMonth - index, false))
             .reverse();
 
-        let leftDatesLength: number = TOTAL_DAYS_IN_ONE_MONTH - (calendarDates.length + prevDates.length);
+        const leftDatesLength: number = TOTAL_DAYS_IN_ONE_MONTH - (calendarDates.length + prevDates.length);
 
-        let nextDates: CalendarDate[]
+        const nextDates: CalendarDate[]
             = Array(leftDatesLength)
             .fill(null)
             .map((date, index) => new CalendarDate(index + 1, false));
 
-        let finalArray: CalendarDate[] = [...prevDates, ...calendarDates, ...nextDates];
+        const finalArray: CalendarDate[] = [...prevDates, ...calendarDates, ...nextDates];
 
         for (let i = 0; i < 6; i++) {
-            let tempArr: CalendarDate[] = [];
+            const tempArr: CalendarDate[] = [];
             for (let j = 0; j < 7; j++) {
                 tempArr.push(finalArray.shift());
             }

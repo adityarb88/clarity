@@ -7,6 +7,9 @@ import {Injectable} from "@angular/core";
 
 @Injectable()
 export class DateUtilsService {
+
+    currentDate: Date = new Date();
+
     //TODO: Get this from Angular Locale Lib
     getLocaleDaysShort(): string[] {
         return ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
