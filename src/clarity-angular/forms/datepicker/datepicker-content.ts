@@ -5,8 +5,6 @@
  */
 import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
 import {CalendarDate} from "./calendar-date";
-import {Point} from "../../popover/common/popover";
-import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {DateUtilsService} from "./providers/date-utils.service";
 
 const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
@@ -40,7 +38,7 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
     },
     providers: [DateUtilsService]
 })
-export class DatepickerContent extends AbstractPopover {
+export class DatepickerContent {
 
     currentDate: Date = new Date();
 
@@ -65,12 +63,12 @@ export class DatepickerContent extends AbstractPopover {
     }
 
     constructor(
-        injector: Injector,
         @SkipSelf() parentHost: ElementRef,
         private dateUtilsService: DateUtilsService) {
-        super(injector, parentHost);
-        this.anchorPoint = Point.BOTTOM_LEFT;
-        this.popoverPoint = Point.LEFT_TOP;
+        //super(injector, parentHost);
+        //this.anchorPoint = Point.BOTTOM_LEFT;
+        //this.popoverPoint = Point.LEFT_TOP;
+        //this.closeOnOutsideClick = true;
     }
 
     ngOnInit() {

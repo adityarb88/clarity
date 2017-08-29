@@ -38,11 +38,11 @@ export class Datepicker {
 
     @HostListener("focus")
     onFocus() {
-        this._ifOpenService.open = true;
+        //this._ifOpenService.open = true;
     }
 
     @HostListener("blur")
     onBlur() {
-        this._ifOpenService.open = false;
+        //this._ifOpenService.open = false;
     }
 }
