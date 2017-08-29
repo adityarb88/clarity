@@ -4,15 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
-import {
-    getDay, getLocaleDaysShort, getLocaleMonthsLong,
-    getNumberOfDaysInTheMonth
-} from "../../utils/date/date";
 import {CalendarDate} from "./calendar-date";
 import {Point} from "../../popover/common/popover";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
+import {DateUtilsService} from "./providers/date-utils.service";
 
-const DAYS_SHORT = getLocaleDaysShort();
 const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
 
 @Component({
@@ -41,7 +37,8 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
     `,
     host: {
         "[class.datepicker-content]": "true",
-    }
+    },
+    providers: [DateUtilsService]
 })
 export class DatepickerContent extends AbstractPopover {
 
@@ -50,18 +47,27 @@ export class DatepickerContent extends AbstractPopover {
     calendarDates: CalendarDate[][] = [];
 
     get noOfDaysInTheMonth(): number {
-        return getNumberOfDaysInTheMonth(this.currentDate.getFullYear(), this.currentDate.getMonth());
+        return this
+            .dateUtilsService
+            .getNumberOfDaysInTheMonth(this.currentDate.getFullYear(), this.currentDate.getMonth());
     }
 
     get noOfDaysInThePreviousMonth(): number {
-        return getNumberOfDaysInTheMonth(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
+        return this
+            .dateUtilsService
+            .getNumberOfDaysInTheMonth(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
     }
 
     get firstDayOfTheMonth(): number {
-        return getDay(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
+        return this
+            .dateUtilsService
+            .getDay(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
     }
 
-    constructor(injector: Injector, @SkipSelf() parentHost: ElementRef) {
+    constructor(
+        injector: Injector,
+        @SkipSelf() parentHost: ElementRef,
+        private dateUtilsService: DateUtilsService) {
         super(injector, parentHost);
         this.anchorPoint = Point.BOTTOM_LEFT;
         this.popoverPoint = Point.LEFT_TOP;
@@ -72,7 +78,7 @@ export class DatepickerContent extends AbstractPopover {
     }
 
     get daysShort(): string[] {
-        return DAYS_SHORT;
+        return this.dateUtilsService.getLocaleDaysShort();
     }
 
     get currentYear(): number {
@@ -80,7 +86,9 @@ export class DatepickerContent extends AbstractPopover {
     }
 
     get currentMonth(): string {
-        return getLocaleMonthsLong()[this.currentDate.getMonth()];
+        return this
+            .dateUtilsService
+            .getLocaleMonthsLong()[this.currentDate.getMonth()];
     }
 
     constructDates(): void {
@@ -112,14 +120,4 @@ export class DatepickerContent extends AbstractPopover {
             this.calendarDates.push(tempArr);
         }
     }
-
-    /*
-    export class DatepickerContent extends AbstractPopover {
-        constructor(injector: Injector, @SkipSelf() parentHost: ElementRef) {
-            super(injector, parentHost);
-            this.anchorPoint = Point.BOTTOM_LEFT;
-            this.popoverPoint = Point.LEFT_TOP;
-        }
-    }
-    */
 }
