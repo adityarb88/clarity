@@ -17,12 +17,12 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
     selector: "clr-datepicker-content",
     template: `
         <div class="datepicker-month-year-container">
-            <div class="datepicker-month">
+            <button class="datepicker-btn datepicker-month">
                 {{currentMonth}}
-            </div>
-            <div class="datepicker-year">
+            </button>
+            <button class="datepicker-btn datepicker-year">
                 {{currentYear}}
-            </div>
+            </button>
         </div>
         <table class="datepicker-table">
             <tr class="datepicker-row">
