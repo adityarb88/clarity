@@ -4,6 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {Injectable} from "@angular/core";
+import {CalendarDate} from "../calendar-date";
+
+const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
 
 @Injectable()
 export class DateUtilsService {
@@ -50,5 +53,66 @@ export class DateUtilsService {
 
     getFullMonth(year: number, month: number) {
         return this.getLocaleMonthsLong()[(new Date(year, month)).getMonth()];
+    }
+
+    get currDate(): number {
+        return this.currentDate.getDate();
+    }
+
+    get currMonth(): number {
+        return this.currentDate.getMonth();
+    }
+
+    get currMonthLong(): string {
+        return this.getLocaleMonthsLong()[this.currMonth];
+    }
+
+    get currYear(): number {
+        return this.currentDate.getFullYear();
+    }
+
+    getDatesInCalendarView(monthNumber: number, dayNumber: number, yearNumber: number): CalendarDate[][] {
+        const noOfDaysInCurrMonth: number = this.getNumberOfDaysInTheMonth(yearNumber, monthNumber);
+        const noOfDaysInPrevMonth: number = this.getNumberOfDaysInTheMonth(yearNumber, monthNumber - 1);
+
+        const calendarDates: CalendarDate[]
+            = Array(noOfDaysInCurrMonth)
+            .fill(null)
+            .map((date, index) => {
+                if (dayNumber === index + 1) {
+                    return new CalendarDate(index + 1, true, true);
+                } else {
+                    return new CalendarDate(index + 1, true, false);
+                }
+            });
+
+        const firstDayOfCurrMonth: number = this.getDay(yearNumber, monthNumber, 1);
+
+        const prevDates: CalendarDate[]
+            = Array(firstDayOfCurrMonth)
+            .fill(null)
+            .map((date, index) => new CalendarDate(noOfDaysInPrevMonth - index, false, false))
+            .reverse();
+
+        const leftDatesLength: number = TOTAL_DAYS_IN_MONTH_VIEW - (calendarDates.length + prevDates.length);
+
+        const nextDates: CalendarDate[]
+            = Array(leftDatesLength)
+            .fill(null)
+            .map((date, index) => new CalendarDate(index + 1, false, false));
+
+        const finalArray: CalendarDate[] = [...prevDates, ...calendarDates, ...nextDates];
+
+        const finalCalendarArray: CalendarDate[][] = [];
+
+        for (let i = 0; i < 6; i++) {
+            const tempArr: CalendarDate[] = [];
+            for (let j = 0; j < 7; j++) {
+                tempArr.push(finalArray.shift());
+            }
+            finalCalendarArray.push(tempArr);
+        }
+
+        return finalCalendarArray;
     }
 }

@@ -72,33 +72,6 @@ export class DatepickerContent {
 
     calendarDates: CalendarDate[][] = [];
 
-    get noOfDaysInTheMonth(): number {
-        return this
-            .dateUtilsService
-            .getNumberOfDaysInTheMonth(
-                this.dateUtilsService.currentDate.getFullYear(),
-                this.dateUtilsService.currentDate.getMonth()
-            );
-    }
-
-    get noOfDaysInThePreviousMonth(): number {
-        return this
-            .dateUtilsService
-            .getNumberOfDaysInTheMonth(
-                this.dateUtilsService.currentDate.getFullYear(),
-                this.dateUtilsService.currentDate.getMonth() - 1
-            );
-    }
-
-    get firstDayOfTheMonth(): number {
-        return this
-            .dateUtilsService
-            .getDay(
-                this.dateUtilsService.currentDate.getFullYear(),
-                this.dateUtilsService.currentDate.getMonth(), 1
-            );
-    }
-
     constructor(@SkipSelf() parentHost: ElementRef,
                 private dateUtilsService: DateUtilsService,
                 private dateViewService: DateViewService) {
@@ -109,62 +82,24 @@ export class DatepickerContent {
     }
 
     ngOnInit() {
-        this.constructDates();
+        this.calendarDates = this
+            .dateUtilsService
+            .getDatesInCalendarView(
+                this.dateUtilsService.currMonth,
+                this.dateUtilsService.currDate,
+                this.dateUtilsService.currYear
+            );
     }
 
     get daysShort(): string[] {
         return this.dateUtilsService.getLocaleDaysShort();
     }
 
-    get currentDate(): number {
-        return this.dateUtilsService.currentDate.getDate();
-    }
-
     get currentYear(): number {
-        return this.dateUtilsService.currentDate.getFullYear();
+        return this.dateUtilsService.currYear;
     }
 
     get currentMonth(): string {
-        return this
-            .dateUtilsService
-            .getLocaleMonthsLong()[this.dateUtilsService.currentDate.getMonth()];
-    }
-
-    constructDates(): void {
-        const calendarDates: CalendarDate[]
-            = Array(this.noOfDaysInTheMonth)
-            .fill(null)
-            .map((date, index) => {
-                if (this.currentDate === index + 1) {
-                    return new CalendarDate(index + 1, true, true);
-                } else {
-                    return new CalendarDate(index + 1, true, false);
-                }
-            });
-
-        console.log(calendarDates);
-
-        const prevDates: CalendarDate[]
-            = Array(this.firstDayOfTheMonth)
-            .fill(null)
-            .map((date, index) => new CalendarDate(this.noOfDaysInThePreviousMonth - index, false, false))
-            .reverse();
-
-        const leftDatesLength: number = TOTAL_DAYS_IN_ONE_MONTH - (calendarDates.length + prevDates.length);
-
-        const nextDates: CalendarDate[]
-            = Array(leftDatesLength)
-            .fill(null)
-            .map((date, index) => new CalendarDate(index + 1, false, false));
-
-        const finalArray: CalendarDate[] = [...prevDates, ...calendarDates, ...nextDates];
-
-        for (let i = 0; i < 6; i++) {
-            const tempArr: CalendarDate[] = [];
-            for (let j = 0; j < 7; j++) {
-                tempArr.push(finalArray.shift());
-            }
-            this.calendarDates.push(tempArr);
-        }
+        return this.dateUtilsService.getFullMonth(this.currentYear, this.dateUtilsService.currMonth);
     }
 }
