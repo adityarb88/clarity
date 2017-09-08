@@ -13,14 +13,18 @@ export class DateUtilsService {
     //TODO: Get this from Angular Locale Lib
     getLocaleDaysShort(): string[] {
         return ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-    };
+    }
 
     //TODO: Get this from Angular Locale Lib
     getLocaleMonthsLong(): string[] {
         return ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
-    };
+    }
+
+    getYearStartingRange(): number[] {
+        return [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+    }
 
     /**
      * Returns the number of days in a month. 28, 29, 30 or 31

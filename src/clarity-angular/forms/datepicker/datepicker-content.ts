@@ -16,12 +16,12 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
         <ng-container *ngIf="monthView">
             <clr-monthpicker></clr-monthpicker>
         </ng-container>
-        <ng-container *ngIf="!monthView">
+        <ng-container *ngIf="!monthView && !yearView">
             <div class="datepicker-month-year-container">
                 <button class="datepicker-btn datepicker-month" (click)="monthView = true">
                     {{currentMonth}}
                 </button>
-                <button class="datepicker-btn datepicker-year">
+                <button class="datepicker-btn datepicker-year" (click)="yearView = true">
                     {{currentYear}}
                 </button>
             </div>
@@ -37,6 +37,9 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
                     </td>
                 </tr>
             </table>
+        </ng-container>
+        <ng-container *ngIf="yearView">
+            <clr-yearpicker></clr-yearpicker>
         </ng-container>
     `,
     host: {

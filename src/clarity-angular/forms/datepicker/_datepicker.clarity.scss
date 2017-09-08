@@ -50,28 +50,43 @@
         opacity: 0.25;
     }
 
-    .monthpicker-content {
+    .monthpicker-content,
+    .yearpicker-content {
         display: flex;
         flex-direction: column;
+        overflow: auto;
+    }
+
+    .monthpicker-content {
         flex-wrap: wrap;
     }
 
-    .month-cell {
+    .month-cell,
+    .year-cell {
         height: 48px;
         line-height: 48px;
-        width: 126px;
         padding: 0 12px;
         font-size: 18px;
-        border-radius: $clr-default-borderradius;
         cursor: pointer;
-        color: $action-blues-light-midtone;
-        font-weight: 200;
         background: none;
         border: none;
-        text-align: left;
+        font-weight: 200;
+        color: $action-blues-light-midtone;
+        outline-offset: -5px;
 
         &:hover {
             background: $gray-light
         }
+    }
+
+    .month-cell {
+        width: 126px;
+        border-radius: $clr-default-borderradius;
+        text-align: left;
+    }
+
+    .year-cell {
+        flex: 0 0 48px;
+        width: 100%;
     }
 }
