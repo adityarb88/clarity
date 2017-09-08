@@ -34,7 +34,7 @@ export class DateUtilsService {
      */
     getNumberOfDaysInTheMonth(year: number, month: number): number {
         return (new Date(year, month + 1, 0)).getDate(); // +1 because date starts at 1 and 0 means the previous months last date.
-    };
+    }
 
     /**
      * Returns the first day of the week.
@@ -46,9 +46,9 @@ export class DateUtilsService {
      */
     getDay(year: number, month: number, date: number): number {
         return (new Date(year, month, date)).getDay();
-    };
+    }
 
     getFullMonth(year: number, month: number) {
         return this.getLocaleMonthsLong()[(new Date(year, month)).getMonth()];
-    };
+    }
 }
