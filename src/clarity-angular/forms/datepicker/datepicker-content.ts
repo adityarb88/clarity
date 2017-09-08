@@ -27,13 +27,18 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
             </div>
             <table class="datepicker-table">
                 <tr class="datepicker-row">
-                    <td *ngFor="let day of daysShort" class="datepicker-cell">
+                    <td *ngFor="let day of daysShort" class="datepicker-cell days">
                         {{day}}
                     </td>
                 </tr>
                 <tr *ngFor="let row of calendarDates" class="datepicker-row">
-                    <td *ngFor="let date of row" class="datepicker-cell" [class.disabled]="!date.currentMonth">
-                        {{date.date}}
+                    <td *ngFor="let date of row" class="datepicker-cell">
+                        <button class="date"
+                                [attr.disabled]="date.currentMonth ? null : ''"
+                                [class.disabled]="!date.currentMonth"
+                                [class.active]="date.currentDate">
+                            {{date.date}}
+                        </button>
                     </td>
                 </tr>
             </table>
@@ -111,6 +116,10 @@ export class DatepickerContent {
         return this.dateUtilsService.getLocaleDaysShort();
     }
 
+    get currentDate(): number {
+        return this.dateUtilsService.currentDate.getDate();
+    }
+
     get currentYear(): number {
         return this.dateUtilsService.currentDate.getFullYear();
     }
@@ -125,12 +134,20 @@ export class DatepickerContent {
         const calendarDates: CalendarDate[]
             = Array(this.noOfDaysInTheMonth)
             .fill(null)
-            .map((date, index) => new CalendarDate(index + 1, true));
+            .map((date, index) => {
+                if (this.currentDate === index + 1) {
+                    return new CalendarDate(index + 1, true, true);
+                } else {
+                    return new CalendarDate(index + 1, true, false);
+                }
+            });
+
+        console.log(calendarDates);
 
         const prevDates: CalendarDate[]
             = Array(this.firstDayOfTheMonth)
             .fill(null)
-            .map((date, index) => new CalendarDate(this.noOfDaysInThePreviousMonth - index, false))
+            .map((date, index) => new CalendarDate(this.noOfDaysInThePreviousMonth - index, false, false))
             .reverse();
 
         const leftDatesLength: number = TOTAL_DAYS_IN_ONE_MONTH - (calendarDates.length + prevDates.length);
@@ -138,7 +155,7 @@ export class DatepickerContent {
         const nextDates: CalendarDate[]
             = Array(leftDatesLength)
             .fill(null)
-            .map((date, index) => new CalendarDate(index + 1, false));
+            .map((date, index) => new CalendarDate(index + 1, false, false));
 
         const finalArray: CalendarDate[] = [...prevDates, ...calendarDates, ...nextDates];
 

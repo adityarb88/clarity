@@ -44,10 +44,35 @@
     .datepicker-cell {
         width: 36px;
         height: 36px;
+        padding: 0;
     }
 
-    .datepicker-cell.disabled {
-        opacity: 0.25;
+    .date {
+        background: none;
+        border: none;
+        width: 100%;
+        height: 36px;
+        line-height: 36px;
+        padding: 0;
+        margin: 0;
+
+        &:not(.disabled) {
+            cursor: pointer;
+        }
+
+        &.disabled {
+            opacity: 0.25;
+        }
+
+        &.active {
+            color: $clr-black;
+            font-weight: 600;
+        }
+    }
+
+    .days {
+        font-weight: 600;
+        font-size: 12px;
     }
 
     .monthpicker-content,
