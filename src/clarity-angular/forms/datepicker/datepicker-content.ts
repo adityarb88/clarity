@@ -108,12 +108,20 @@ export class DatepickerContent {
     }
 
     get month(): string {
-        const month: number = this.dateUtilsService.selectedMonth || this.dateUtilsService.currMonth;
-        return this.dateUtilsService.getMonthLong(month);
+        const selMonth: number = this.dateUtilsService.selectedMonth;
+        if (typeof selMonth !== "undefined") {
+            return this.dateUtilsService.getMonthLong(selMonth);
+        } else {
+            return this.dateUtilsService.getMonthLong(this.dateUtilsService.currMonth);
+        }
     }
 
     get year(): number {
-        const year: number = this.dateUtilsService.selectedYear || this.dateUtilsService.currYear;
-        return year;
+        const selYear: number = this.dateUtilsService.selectedYear;
+        if (typeof selYear !== "undefined") {
+            return selYear;
+        } else {
+            return this.dateUtilsService.currYear;
+        }
     }
 }

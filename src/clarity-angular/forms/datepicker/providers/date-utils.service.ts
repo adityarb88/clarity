@@ -124,8 +124,19 @@ export class DateUtilsService {
     }
 
     getDatesInCalendarView(): CalendarDate[][] {
-        const month: number = this.selectedMonth || this.currMonth;
-        const year: number = this.selectedYear || this.currYear;
+        let month: number;
+        let year: number;
+        if (typeof this.selectedMonth !== "undefined") {
+            month = this.selectedMonth;
+        } else {
+            month = this.currMonth;
+        }
+
+        if (typeof this.selectedYear !== "undefined") {
+            year = this.selectedYear;
+        } else {
+            year = this.currYear;
+        }
 
         const noOfDaysInCurrMonth: number = this.getNumberOfDaysInTheMonth(year, month);
         const noOfDaysInPrevMonth: number = this.getNumberOfDaysInTheMonth(year, month - 1);
@@ -137,7 +148,7 @@ export class DateUtilsService {
                 return new CalendarDate(index + 1, true, false);
             });
 
-        if (month === this.currMonth) {
+        if (month === this.currMonth && year === this.currYear) {
             calendarDates[this.currDate - 1].currentDate = true;
         }
 
