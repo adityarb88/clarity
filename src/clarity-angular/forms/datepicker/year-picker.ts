@@ -10,7 +10,11 @@ import {DateViewService} from "./providers/date-view.service";
 @Component({
     selector: "clr-yearpicker",
     template: `
-        <button *ngFor="let year of years" class="year-cell" (click)="yearView = false">
+        <button
+            *ngFor="let year of years"
+            class="year-cell"
+            (click)="setYear(year)"
+            [class.active]="year === selectedYear">
             {{year}}
         </button>
     `,
@@ -27,5 +31,15 @@ export class YearPicker {
 
     set yearView(value: boolean) {
         this.dateViewService.yearView = value;
+    }
+
+    get selectedYear(): number {
+        const selectedYear: number = this.dateUtilsService.selectedYear || this.dateUtilsService.currYear;
+        return selectedYear;
+    }
+
+    setYear(year: number): void {
+        this.dateUtilsService.selectedYear = year;
+        this.yearView = false;
     }
 }

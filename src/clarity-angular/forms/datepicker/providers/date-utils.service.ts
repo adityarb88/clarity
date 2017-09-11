@@ -13,6 +13,16 @@ export class DateUtilsService {
 
     currentDate: Date = new Date();
 
+    private _currentCalendarViewDates: CalendarDate[][] = [];
+
+    get currentCalendarViewDates(): CalendarDate[][] {
+        return this._currentCalendarViewDates;
+    }
+
+    set currentCalendarViewDates(value: CalendarDate[][]) {
+        this._currentCalendarViewDates = value;
+    }
+
     //TODO: Get this from Angular Locale Lib
     getLocaleDaysShort(): string[] {
         return ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
@@ -36,11 +46,12 @@ export class DateUtilsService {
      * @returns {number}
      */
     getNumberOfDaysInTheMonth(year: number, month: number): number {
-        return (new Date(year, month + 1, 0)).getDate(); // +1 because date starts at 1 and 0 means the previous months last date.
+        // +1 because date starts at 1 and 0 means the previous months last date.
+        return (new Date(year, month + 1, 0)).getDate();
     }
 
     /**
-     * Returns the first day of the week.
+     * Returns the day for the date.
      * For eg: 0 for Sunday, 1 for Monday and so on when locale is en_US
      * @param {number} year
      * @param {number} month
@@ -51,8 +62,14 @@ export class DateUtilsService {
         return (new Date(year, month, date)).getDay();
     }
 
-    getFullMonth(year: number, month: number) {
-        return this.getLocaleMonthsLong()[(new Date(year, month)).getMonth()];
+    /**
+     * Returns the string value of the month
+     * @param {number} year
+     * @param {number} month
+     * @returns {string}
+     */
+    getMonthLong(month: number) {
+        return this.getLocaleMonthsLong()[month];
     }
 
     get currDate(): number {
@@ -71,22 +88,59 @@ export class DateUtilsService {
         return this.currentDate.getFullYear();
     }
 
-    getDatesInCalendarView(monthNumber: number, dayNumber: number, yearNumber: number): CalendarDate[][] {
-        const noOfDaysInCurrMonth: number = this.getNumberOfDaysInTheMonth(yearNumber, monthNumber);
-        const noOfDaysInPrevMonth: number = this.getNumberOfDaysInTheMonth(yearNumber, monthNumber - 1);
+    private _selectedDate: number;
+    get selectedDate(): number {
+        return this._selectedDate;
+    }
+
+    set selectedDate(value: number) {
+        this._selectedDate = value;
+    }
+
+    private _selectedMonth: number;
+    get selectedMonth(): number {
+        return this._selectedMonth;
+    }
+
+    set selectedMonth(value: number) {
+        if (value !== this.selectedMonth) {
+            this._selectedMonth = value;
+            this.currentCalendarViewDates = this.getDatesInCalendarView();
+        }
+    }
+
+    private _selectedYear: number;
+    get selectedYear(): number {
+        return this._selectedYear;
+    }
+
+    set selectedYear(value: number) {
+        if (value !== this.selectedYear) {
+            this._selectedYear = value;
+            this.currentCalendarViewDates = this.getDatesInCalendarView();
+        }
+    }
+
+    getDatesInCalendarView(): CalendarDate[][] {
+        const month: number = this.selectedMonth || this.currMonth;
+        const year: number = this.selectedYear || this.currYear;
+
+        const noOfDaysInCurrMonth: number = this.getNumberOfDaysInTheMonth(year, month);
+        const noOfDaysInPrevMonth: number = this.getNumberOfDaysInTheMonth(year, month - 1);
 
         const calendarDates: CalendarDate[]
             = Array(noOfDaysInCurrMonth)
             .fill(null)
             .map((date, index) => {
-                if (dayNumber === index + 1) {
+                /*if (dayNumber === index + 1) {
                     return new CalendarDate(index + 1, true, true);
                 } else {
                     return new CalendarDate(index + 1, true, false);
-                }
+                }*/
+                return new CalendarDate(index + 1, true, false);
             });
 
-        const firstDayOfCurrMonth: number = this.getDay(yearNumber, monthNumber, 1);
+        const firstDayOfCurrMonth: number = this.getDay(year, month, 1);
 
         const prevDates: CalendarDate[]
             = Array(firstDayOfCurrMonth)

@@ -10,7 +10,11 @@ import {DateViewService} from "./providers/date-view.service";
 @Component({
     selector: "clr-monthpicker",
     template: `
-        <button *ngFor="let month of months" class="month-cell" (click)="monthView = false">
+        <button 
+            *ngFor="let month of months" 
+            class="month-cell" 
+            (click)="setMonth(month)"
+            [class.active]="month === selectedMonth">
             {{month}}
         </button>
     `,
@@ -27,5 +31,16 @@ export class MonthPicker {
 
     set monthView(value: boolean) {
         this.dateViewService.monthView = value;
+    }
+
+    get selectedMonth(): string {
+        const selectedMonth = this.dateUtilsService.selectedMonth || this.dateUtilsService.currMonth;
+        return this.months[selectedMonth];
+    }
+
+    setMonth(month: string): void {
+        const selectedMonthIndex: number = this.months.indexOf(month);
+        this.dateUtilsService.selectedMonth = selectedMonthIndex;
+        this.monthView = false;
     }
 }

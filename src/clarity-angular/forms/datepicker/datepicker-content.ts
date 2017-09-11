@@ -8,8 +8,6 @@ import {CalendarDate} from "./calendar-date";
 import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
 
-const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
-
 @Component({
     selector: "clr-datepicker-content",
     template: `
@@ -19,10 +17,10 @@ const TOTAL_DAYS_IN_ONE_MONTH: number = 42;
         <ng-container *ngIf="!monthView && !yearView">
             <div class="datepicker-month-year-container">
                 <button class="datepicker-btn datepicker-month" (click)="monthView = true">
-                    {{currentMonth}}
+                    {{month}}
                 </button>
                 <button class="datepicker-btn datepicker-year" (click)="yearView = true">
-                    {{currentYear}}
+                    {{year}}
                 </button>
             </div>
             <table class="datepicker-table">
@@ -70,8 +68,6 @@ export class DatepickerContent {
         this.dateViewService.yearView = value;
     }
 
-    calendarDates: CalendarDate[][] = [];
-
     constructor(@SkipSelf() parentHost: ElementRef,
                 private dateUtilsService: DateUtilsService,
                 private dateViewService: DateViewService) {
@@ -81,25 +77,27 @@ export class DatepickerContent {
         //this.closeOnOutsideClick = true;
     }
 
+    get calendarDates(): CalendarDate[][] {
+        return this.dateUtilsService.currentCalendarViewDates;
+    }
+
     ngOnInit() {
-        this.calendarDates = this
+        this.dateUtilsService.currentCalendarViewDates = this
             .dateUtilsService
-            .getDatesInCalendarView(
-                this.dateUtilsService.currMonth,
-                this.dateUtilsService.currDate,
-                this.dateUtilsService.currYear
-            );
+            .getDatesInCalendarView();
     }
 
     get daysShort(): string[] {
         return this.dateUtilsService.getLocaleDaysShort();
     }
 
-    get currentYear(): number {
-        return this.dateUtilsService.currYear;
+    get month(): string {
+        const month: number = this.dateUtilsService.selectedMonth || this.dateUtilsService.currMonth;
+        return this.dateUtilsService.getMonthLong(month);
     }
 
-    get currentMonth(): string {
-        return this.dateUtilsService.getFullMonth(this.currentYear, this.dateUtilsService.currMonth);
+    get year(): number {
+        const year: number = this.dateUtilsService.selectedYear || this.dateUtilsService.currYear;
+        return year;
     }
 }

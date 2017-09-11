@@ -95,6 +95,7 @@
         cursor: pointer;
         background: none;
         border: none;
+        border-radius: $clr-default-borderradius;
         font-weight: 200;
         color: $action-blues-light-midtone;
         outline-offset: -5px;
@@ -102,11 +103,15 @@
         &:hover {
             background: $gray-light
         }
+
+        &.active {
+            background: $action-blues-light-midtone;
+            color: $clr-white;
+        }
     }
 
     .month-cell {
         width: 126px;
-        border-radius: $clr-default-borderradius;
         text-align: left;
     }
 
