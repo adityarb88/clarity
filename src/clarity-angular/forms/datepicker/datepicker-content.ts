@@ -34,7 +34,9 @@ import {DateViewService} from "./providers/date-view.service";
                         <button class="date"
                                 [attr.disabled]="date.currentMonth ? null : ''"
                                 [class.disabled]="!date.currentMonth"
-                                [class.active]="date.currentDate">
+                                [class.current]="date.currentDate"
+                                [class.active]="(date.date === selectedDate) && date.currentMonth"
+                                (click)="setDate(date.date)">
                             {{date.date}}
                         </button>
                     </td>
@@ -43,6 +45,12 @@ import {DateViewService} from "./providers/date-view.service";
         </ng-container>
         <ng-container *ngIf="yearView">
             <clr-yearpicker></clr-yearpicker>
+        </ng-container>
+        
+        <ng-container *ngIf="selectedDate">
+            <div class="temp-container">
+            {{month}} | {{selectedDate}} | {{year}}
+            </div>
         </ng-container>
     `,
     host: {
@@ -89,6 +97,14 @@ export class DatepickerContent {
 
     get daysShort(): string[] {
         return this.dateUtilsService.getLocaleDaysShort();
+    }
+
+    get selectedDate(): number {
+        return this.dateUtilsService.selectedDate;
+    }
+
+    setDate(value: number): void {
+        this.dateUtilsService.selectedDate = value;
     }
 
     get month(): string {

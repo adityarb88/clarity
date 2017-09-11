@@ -26,15 +26,14 @@ export class Datepicker {
         if (!container) {
             // We need a new anchor, since we're projecting the current one.
             this.vcr.createComponent(this.cfr.resolveComponentFactory(EmptyAnchor));
-            let factory: ComponentFactory<DatepickerContainer> = this.cfr.resolveComponentFactory(DatepickerContainer);
-            let componentRef: ComponentRef<DatepickerContainer> =
+            const factory: ComponentFactory<DatepickerContainer> = this.cfr.resolveComponentFactory(DatepickerContainer);
+            const componentRef: ComponentRef<DatepickerContainer> =
                 this.vcr.createComponent(factory, undefined, undefined, [[this.el.nativeElement]]);
             // We can now remove the useless anchor
             this.vcr.remove(0);
             this._ifOpenService = componentRef.injector.get(IfOpenService);
         }
     }
-
 
     @HostListener("focus")
     onFocus() {

@@ -94,7 +94,9 @@ export class DateUtilsService {
     }
 
     set selectedDate(value: number) {
-        this._selectedDate = value;
+        if (this._selectedDate !== value) {
+            this._selectedDate = value;
+        }
     }
 
     private _selectedMonth: number;
@@ -132,13 +134,12 @@ export class DateUtilsService {
             = Array(noOfDaysInCurrMonth)
             .fill(null)
             .map((date, index) => {
-                /*if (dayNumber === index + 1) {
-                    return new CalendarDate(index + 1, true, true);
-                } else {
-                    return new CalendarDate(index + 1, true, false);
-                }*/
                 return new CalendarDate(index + 1, true, false);
             });
+
+        if (month === this.currMonth) {
+            calendarDates[this.currDate - 1].currentDate = true;
+        }
 
         const firstDayOfCurrMonth: number = this.getDay(year, month, 1);
 

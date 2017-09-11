@@ -55,6 +55,7 @@
         line-height: 36px;
         padding: 0;
         margin: 0;
+        border-radius: $clr-default-borderradius;
 
         &:not(.disabled) {
             cursor: pointer;
@@ -64,9 +65,14 @@
             opacity: 0.25;
         }
 
-        &.active {
+        &.current {
             color: $clr-black;
             font-weight: 600;
+        }
+
+        &.active {
+            background: $action-blues-light-midtone;
+            color: $clr-white;
         }
     }
 
@@ -118,5 +124,11 @@
     .year-cell {
         flex: 0 0 48px;
         width: 100%;
+    }
+
+    .temp-container {
+        position: fixed;
+        right: 850px;
+        top: 300px;
     }
 }
