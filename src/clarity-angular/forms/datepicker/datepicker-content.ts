@@ -7,6 +7,8 @@ import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
 import {CalendarDate} from "./calendar-date";
 import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
+import {AbstractPopover} from "../../popover/common/abstract-popover";
+import {Point} from "../../popover/common/popover";
 
 @Component({
     selector: "clr-datepicker-content",
@@ -58,7 +60,7 @@ import {DateViewService} from "./providers/date-view.service";
     },
     providers: [DateUtilsService, DateViewService]
 })
-export class DatepickerContent {
+export class DatepickerContent extends AbstractPopover {
 
     get monthView(): boolean {
         return this.dateViewService.monthView;
@@ -77,12 +79,13 @@ export class DatepickerContent {
     }
 
     constructor(@SkipSelf() parentHost: ElementRef,
+                private injector: Injector,
                 private dateUtilsService: DateUtilsService,
                 private dateViewService: DateViewService) {
-        //super(injector, parentHost);
-        //this.anchorPoint = Point.BOTTOM_LEFT;
-        //this.popoverPoint = Point.LEFT_TOP;
-        //this.closeOnOutsideClick = true;
+        super(injector, parentHost);
+        this.anchorPoint = Point.BOTTOM_LEFT;
+        this.popoverPoint = Point.LEFT_TOP;
+        this.closeOnOutsideClick = true;
     }
 
     get calendarDates(): CalendarDate[][] {

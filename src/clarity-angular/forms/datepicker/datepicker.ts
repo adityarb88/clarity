@@ -13,7 +13,10 @@ import {EmptyAnchor} from "../../utils/host-wrapping/empty-anchor";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 
 @Directive({
-    selector: "[clrDatepicker]"
+    selector: "[clrDatepicker]",
+    host: {
+        "[class.datepicker-input]": "true",
+    }
 })
 export class Datepicker {
 

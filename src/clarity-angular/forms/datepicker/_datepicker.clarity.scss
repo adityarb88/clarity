@@ -3,6 +3,26 @@
 // The full license information can be found in LICENSE in the root directory of this project.
 
 @include exports('datepicker.clarity') {
+    .datepicker-container {
+    }
+
+    .datepicker-trigger {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        height: 36px;
+        width: 36px;
+
+        &:hover clr-icon {
+            fill: $clr-action-blue;
+        }
+    }
+
+    input[type="text"].datepicker-input {
+        padding-right: 36px;
+    }
+
     .datepicker-content {
         display: flex;
         flex-direction: column;

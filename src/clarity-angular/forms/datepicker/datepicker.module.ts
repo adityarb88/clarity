@@ -7,9 +7,10 @@ import {ClrConditionalModule} from "../../utils/conditional/conditional.module";
 import {DatepickerContent} from "./datepicker-content";
 import {MonthPicker} from "./month-picker";
 import {YearPicker} from "./year-picker";
+import {ClrIconModule} from "../../icon/icon.module";
 
 @NgModule({
-    imports: [CommonModule, ClrHostWrappingModule, ClrConditionalModule],
+    imports: [CommonModule, ClrHostWrappingModule, ClrConditionalModule, ClrIconModule],
     declarations: [Datepicker, DatepickerContainer, DatepickerContent, MonthPicker, YearPicker],
     exports: [Datepicker, DatepickerContainer, DatepickerContent, MonthPicker, YearPicker],
     entryComponents: [DatepickerContainer]
