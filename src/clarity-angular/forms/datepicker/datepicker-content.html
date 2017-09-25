@@ -1,0 +1,41 @@
+<ng-container *ngIf="monthView">
+    <clr-monthpicker></clr-monthpicker>
+</ng-container>
+<ng-container *ngIf="!monthView && !yearView">
+    <div class="datepicker-month-year-container">
+        <button class="datepicker-btn datepicker-month" (click)="monthView = true">
+            {{month}}
+        </button>
+        <button class="datepicker-btn datepicker-year" (click)="yearView = true">
+            {{year}}
+        </button>
+    </div>
+    <table class="datepicker-table">
+        <tr class="datepicker-row">
+            <td *ngFor="let day of daysShort" class="datepicker-cell days">
+                {{day}}
+            </td>
+        </tr>
+        <tr *ngFor="let row of calendarDates" class="datepicker-row">
+            <td *ngFor="let date of row" class="datepicker-cell">
+                <button class="date"
+                        [attr.disabled]="date.currentMonth ? null : ''"
+                        [class.disabled]="!date.currentMonth"
+                        [class.current]="date.currentDate"
+                        [class.active]="(date.date === selectedDate) && date.currentMonth"
+                        (click)="setDate(date.date)">
+                    {{date.date}}
+                </button>
+            </td>
+        </tr>
+    </table>
+</ng-container>
+<ng-container *ngIf="yearView">
+    <clr-yearpicker></clr-yearpicker>
+</ng-container>
+
+<ng-container *ngIf="selectedDate">
+    <div class="temp-container">
+        {{month}} | {{selectedDate}} | {{year}}
+    </div>
+</ng-container>
