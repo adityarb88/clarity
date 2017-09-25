@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {
-    ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, HostListener,
+    ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef,
     Optional,
     ViewContainerRef
 } from "@angular/core";
@@ -36,15 +36,5 @@ export class Datepicker {
             this.vcr.remove(0);
             this._ifOpenService = componentRef.injector.get(IfOpenService);
         }
-    }
-
-    @HostListener("focus")
-    onFocus() {
-        //this._ifOpenService.open = true;
-    }
-
-    @HostListener("blur")
-    onBlur() {
-        //this._ifOpenService.open = false;
     }
 }
