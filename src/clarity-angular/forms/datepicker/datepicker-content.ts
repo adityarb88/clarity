@@ -9,6 +9,7 @@ import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
+import {MonthViewType} from "./utils/month-view.enum";
 
 @Component({
     selector: "clr-datepicker-content",
@@ -68,6 +69,15 @@ export class DatepickerContent extends AbstractPopover {
         this.dateUtilsService.selectedDate = value;
     }
 
+    setDateAndChangeCalendarMonth(value: number, increment: boolean): void {
+        if (increment) {
+            this.dateUtilsService.changeViewToNextMonth();
+        } else {
+            this.dateUtilsService.changeViewToPreviousMonth();
+        }
+        this.dateUtilsService.selectedDate = value;
+    }
+
     get month(): string {
         const selMonth: number = this.dateUtilsService.selectedMonth;
         if (typeof selMonth !== "undefined") {
@@ -84,5 +94,21 @@ export class DatepickerContent extends AbstractPopover {
         } else {
             return this.dateUtilsService.currYear;
         }
+    }
+
+    isPreviousMonth(date: CalendarDate): boolean {
+        return date.monthView === MonthViewType.PREVIOUS;
+    }
+
+    isCurrentMonth(date: CalendarDate): boolean {
+        return date.monthView === MonthViewType.CURRENT;
+    }
+
+    isNextMonth(date: CalendarDate): boolean {
+        return date.monthView === MonthViewType.NEXT;
+    }
+
+    onDatepickerTableKeyDown(event: KeyboardEvent) {
+        console.log("Test", event);
     }
 }

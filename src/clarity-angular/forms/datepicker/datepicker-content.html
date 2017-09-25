@@ -16,15 +16,32 @@
                 {{day}}
             </td>
         </tr>
+    </table>
+    <table class="datepicker-table" (keydown)="onDatepickerTableKeyDown($event)">
         <tr *ngFor="let row of calendarDates" class="datepicker-row">
             <td *ngFor="let date of row" class="datepicker-cell">
-                <button class="date"
-                        [attr.disabled]="date.isDateInCurrentMonth ? null : ''"
+                <button *ngIf="isPreviousMonth(date)"
+                        class="date is-not-current"
                         [attr.tabindex]="!date.isTodaysDate ? -1 : null"
-                        [class.disabled]="!date.isDateInCurrentMonth"
-                        [class.current]="date.isTodaysDate"
-                        [class.active]="(date.date === selectedDate) && date.isDateInCurrentMonth"
+                        [class.is-today]="date.isTodaysDate"
+                        (click)="setDateAndChangeCalendarMonth(date.date, false)">
+                    {{date.date}}
+                </button>
+
+                <button *ngIf="isCurrentMonth(date)"
+                        class="date"
+                        [attr.tabindex]="!date.isTodaysDate ? -1 : null"
+                        [class.is-today]="date.isTodaysDate"
+                        [class.active]="(date.date === selectedDate) && isCurrentMonth(date)"
                         (click)="setDate(date.date)">
+                    {{date.date}}
+                </button>
+
+                <button *ngIf="isNextMonth(date)"
+                        class="date is-not-current"
+                        [attr.tabindex]="!date.isTodaysDate ? -1 : null"
+                        [class.is-today]="date.isTodaysDate"
+                        (click)="setDateAndChangeCalendarMonth(date.date, true)">
                     {{date.date}}
                 </button>
             </td>

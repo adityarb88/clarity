@@ -40,11 +40,26 @@
         justify-content: space-between;
     }
 
+    .datepicker-btn,
+    .date {
+        &:hover,
+        &:focus {
+            background: #eee;
+        }
+
+        &:focus {
+            //Only because we have defined a background color for focus above
+            outline: 0;
+        }
+    }
+
     .datepicker-btn {
         padding: 0;
         margin: 0;
         border: none;
+        border-radius: 3px;
         background: none;
+        padding: 0 6px;
         cursor: pointer;
         color: $action-blues-light-midtone;
         height: 36px;
@@ -76,16 +91,14 @@
         padding: 0;
         margin: 0;
         border-radius: $clr-default-borderradius;
+        cursor: pointer;
 
-        &:not(.disabled) {
-            cursor: pointer;
-        }
 
-        &.disabled {
+        &.is-not-current {
             opacity: 0.25;
         }
 
-        &.current {
+        &.is-today {
             color: $clr-black;
             font-weight: 600;
         }
@@ -93,6 +106,10 @@
         &.active {
             background: $action-blues-light-midtone;
             color: $clr-white;
+        }
+
+        &.active:focus {
+            background-color: $action-blues-dark;
         }
     }
 

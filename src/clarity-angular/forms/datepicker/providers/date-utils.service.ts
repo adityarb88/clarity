@@ -5,6 +5,7 @@
  */
 import {Injectable} from "@angular/core";
 import {CalendarDate} from "../calendar-date";
+import {MonthViewType} from "../utils/month-view.enum";
 
 const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
 
@@ -123,6 +124,40 @@ export class DateUtilsService {
         }
     }
 
+    changeViewToPreviousMonth(): void {
+        if (typeof this.selectedMonth === "undefined") {
+            this.selectedMonth = this.currMonth;
+        }
+        if (typeof this.selectedYear === "undefined") {
+            this.selectedYear = this.currYear;
+        }
+
+        if (this._selectedMonth === 0) {
+            this._selectedMonth = 11;
+            this._selectedYear--;
+        } else {
+            this._selectedMonth--;
+        }
+        this.currentCalendarViewDates = this.getDatesInCalendarView();
+    }
+
+    changeViewToNextMonth(): void {
+        if (typeof this.selectedMonth === "undefined") {
+            this.selectedMonth = this.currMonth;
+        }
+        if (typeof this.selectedYear === "undefined") {
+            this.selectedYear = this.currYear;
+        }
+
+        if (this._selectedMonth === 11) {
+            this._selectedMonth = 0;
+            this._selectedYear++;
+        } else {
+            this._selectedMonth++;
+        }
+        this.currentCalendarViewDates = this.getDatesInCalendarView();
+    }
+
     getDatesInCalendarView(): CalendarDate[][] {
         let month: number;
         let year: number;
@@ -155,7 +190,11 @@ export class DateUtilsService {
             = Array(firstDayOfCurrMonth)
             .fill(null)
             .map((date, index) => {
-                return new CalendarDate(noOfDaysInPrevMonth - (firstDayOfCurrMonth - (index + 1)), false, false);
+                return new CalendarDate(
+                    noOfDaysInPrevMonth - (firstDayOfCurrMonth - (index + 1)),
+                    MonthViewType.PREVIOUS,
+                    false
+                );
             });
 
 
@@ -164,7 +203,7 @@ export class DateUtilsService {
             = Array(noOfDaysInCurrMonth)
             .fill(null)
             .map((date, index) => {
-                return new CalendarDate(index + 1, true, false);
+                return new CalendarDate(index + 1, MonthViewType.CURRENT, false);
             });
 
         if (month === this.currMonth && year === this.currYear) {
@@ -177,7 +216,7 @@ export class DateUtilsService {
         const datesInNextMonth: CalendarDate[]
             = Array(leftDatesLength)
             .fill(null)
-            .map((date, index) => new CalendarDate(index + 1, false, false));
+            .map((date, index) => new CalendarDate(index + 1, MonthViewType.NEXT, false));
 
         //Combine Final Array
         const finalArray: CalendarDate[] = [...datesInPreviousMonth, ...datesInCurrentMonth, ...datesInNextMonth];

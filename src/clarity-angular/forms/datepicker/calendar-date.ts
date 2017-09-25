@@ -3,10 +3,12 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+import {MonthViewType} from "./utils/month-view.enum";
+
 export class CalendarDate {
     constructor(
         public date: number,
-        public isDateInCurrentMonth: boolean = true,
+        public monthView: MonthViewType = MonthViewType.CURRENT,
         public isTodaysDate: boolean = false) {
     }
 }
