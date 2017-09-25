@@ -126,12 +126,15 @@ export class DateUtilsService {
     getDatesInCalendarView(): CalendarDate[][] {
         let month: number;
         let year: number;
+
+        // Get month for which the calendar view needs to be constructed
         if (typeof this.selectedMonth !== "undefined") {
             month = this.selectedMonth;
         } else {
             month = this.currMonth;
         }
 
+        // Get year for which the calendar view needs to be constructed
         if (typeof this.selectedYear !== "undefined") {
             year = this.selectedYear;
         } else {
@@ -141,7 +144,23 @@ export class DateUtilsService {
         const noOfDaysInCurrMonth: number = this.getNumberOfDaysInTheMonth(year, month);
         const noOfDaysInPrevMonth: number = this.getNumberOfDaysInTheMonth(year, month - 1);
 
-        const calendarDates: CalendarDate[]
+        // Gets the first day of the current month to figure out how many dates of previous month
+        // are needed to complete the Calendar View. For eg: Assuming the first day of the week is Sunday,
+        // if first day of the current month is Wednesday (this.getDay function would return 3 since
+        // first day of the week is 0), we need the 3 days from the previous month.
+        const firstDayOfCurrMonth: number = this.getDay(year, month, 1);
+
+        // Gets the dates in the previous month of the calendar view
+        const datesInPreviousMonth: CalendarDate[]
+            = Array(firstDayOfCurrMonth)
+            .fill(null)
+            .map((date, index) => {
+                return new CalendarDate(noOfDaysInPrevMonth - (firstDayOfCurrMonth - (index + 1)), false, false);
+            });
+
+
+        // Gets the dates in the current month of the calendar view
+        const datesInCurrentMonth: CalendarDate[]
             = Array(noOfDaysInCurrMonth)
             .fill(null)
             .map((date, index) => {
@@ -149,28 +168,23 @@ export class DateUtilsService {
             });
 
         if (month === this.currMonth && year === this.currYear) {
-            calendarDates[this.currDate - 1].currentDate = true;
+            datesInCurrentMonth[this.currDate - 1].isTodaysDate = true;
         }
 
-        const firstDayOfCurrMonth: number = this.getDay(year, month, 1);
+        const leftDatesLength: number = TOTAL_DAYS_IN_MONTH_VIEW - (datesInCurrentMonth.length + datesInPreviousMonth.length);
 
-        const prevDates: CalendarDate[]
-            = Array(firstDayOfCurrMonth)
-            .fill(null)
-            .map((date, index) => new CalendarDate(noOfDaysInPrevMonth - index, false, false))
-            .reverse();
-
-        const leftDatesLength: number = TOTAL_DAYS_IN_MONTH_VIEW - (calendarDates.length + prevDates.length);
-
-        const nextDates: CalendarDate[]
+        // Gets the dates in the next month of the calendar view
+        const datesInNextMonth: CalendarDate[]
             = Array(leftDatesLength)
             .fill(null)
             .map((date, index) => new CalendarDate(index + 1, false, false));
 
-        const finalArray: CalendarDate[] = [...prevDates, ...calendarDates, ...nextDates];
+        //Combine Final Array
+        const finalArray: CalendarDate[] = [...datesInPreviousMonth, ...datesInCurrentMonth, ...datesInNextMonth];
 
         const finalCalendarArray: CalendarDate[][] = [];
 
+        // Convert the finalArray into 6 arrays of CalendarDate arrays each consisting of 7 days.
         for (let i = 0; i < 6; i++) {
             const tempArr: CalendarDate[] = [];
             for (let j = 0; j < 7; j++) {

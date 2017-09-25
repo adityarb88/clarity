@@ -19,10 +19,11 @@
         <tr *ngFor="let row of calendarDates" class="datepicker-row">
             <td *ngFor="let date of row" class="datepicker-cell">
                 <button class="date"
-                        [attr.disabled]="date.currentMonth ? null : ''"
-                        [class.disabled]="!date.currentMonth"
-                        [class.current]="date.currentDate"
-                        [class.active]="(date.date === selectedDate) && date.currentMonth"
+                        [attr.disabled]="date.isDateInCurrentMonth ? null : ''"
+                        [attr.tabindex]="!date.isTodaysDate ? -1 : null"
+                        [class.disabled]="!date.isDateInCurrentMonth"
+                        [class.current]="date.isTodaysDate"
+                        [class.active]="(date.date === selectedDate) && date.isDateInCurrentMonth"
                         (click)="setDate(date.date)">
                     {{date.date}}
                 </button>

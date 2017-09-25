@@ -6,7 +6,7 @@
 export class CalendarDate {
     constructor(
         public date: number,
-        public currentMonth: boolean = true,
-        public currentDate: boolean = false) {
+        public isDateInCurrentMonth: boolean = true,
+        public isTodaysDate: boolean = false) {
     }
 }
