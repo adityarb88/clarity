@@ -62,31 +62,19 @@ export class DatepickerContent extends AbstractPopover {
         return this.dateUtilsService.getLocaleDaysShort();
     }
 
-    get dateValue(): number {
-        return this.dateUtilsService.selectedDate.date;
+    get selectedDateValue(): number {
+        const dateVal: CalendarDate = this.dateUtilsService.selectedDate;
+        return dateVal ? dateVal.date : undefined;
     }
 
-    setDate(value: number): void {
-        const dateValue: CalendarDate
-            = new CalendarDate(
-            value,
-            this.dateUtilsService.calendarViewMonth,
-            this.dateUtilsService.calendarViewYear
-        );
-        this.dateUtilsService.selectedDate = dateValue;
-    }
-
-    setDateAndChangeCalendarMonth(value: number, increment: boolean): void {
-        if (increment) {
-            this.dateUtilsService.changeViewToNextMonth();
-        } else {
+    setDate(calDate: DateCell): void {
+        const date: CalendarDate = calDate.date;
+        if (this.dateUtilsService.isPreviousViewMonth(date)) {
             this.dateUtilsService.changeViewToPreviousMonth();
+        } else if (this.dateUtilsService.isNextViewMonth(date)) {
+            this.dateUtilsService.changeViewToNextMonth();
         }
-        this.dateUtilsService.selectedDate = new CalendarDate(
-            value,
-            this.dateUtilsService.calendarViewMonth,
-            this.dateUtilsService.calendarViewYear
-        );
+        this.dateUtilsService.selectedDate = date;
     }
 
     get month(): string {
@@ -107,25 +95,17 @@ export class DatepickerContent extends AbstractPopover {
         }
     }
 
-    isPreviousMonth(date: DateCell): boolean {
-        return date.monthView === MonthViewType.PREVIOUS;
-    }
-
-    isCurrentMonth(date: DateCell): boolean {
-        return date.monthView === MonthViewType.CURRENT;
-    }
-
-    isNextMonth(date: DateCell): boolean {
-        return date.monthView === MonthViewType.NEXT;
+    isCalendarViewMonth(calDate: DateCell): boolean {
+        return this.dateUtilsService.isCurrentViewMonth(calDate.date);
     }
 
     /*
-    getTabIndex(date: DateCell): number {
-        if ((date.date === this.dateUtilsService.selectedDate)
-            || (date.isTodaysDate) || (date.date === 1)) {
-            return 0;
-        }
-        return -1;
+    isPreviousMonth(calDate: DateCell): boolean {
+        return this.dateUtilsService.isPreviousViewMonth(calDate.date);
+    }
+
+    isNextMonth(calDate: DateCell): boolean {
+        return this.dateUtilsService.isNextViewMonth(calDate.date);
     }*/
 
     onDatepickerTableKeyDown(event: KeyboardEvent) {

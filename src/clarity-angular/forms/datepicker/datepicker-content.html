@@ -20,30 +20,38 @@
     <table class="datepicker-table" (keydown)="onDatepickerTableKeyDown($event)">
         <tr *ngFor="let row of calendarDates" class="datepicker-row">
             <td *ngFor="let date of row" class="datepicker-cell">
-                <button *ngIf="isPreviousMonth(date)"
+                <!--button *ngIf="isPreviousMonth(date)"
                         class="date is-not-current"
                         [attr.tabindex]="!date.isTodaysDate ? -1 : null"
                         [class.is-today]="date.isTodaysDate"
-                        (click)="setDateAndChangeCalendarMonth(date.date, false)">
+                        (click)="setDate(date.date)">
                     {{date.date}}
-                </button>
+                </button-->
 
-                <button *ngIf="isCurrentMonth(date)"
+                <button *ngIf="isCalendarViewMonth(date)"
                         class="date"
                         [attr.tabindex]="!date.isTodaysDate ? -1 : null"
                         [class.is-today]="date.isTodaysDate"
-                        [class.active]="(date.date === dateValue) && isCurrentMonth(date)"
+                        [class.active]="(date.date === selectedDateValue) && isCalendarViewMonth(date)"
                         (click)="setDate(date.date)">
-                    {{date.date}}
+                    {{date.date.date}}
                 </button>
 
-                <button *ngIf="isNextMonth(date)"
+                <button *ngIf="!isCalendarViewMonth(date)"
                         class="date is-not-current"
                         [attr.tabindex]="!date.isTodaysDate ? -1 : null"
                         [class.is-today]="date.isTodaysDate"
-                        (click)="setDateAndChangeCalendarMonth(date.date, true)">
-                    {{date.date}}
+                        (click)="setDate(date.date)">
+                    {{date.date.date}}
                 </button>
+
+                <!--button *ngIf="isNextMonth(date)"
+                        class="date is-not-current"
+                        [attr.tabindex]="!date.isTodaysDate ? -1 : null"
+                        [class.is-today]="date.isTodaysDate"
+                        (click)="setDate(date.date)">
+                    {{date.date}}
+                </button-->
             </td>
         </tr>
     </table>

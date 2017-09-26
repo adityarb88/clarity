@@ -192,6 +192,82 @@ export class DateUtilsService {
     }
 
     /**
+     * Returns a [month, year] tuple of the previous month based on the month and year passed to
+     * this method.
+     * @param {number} month
+     * @param {number} year
+     * @returns {[number , number]}
+     */
+    getPreviousMonth(month: number, year: number): [number, number] {
+        if (month === 0) {
+            return [11, year - 1];
+        } else {
+            return [month - 1, year];
+        }
+    }
+
+    /**
+     * Returns a [month, year] tuple of the next month based on the month and year passed to
+     * this method.
+     * @param {number} month
+     * @param {number} year
+     * @returns {[number , number]}
+     */
+    getNextMonth(month: number, year: number): [number, number] {
+        if (month === 11) {
+            return [0, year + 1];
+        } else {
+            return [month + 1, year];
+        }
+    }
+
+    /**
+     * Compares with the current Calendar View and returns if the passed CalendarDate is
+     * of the previous Calendar View month or not
+     * @param {CalendarDate} calDate
+     * @returns {boolean}
+     */
+    isPreviousViewMonth(calDate: CalendarDate): boolean {
+        const month: number = calDate.month;
+        const year: number = calDate.year;
+        const viewMonth: number = this.calendarViewMonth;
+        const viewYear: number = this.calendarViewYear;
+        if (this.calendarViewMonth === 0) {
+            return (month === 11 && year === viewYear - 1);
+        } else {
+            return (month === viewMonth - 1);
+        }
+    }
+
+    /**
+     * Compares with the current Calendar View and returns if the passed CalendarDate is
+     * of the same month or not
+     * @param {CalendarDate} calDate
+     * @returns {boolean}
+     */
+    isCurrentViewMonth(calDate: CalendarDate): boolean {
+        return (calDate.month === this.calendarViewMonth && calDate.year === this.calendarViewYear);
+    }
+
+    /**
+     * Compares with the current Calendar View and returns if the passed CalendarDate is
+     * of the next Calendar View month or not
+     * @param {CalendarDate} calDate
+     * @returns {boolean}
+     */
+    isNextViewMonth(calDate: CalendarDate): boolean {
+        const month: number = calDate.month;
+        const year: number = calDate.year;
+        const viewMonth: number = this.calendarViewMonth;
+        const viewYear: number = this.calendarViewYear;
+        if (this.calendarViewMonth === 11) {
+            return (month === 0 && year === viewYear + 1);
+        } else {
+            return ((month === viewMonth + 1) && (year === viewYear));
+        }
+    }
+
+    /**
      * Generates and returns the dates in the Calendar View selected by the user.
      * Depends on the month and year view selected by the user
      * @returns {DateCell[][]}
@@ -228,9 +304,14 @@ export class DateUtilsService {
             = Array(firstDayOfCurrMonth)
             .fill(null)
             .map((date, index) => {
-                return new DateCell(
+                const previousMonth: [number, number] = this.getPreviousMonth(month, year);
+                const calDate: CalendarDate = new CalendarDate(
                     noOfDaysInPrevMonth - (firstDayOfCurrMonth - (index + 1)),
-                    MonthViewType.PREVIOUS,
+                    previousMonth[0],
+                    previousMonth[1]
+                );
+                return new DateCell(
+                    calDate,
                     false
                 );
             });
@@ -241,9 +322,15 @@ export class DateUtilsService {
             = Array(noOfDaysInCurrMonth)
             .fill(null)
             .map((date, index) => {
-                return new DateCell(index + 1, MonthViewType.CURRENT, false);
+                const calDate: CalendarDate = new CalendarDate(
+                    index + 1,
+                    month,
+                    year
+                );
+                return new DateCell(calDate, false);
             });
 
+        //Check for today's date
         if (month === this.currentMonth && year === this.currentYear) {
             datesInCurrentMonth[this.currentDate - 1].isTodaysDate = true;
         }
@@ -254,7 +341,15 @@ export class DateUtilsService {
         const datesInNextMonth: DateCell[]
             = Array(leftDatesLength)
             .fill(null)
-            .map((date, index) => new DateCell(index + 1, MonthViewType.NEXT, false));
+            .map((date, index) => {
+                const nextMonth: [number, number] = this.getNextMonth(month, year);
+                const calDate: CalendarDate = new CalendarDate(
+                    index + 1,
+                    nextMonth[0],
+                    nextMonth[1]
+                );
+                return new DateCell(calDate, false);
+            });
 
         //Combine Final Array
         const finalArray: DateCell[] = [...datesInPreviousMonth, ...datesInCurrentMonth, ...datesInNextMonth];
