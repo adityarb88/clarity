@@ -32,7 +32,7 @@
                         class="date"
                         [attr.tabindex]="!date.isTodaysDate ? -1 : null"
                         [class.is-today]="date.isTodaysDate"
-                        [class.active]="(date.date === selectedDate) && isCurrentMonth(date)"
+                        [class.active]="(date.date === dateValue) && isCurrentMonth(date)"
                         (click)="setDate(date.date)">
                     {{date.date}}
                 </button>

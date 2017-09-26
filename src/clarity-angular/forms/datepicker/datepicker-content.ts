@@ -10,6 +10,7 @@ import {DateViewService} from "./providers/date-view.service";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
 import {MonthViewType} from "./utils/month-view.enum";
+import {CalendarDate} from "./model/calendar-date";
 
 @Component({
     selector: "clr-datepicker-content",
@@ -61,12 +62,18 @@ export class DatepickerContent extends AbstractPopover {
         return this.dateUtilsService.getLocaleDaysShort();
     }
 
-    get selectedDate(): number {
-        return this.dateUtilsService.selectedDate;
+    get dateValue(): number {
+        return this.dateUtilsService.selectedDate.date;
     }
 
     setDate(value: number): void {
-        this.dateUtilsService.selectedDate = value;
+        const dateValue: CalendarDate
+            = new CalendarDate(
+            value,
+            this.dateUtilsService.calendarViewMonth,
+            this.dateUtilsService.calendarViewYear
+        );
+        this.dateUtilsService.selectedDate = dateValue;
     }
 
     setDateAndChangeCalendarMonth(value: number, increment: boolean): void {
@@ -75,7 +82,11 @@ export class DatepickerContent extends AbstractPopover {
         } else {
             this.dateUtilsService.changeViewToPreviousMonth();
         }
-        this.dateUtilsService.selectedDate = value;
+        this.dateUtilsService.selectedDate = new CalendarDate(
+            value,
+            this.dateUtilsService.calendarViewMonth,
+            this.dateUtilsService.calendarViewYear
+        );
     }
 
     get month(): string {
@@ -108,13 +119,14 @@ export class DatepickerContent extends AbstractPopover {
         return date.monthView === MonthViewType.NEXT;
     }
 
+    /*
     getTabIndex(date: DateCell): number {
         if ((date.date === this.dateUtilsService.selectedDate)
             || (date.isTodaysDate) || (date.date === 1)) {
             return 0;
         }
         return -1;
-    }
+    }*/
 
     onDatepickerTableKeyDown(event: KeyboardEvent) {
         console.log("Test", event);

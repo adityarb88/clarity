@@ -14,7 +14,7 @@ import {DateViewService} from "./providers/date-view.service";
             *ngFor="let year of years"
             class="year-cell"
             (click)="setYear(year)"
-            [class.active]="year === selectedYear">
+            [class.active]="year === calendarViewYear">
             {{year}}
         </button>
     `,
@@ -33,9 +33,9 @@ export class YearPicker {
         this.dateViewService.yearView = value;
     }
 
-    get selectedYear(): number {
-        const selectedYear: number = this.dateUtilsService.calendarViewYear || this.dateUtilsService.currentYear;
-        return selectedYear;
+    get calendarViewYear(): number {
+        const calViewYear: number = this.dateUtilsService.calendarViewYear || this.dateUtilsService.currentYear;
+        return calViewYear;
     }
 
     setYear(year: number): void {

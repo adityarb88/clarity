@@ -6,6 +6,7 @@
 import {Injectable} from "@angular/core";
 import {DateCell} from "../model/date-cell";
 import {MonthViewType} from "../utils/month-view.enum";
+import {CalendarDate} from "../model/calendar-date";
 
 const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
 
@@ -98,17 +99,17 @@ export class DateUtilsService {
         return this.todaysFullDate.getFullYear();
     }
 
-    private _selectedDate: number;
+    private _selectedDate: CalendarDate;
 
     /**
      * Returns the date selected by the user
-     * @returns {number}
+     * @returns {CalendarDate}
      */
-    get selectedDate(): number {
+    get selectedDate(): CalendarDate {
         return this._selectedDate;
     }
 
-    set selectedDate(value: number) {
+    set selectedDate(value: CalendarDate) {
         if (this._selectedDate !== value) {
             this._selectedDate = value;
         }
