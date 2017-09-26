@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {Injectable} from "@angular/core";
-import {DateCell} from "../date-cell";
+import {DateCell} from "../model/date-cell";
 import {MonthViewType} from "../utils/month-view.enum";
 
 const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
@@ -114,36 +114,36 @@ export class DateUtilsService {
         }
     }
 
-    private _selectedMonth: number;
+    private _calendarViewMonth: number;
 
     /**
-     * Returns the month selected by the user.
+     * Returns the month in the present Calendar View.
      * @returns {number}
      */
-    get selectedMonth(): number {
-        return this._selectedMonth;
+    get calendarViewMonth(): number {
+        return this._calendarViewMonth;
     }
 
-    set selectedMonth(value: number) {
-        if (value !== this.selectedMonth) {
-            this._selectedMonth = value;
+    set calendarViewMonth(value: number) {
+        if (value !== this.calendarViewMonth) {
+            this._calendarViewMonth = value;
             this.currentCalendarViewDates = this.getDatesInCalendarView();
         }
     }
 
-    private _selectedYear: number;
+    private _calendarViewYear: number;
 
     /**
-     * Returns the year value selected by the user
+     * Returns the year in the present Calendar View.
      * @returns {number}
      */
-    get selectedYear(): number {
-        return this._selectedYear;
+    get calendarViewYear(): number {
+        return this._calendarViewYear;
     }
 
-    set selectedYear(value: number) {
-        if (value !== this.selectedYear) {
-            this._selectedYear = value;
+    set calendarViewYear(value: number) {
+        if (value !== this.calendarViewYear) {
+            this._calendarViewYear = value;
             this.currentCalendarViewDates = this.getDatesInCalendarView();
         }
     }
@@ -153,18 +153,18 @@ export class DateUtilsService {
      * Sets the dates for the previous month's calendar view.
      */
     changeViewToPreviousMonth(): void {
-        if (typeof this.selectedMonth === "undefined") {
-            this.selectedMonth = this.currentMonth;
+        if (typeof this.calendarViewMonth === "undefined") {
+            this.calendarViewMonth = this.currentMonth;
         }
-        if (typeof this.selectedYear === "undefined") {
-            this.selectedYear = this.currentYear;
+        if (typeof this.calendarViewYear === "undefined") {
+            this.calendarViewYear = this.currentYear;
         }
 
-        if (this._selectedMonth === 0) {
-            this._selectedMonth = 11;
-            this._selectedYear--;
+        if (this._calendarViewMonth === 0) {
+            this._calendarViewMonth = 11;
+            this._calendarViewYear--;
         } else {
-            this._selectedMonth--;
+            this._calendarViewMonth--;
         }
         this.currentCalendarViewDates = this.getDatesInCalendarView();
     }
@@ -174,18 +174,18 @@ export class DateUtilsService {
      * Sets the dates for the next month's calendar view.
      */
     changeViewToNextMonth(): void {
-        if (typeof this.selectedMonth === "undefined") {
-            this.selectedMonth = this.currentMonth;
+        if (typeof this.calendarViewMonth === "undefined") {
+            this.calendarViewMonth = this.currentMonth;
         }
-        if (typeof this.selectedYear === "undefined") {
-            this.selectedYear = this.currentYear;
+        if (typeof this.calendarViewYear === "undefined") {
+            this.calendarViewYear = this.currentYear;
         }
 
-        if (this._selectedMonth === 11) {
-            this._selectedMonth = 0;
-            this._selectedYear++;
+        if (this._calendarViewMonth === 11) {
+            this._calendarViewMonth = 0;
+            this._calendarViewYear++;
         } else {
-            this._selectedMonth++;
+            this._calendarViewMonth++;
         }
         this.currentCalendarViewDates = this.getDatesInCalendarView();
     }
@@ -200,15 +200,15 @@ export class DateUtilsService {
         let year: number;
 
         // Get month for which the calendar view needs to be constructed
-        if (typeof this.selectedMonth !== "undefined") {
-            month = this.selectedMonth;
+        if (typeof this.calendarViewMonth !== "undefined") {
+            month = this.calendarViewMonth;
         } else {
             month = this.currentMonth;
         }
 
         // Get year for which the calendar view needs to be constructed
-        if (typeof this.selectedYear !== "undefined") {
-            year = this.selectedYear;
+        if (typeof this.calendarViewYear !== "undefined") {
+            year = this.calendarViewYear;
         } else {
             year = this.currentYear;
         }

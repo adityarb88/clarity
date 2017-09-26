@@ -34,12 +34,12 @@ export class YearPicker {
     }
 
     get selectedYear(): number {
-        const selectedYear: number = this.dateUtilsService.selectedYear || this.dateUtilsService.currentYear;
+        const selectedYear: number = this.dateUtilsService.calendarViewYear || this.dateUtilsService.currentYear;
         return selectedYear;
     }
 
     setYear(year: number): void {
-        this.dateUtilsService.selectedYear = year;
+        this.dateUtilsService.calendarViewYear = year;
         this.yearView = false;
     }
 }

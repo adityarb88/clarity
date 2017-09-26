@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
-import {DateCell} from "./date-cell";
+import {DateCell} from "./model/date-cell";
 import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
@@ -79,7 +79,7 @@ export class DatepickerContent extends AbstractPopover {
     }
 
     get month(): string {
-        const selMonth: number = this.dateUtilsService.selectedMonth;
+        const selMonth: number = this.dateUtilsService.calendarViewMonth;
         if (typeof selMonth !== "undefined") {
             return this.dateUtilsService.getMonthLong(selMonth);
         } else {
@@ -88,7 +88,7 @@ export class DatepickerContent extends AbstractPopover {
     }
 
     get year(): number {
-        const selYear: number = this.dateUtilsService.selectedYear;
+        const selYear: number = this.dateUtilsService.calendarViewYear;
         if (typeof selYear !== "undefined") {
             return selYear;
         } else {

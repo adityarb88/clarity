@@ -34,13 +34,13 @@ export class MonthPicker {
     }
 
     get selectedMonth(): string {
-        const selectedMonth = this.dateUtilsService.selectedMonth || this.dateUtilsService.currentMonth;
+        const selectedMonth = this.dateUtilsService.calendarViewMonth || this.dateUtilsService.currentMonth;
         return this.months[selectedMonth];
     }
 
     setMonth(month: string): void {
         const selectedMonthIndex: number = this.months.indexOf(month);
-        this.dateUtilsService.selectedMonth = selectedMonthIndex;
+        this.dateUtilsService.calendarViewMonth = selectedMonthIndex;
         this.monthView = false;
     }
 }
