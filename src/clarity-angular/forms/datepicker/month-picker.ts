@@ -34,7 +34,7 @@ export class MonthPicker {
     }
 
     get selectedMonth(): string {
-        const selectedMonth = this.dateUtilsService.selectedMonth || this.dateUtilsService.currMonth;
+        const selectedMonth = this.dateUtilsService.selectedMonth || this.dateUtilsService.currentMonth;
         return this.months[selectedMonth];
     }
 

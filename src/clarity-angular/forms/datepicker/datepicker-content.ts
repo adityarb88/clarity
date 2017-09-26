@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
-import {CalendarDate} from "./calendar-date";
+import {DateCell} from "./date-cell";
 import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
@@ -47,7 +47,7 @@ export class DatepickerContent extends AbstractPopover {
         this.closeOnOutsideClick = true;
     }
 
-    get calendarDates(): CalendarDate[][] {
+    get calendarDates(): DateCell[][] {
         return this.dateUtilsService.currentCalendarViewDates;
     }
 
@@ -83,7 +83,7 @@ export class DatepickerContent extends AbstractPopover {
         if (typeof selMonth !== "undefined") {
             return this.dateUtilsService.getMonthLong(selMonth);
         } else {
-            return this.dateUtilsService.getMonthLong(this.dateUtilsService.currMonth);
+            return this.dateUtilsService.getMonthLong(this.dateUtilsService.currentMonth);
         }
     }
 
@@ -92,20 +92,28 @@ export class DatepickerContent extends AbstractPopover {
         if (typeof selYear !== "undefined") {
             return selYear;
         } else {
-            return this.dateUtilsService.currYear;
+            return this.dateUtilsService.currentYear;
         }
     }
 
-    isPreviousMonth(date: CalendarDate): boolean {
+    isPreviousMonth(date: DateCell): boolean {
         return date.monthView === MonthViewType.PREVIOUS;
     }
 
-    isCurrentMonth(date: CalendarDate): boolean {
+    isCurrentMonth(date: DateCell): boolean {
         return date.monthView === MonthViewType.CURRENT;
     }
 
-    isNextMonth(date: CalendarDate): boolean {
+    isNextMonth(date: DateCell): boolean {
         return date.monthView === MonthViewType.NEXT;
+    }
+
+    getTabIndex(date: DateCell): number {
+        if ((date.date === this.dateUtilsService.selectedDate)
+            || (date.isTodaysDate) || (date.date === 1)) {
+            return 0;
+        }
+        return -1;
     }
 
     onDatepickerTableKeyDown(event: KeyboardEvent) {

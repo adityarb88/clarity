@@ -34,7 +34,7 @@ export class YearPicker {
     }
 
     get selectedYear(): number {
-        const selectedYear: number = this.dateUtilsService.selectedYear || this.dateUtilsService.currYear;
+        const selectedYear: number = this.dateUtilsService.selectedYear || this.dateUtilsService.currentYear;
         return selectedYear;
     }
 

@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {Injectable} from "@angular/core";
-import {CalendarDate} from "../calendar-date";
+import {DateCell} from "../date-cell";
 import {MonthViewType} from "../utils/month-view.enum";
 
 const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
@@ -12,15 +12,16 @@ const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
 @Injectable()
 export class DateUtilsService {
 
-    currentDate: Date = new Date();
+    //Today's Date
+    todaysFullDate: Date = new Date();
 
-    private _currentCalendarViewDates: CalendarDate[][] = [];
+    private _currentCalendarViewDates: DateCell[][] = [];
 
-    get currentCalendarViewDates(): CalendarDate[][] {
+    get currentCalendarViewDates(): DateCell[][] {
         return this._currentCalendarViewDates;
     }
 
-    set currentCalendarViewDates(value: CalendarDate[][]) {
+    set currentCalendarViewDates(value: DateCell[][]) {
         this._currentCalendarViewDates = value;
     }
 
@@ -73,23 +74,36 @@ export class DateUtilsService {
         return this.getLocaleMonthsLong()[month];
     }
 
-    get currDate(): number {
-        return this.currentDate.getDate();
+    /**
+     * Returns the current date
+     * @returns {number}
+     */
+    get currentDate(): number {
+        return this.todaysFullDate.getDate();
     }
 
-    get currMonth(): number {
-        return this.currentDate.getMonth();
+    /**
+     * Returns the current month
+     * @returns {number}
+     */
+    get currentMonth(): number {
+        return this.todaysFullDate.getMonth();
     }
 
-    get currMonthLong(): string {
-        return this.getLocaleMonthsLong()[this.currMonth];
-    }
-
-    get currYear(): number {
-        return this.currentDate.getFullYear();
+    /**
+     * Returns the current year
+     * @returns {number}
+     */
+    get currentYear(): number {
+        return this.todaysFullDate.getFullYear();
     }
 
     private _selectedDate: number;
+
+    /**
+     * Returns the date selected by the user
+     * @returns {number}
+     */
     get selectedDate(): number {
         return this._selectedDate;
     }
@@ -101,6 +115,11 @@ export class DateUtilsService {
     }
 
     private _selectedMonth: number;
+
+    /**
+     * Returns the month selected by the user.
+     * @returns {number}
+     */
     get selectedMonth(): number {
         return this._selectedMonth;
     }
@@ -113,6 +132,11 @@ export class DateUtilsService {
     }
 
     private _selectedYear: number;
+
+    /**
+     * Returns the year value selected by the user
+     * @returns {number}
+     */
     get selectedYear(): number {
         return this._selectedYear;
     }
@@ -124,12 +148,16 @@ export class DateUtilsService {
         }
     }
 
+    /**
+     * Changes the calendar view to the previous month.
+     * Sets the dates for the previous month's calendar view.
+     */
     changeViewToPreviousMonth(): void {
         if (typeof this.selectedMonth === "undefined") {
-            this.selectedMonth = this.currMonth;
+            this.selectedMonth = this.currentMonth;
         }
         if (typeof this.selectedYear === "undefined") {
-            this.selectedYear = this.currYear;
+            this.selectedYear = this.currentYear;
         }
 
         if (this._selectedMonth === 0) {
@@ -141,12 +169,16 @@ export class DateUtilsService {
         this.currentCalendarViewDates = this.getDatesInCalendarView();
     }
 
+    /**
+     * Changes the calendar view to the next month.
+     * Sets the dates for the next month's calendar view.
+     */
     changeViewToNextMonth(): void {
         if (typeof this.selectedMonth === "undefined") {
-            this.selectedMonth = this.currMonth;
+            this.selectedMonth = this.currentMonth;
         }
         if (typeof this.selectedYear === "undefined") {
-            this.selectedYear = this.currYear;
+            this.selectedYear = this.currentYear;
         }
 
         if (this._selectedMonth === 11) {
@@ -158,7 +190,12 @@ export class DateUtilsService {
         this.currentCalendarViewDates = this.getDatesInCalendarView();
     }
 
-    getDatesInCalendarView(): CalendarDate[][] {
+    /**
+     * Generates and returns the dates in the Calendar View selected by the user.
+     * Depends on the month and year view selected by the user
+     * @returns {DateCell[][]}
+     */
+    getDatesInCalendarView(): DateCell[][] {
         let month: number;
         let year: number;
 
@@ -166,14 +203,14 @@ export class DateUtilsService {
         if (typeof this.selectedMonth !== "undefined") {
             month = this.selectedMonth;
         } else {
-            month = this.currMonth;
+            month = this.currentMonth;
         }
 
         // Get year for which the calendar view needs to be constructed
         if (typeof this.selectedYear !== "undefined") {
             year = this.selectedYear;
         } else {
-            year = this.currYear;
+            year = this.currentYear;
         }
 
         const noOfDaysInCurrMonth: number = this.getNumberOfDaysInTheMonth(year, month);
@@ -186,11 +223,11 @@ export class DateUtilsService {
         const firstDayOfCurrMonth: number = this.getDay(year, month, 1);
 
         // Gets the dates in the previous month of the calendar view
-        const datesInPreviousMonth: CalendarDate[]
+        const datesInPreviousMonth: DateCell[]
             = Array(firstDayOfCurrMonth)
             .fill(null)
             .map((date, index) => {
-                return new CalendarDate(
+                return new DateCell(
                     noOfDaysInPrevMonth - (firstDayOfCurrMonth - (index + 1)),
                     MonthViewType.PREVIOUS,
                     false
@@ -199,33 +236,33 @@ export class DateUtilsService {
 
 
         // Gets the dates in the current month of the calendar view
-        const datesInCurrentMonth: CalendarDate[]
+        const datesInCurrentMonth: DateCell[]
             = Array(noOfDaysInCurrMonth)
             .fill(null)
             .map((date, index) => {
-                return new CalendarDate(index + 1, MonthViewType.CURRENT, false);
+                return new DateCell(index + 1, MonthViewType.CURRENT, false);
             });
 
-        if (month === this.currMonth && year === this.currYear) {
-            datesInCurrentMonth[this.currDate - 1].isTodaysDate = true;
+        if (month === this.currentMonth && year === this.currentYear) {
+            datesInCurrentMonth[this.currentDate - 1].isTodaysDate = true;
         }
 
         const leftDatesLength: number = TOTAL_DAYS_IN_MONTH_VIEW - (datesInCurrentMonth.length + datesInPreviousMonth.length);
 
         // Gets the dates in the next month of the calendar view
-        const datesInNextMonth: CalendarDate[]
+        const datesInNextMonth: DateCell[]
             = Array(leftDatesLength)
             .fill(null)
-            .map((date, index) => new CalendarDate(index + 1, MonthViewType.NEXT, false));
+            .map((date, index) => new DateCell(index + 1, MonthViewType.NEXT, false));
 
         //Combine Final Array
-        const finalArray: CalendarDate[] = [...datesInPreviousMonth, ...datesInCurrentMonth, ...datesInNextMonth];
+        const finalArray: DateCell[] = [...datesInPreviousMonth, ...datesInCurrentMonth, ...datesInNextMonth];
 
-        const finalCalendarArray: CalendarDate[][] = [];
+        const finalCalendarArray: DateCell[][] = [];
 
-        // Convert the finalArray into 6 arrays of CalendarDate arrays each consisting of 7 days.
+        // Convert the finalArray into 6 arrays of DateCell arrays each consisting of 7 days.
         for (let i = 0; i < 6; i++) {
-            const tempArr: CalendarDate[] = [];
+            const tempArr: DateCell[] = [];
             for (let j = 0; j < 7; j++) {
                 tempArr.push(finalArray.shift());
             }

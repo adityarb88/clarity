@@ -5,7 +5,7 @@
  */
 import {MonthViewType} from "./utils/month-view.enum";
 
-export class CalendarDate {
+export class DateCell {
     constructor(
         public date: number,
         public monthView: MonthViewType = MonthViewType.CURRENT,
