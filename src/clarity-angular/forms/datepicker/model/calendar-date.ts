@@ -9,4 +9,19 @@ export class CalendarDate {
                 public month: number,
                 public year: number) {
     }
+
+    /**
+     * Checks if the passed CalendarDate is equal to itself.
+     * @param {CalendarDate} calDate
+     * @returns {boolean}
+     */
+    isEqual(calDate: CalendarDate) {
+        if (calDate) {
+            return ((this.date === calDate.date)
+                && (this.month === calDate.month)
+                && (this.year === calDate.year));
+        } else {
+            return false;
+        }
+    }
 }

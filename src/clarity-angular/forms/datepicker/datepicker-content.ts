@@ -9,7 +9,6 @@ import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
-import {MonthViewType} from "./utils/month-view.enum";
 import {CalendarDate} from "./model/calendar-date";
 
 @Component({
@@ -23,92 +22,119 @@ import {CalendarDate} from "./model/calendar-date";
 export class DatepickerContent extends AbstractPopover {
 
     get monthView(): boolean {
-        return this.dateViewService.monthView;
+        return this._dateViewService.monthView;
     }
 
     set monthView(value: boolean) {
-        this.dateViewService.monthView = value;
+        this._dateViewService.monthView = value;
     }
 
     get yearView(): boolean {
-        return this.dateViewService.yearView;
+        return this._dateViewService.yearView;
     }
 
     set yearView(value: boolean) {
-        this.dateViewService.yearView = value;
+        this._dateViewService.yearView = value;
     }
 
     constructor(@SkipSelf() parentHost: ElementRef,
-                private injector: Injector,
-                private dateUtilsService: DateUtilsService,
-                private dateViewService: DateViewService) {
-        super(injector, parentHost);
+                private _injector: Injector,
+                private _dateUtilsService: DateUtilsService,
+                private _dateViewService: DateViewService) {
+        super(_injector, parentHost);
         this.anchorPoint = Point.BOTTOM_LEFT;
         this.popoverPoint = Point.LEFT_TOP;
         this.closeOnOutsideClick = true;
     }
 
     get calendarDates(): DateCell[][] {
-        return this.dateUtilsService.currentCalendarViewDates;
+        return this._dateUtilsService.currentCalendarViewDates;
     }
 
     ngOnInit() {
-        this.dateUtilsService.currentCalendarViewDates = this
-            .dateUtilsService
-            .getDatesInCalendarView();
+        this._dateUtilsService.initializeCalendarViewData();
+        this._dateUtilsService.currentCalendarViewDates
+            = this._dateUtilsService.getDatesInCalendarView();
     }
 
     get daysShort(): string[] {
-        return this.dateUtilsService.getLocaleDaysShort();
+        return this._dateUtilsService.getLocaleDaysShort();
     }
 
-    get selectedDateValue(): number {
-        const dateVal: CalendarDate = this.dateUtilsService.selectedDate;
-        return dateVal ? dateVal.date : undefined;
-    }
-
-    setDate(calDate: DateCell): void {
-        const date: CalendarDate = calDate.date;
-        if (this.dateUtilsService.isPreviousViewMonth(date)) {
-            this.dateUtilsService.changeViewToPreviousMonth();
-        } else if (this.dateUtilsService.isNextViewMonth(date)) {
-            this.dateUtilsService.changeViewToNextMonth();
+    setDate(dateCell: DateCell): void {
+        const date: CalendarDate = dateCell.calendarDate;
+        if (this._dateUtilsService.isPreviousViewMonth(date)) {
+            this._dateUtilsService.changeViewToPreviousMonth();
+        } else if (this._dateUtilsService.isNextViewMonth(date)) {
+            this._dateUtilsService.changeViewToNextMonth();
         }
-        this.dateUtilsService.selectedDate = date;
+        this._dateUtilsService.selectedDate = date;
     }
 
     get month(): string {
-        const selMonth: number = this.dateUtilsService.calendarViewMonth;
-        if (typeof selMonth !== "undefined") {
-            return this.dateUtilsService.getMonthLong(selMonth);
-        } else {
-            return this.dateUtilsService.getMonthLong(this.dateUtilsService.currentMonth);
-        }
+        return this._dateUtilsService.getMonthLong(this._dateUtilsService.calendarViewMonth);
     }
 
     get year(): number {
-        const selYear: number = this.dateUtilsService.calendarViewYear;
-        if (typeof selYear !== "undefined") {
-            return selYear;
-        } else {
-            return this.dateUtilsService.currentYear;
-        }
+        return this._dateUtilsService.calendarViewYear;
     }
 
-    isCalendarViewMonth(calDate: DateCell): boolean {
-        return this.dateUtilsService.isCurrentViewMonth(calDate.date);
+    isCalendarViewMonth(dateCell: DateCell): boolean {
+        return this._dateUtilsService.isCurrentViewMonth(dateCell.calendarDate);
     }
 
-    /*
-    isPreviousMonth(calDate: DateCell): boolean {
-        return this.dateUtilsService.isPreviousViewMonth(calDate.date);
+    /**
+     * Returns if the date in the DateCell matches that of the
+     * date selected by the user
+     * @param {DateCell} dateCell
+     * @returns {boolean}
+     */
+    isSelectedDate(dateCell: DateCell): boolean {
+        return dateCell.calendarDate.isEqual(this._dateUtilsService.selectedDate);
     }
-
-    isNextMonth(calDate: DateCell): boolean {
-        return this.dateUtilsService.isNextViewMonth(calDate.date);
-    }*/
 
     onDatepickerTableKeyDown(event: KeyboardEvent) {
         console.log("Test", event);
+    }
+
+    /**
+     * Gets the tab index of the date cell. Only returns 0 or -1.
+     * Used to determine which button to focus on when the user is navigating
+     * using a keyboard.
+     *
+     * @param {DateCell} dateCell
+     * @returns {number}
+     */
+    getTabIndex(dateCell: DateCell): number {
+        const calDate: CalendarDate = dateCell.calendarDate;
+        const dUService: DateUtilsService = this._dateUtilsService;
+        const selDate: CalendarDate = dUService.selectedDate;
+        const calViewMonth: number = dUService.calendarViewMonth;
+        const calViewYear: number = dUService.calendarViewYear;
+
+        // Nasty (but not THAT nasty) if else blocks.
+        // Order important
+        if (selDate
+            && selDate.month === calViewMonth
+            && selDate.year === calViewYear) {
+            if (calDate.isEqual(selDate)) {
+                return 0;
+            } else {
+                return -1;
+            }
+        } else if (calViewYear === dUService.currentYear
+            && calViewMonth === dUService.currentMonth) {
+            if (dateCell.isTodaysDate) {
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            if (calDate.date === 15) {
+                return 0;
+            } else {
+                return -1;
+            }
+        }
     }
 }

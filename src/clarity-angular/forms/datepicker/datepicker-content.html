@@ -19,39 +19,21 @@
     </table>
     <table class="datepicker-table" (keydown)="onDatepickerTableKeyDown($event)">
         <tr *ngFor="let row of calendarDates" class="datepicker-row">
-            <td *ngFor="let date of row" class="datepicker-cell">
-                <!--button *ngIf="isPreviousMonth(date)"
-                        class="date is-not-current"
-                        [attr.tabindex]="!date.isTodaysDate ? -1 : null"
-                        [class.is-today]="date.isTodaysDate"
-                        (click)="setDate(date.date)">
-                    {{date.date}}
-                </button-->
-
-                <button *ngIf="isCalendarViewMonth(date)"
+            <td *ngFor="let dateCell of row" class="datepicker-cell">
+                <button *ngIf="isCalendarViewMonth(dateCell)"
                         class="date"
-                        [attr.tabindex]="!date.isTodaysDate ? -1 : null"
-                        [class.is-today]="date.isTodaysDate"
-                        [class.active]="(date.date === selectedDateValue) && isCalendarViewMonth(date)"
-                        (click)="setDate(date.date)">
-                    {{date.date.date}}
+                        [attr.tabindex]="getTabIndex(dateCell)"
+                        [class.is-today]="dateCell.isTodaysDate"
+                        [class.active]="isSelectedDate(dateCell)"
+                        (click)="setDate(dateCell)">
+                    {{dateCell.calendarDate.date}}
                 </button>
-
-                <button *ngIf="!isCalendarViewMonth(date)"
+                <button *ngIf="!isCalendarViewMonth(dateCell)"
+                        tabindex="-1"
                         class="date is-not-current"
-                        [attr.tabindex]="!date.isTodaysDate ? -1 : null"
-                        [class.is-today]="date.isTodaysDate"
-                        (click)="setDate(date.date)">
-                    {{date.date.date}}
+                        (click)="setDate(dateCell)">
+                    {{dateCell.calendarDate.date}}
                 </button>
-
-                <!--button *ngIf="isNextMonth(date)"
-                        class="date is-not-current"
-                        [attr.tabindex]="!date.isTodaysDate ? -1 : null"
-                        [class.is-today]="date.isTodaysDate"
-                        (click)="setDate(date.date)">
-                    {{date.date}}
-                </button-->
             </td>
         </tr>
     </table>

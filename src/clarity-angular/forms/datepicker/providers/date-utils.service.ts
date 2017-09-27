@@ -5,7 +5,6 @@
  */
 import {Injectable} from "@angular/core";
 import {DateCell} from "../model/date-cell";
-import {MonthViewType} from "../utils/month-view.enum";
 import {CalendarDate} from "../model/calendar-date";
 
 const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
@@ -99,12 +98,11 @@ export class DateUtilsService {
         return this.todaysFullDate.getFullYear();
     }
 
+    /**
+     * Date selected by the user.
+     */
     private _selectedDate: CalendarDate;
 
-    /**
-     * Returns the date selected by the user
-     * @returns {CalendarDate}
-     */
     get selectedDate(): CalendarDate {
         return this._selectedDate;
     }
@@ -115,12 +113,11 @@ export class DateUtilsService {
         }
     }
 
+    /**
+     * Month Value in the current Calendar View.
+     */
     private _calendarViewMonth: number;
 
-    /**
-     * Returns the month in the present Calendar View.
-     * @returns {number}
-     */
     get calendarViewMonth(): number {
         return this._calendarViewMonth;
     }
@@ -132,12 +129,11 @@ export class DateUtilsService {
         }
     }
 
+    /**
+     * Year value in the current Calendar View.
+     */
     private _calendarViewYear: number;
 
-    /**
-     * Returns the year in the present Calendar View.
-     * @returns {number}
-     */
     get calendarViewYear(): number {
         return this._calendarViewYear;
     }
@@ -146,6 +142,15 @@ export class DateUtilsService {
         if (value !== this.calendarViewYear) {
             this._calendarViewYear = value;
             this.currentCalendarViewDates = this.getDatesInCalendarView();
+        }
+    }
+
+    initializeCalendarViewData(): void {
+        if (typeof this.calendarViewMonth === "undefined") {
+            this.calendarViewMonth = this.currentMonth;
+        }
+        if (typeof this.calendarViewYear === "undefined") {
+            this.calendarViewYear = this.currentYear;
         }
     }
 

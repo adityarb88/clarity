@@ -7,7 +7,7 @@ import {CalendarDate} from "./calendar-date";
 
 export class DateCell {
     constructor(
-        public date: CalendarDate,
+        public calendarDate: CalendarDate,
         public isTodaysDate: boolean = false) {
     }
 }
