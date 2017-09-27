@@ -3,13 +3,15 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
+import {Component, ElementRef, Injector, NgZone, SkipSelf} from "@angular/core";
 import {DateCell} from "./model/date-cell";
 import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
 import {CalendarDate} from "./model/calendar-date";
+import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+import {first} from 'rxjs/operator/first';
 
 @Component({
     selector: "clr-datepicker-content",
@@ -40,7 +42,9 @@ export class DatepickerContent extends AbstractPopover {
     constructor(@SkipSelf() parentHost: ElementRef,
                 private _injector: Injector,
                 private _dateUtilsService: DateUtilsService,
-                private _dateViewService: DateViewService) {
+                private _dateViewService: DateViewService,
+                private _ngZone: NgZone,
+                private _elRef: ElementRef) {
         super(_injector, parentHost);
         this.anchorPoint = Point.BOTTOM_LEFT;
         this.popoverPoint = Point.LEFT_TOP;
@@ -93,8 +97,43 @@ export class DatepickerContent extends AbstractPopover {
         return dateCell.calendarDate.isEqual(this._dateUtilsService.selectedDate);
     }
 
+    onDateCellFocus(dateCell: DateCell) {
+        this._dateUtilsService.focusedDate = dateCell.calendarDate;
+    }
+
     onDatepickerTableKeyDown(event: KeyboardEvent) {
-        console.log("Test", event);
+        switch(event.keyCode) {
+            case UP_ARROW:
+                this._dateUtilsService.incrementFocusedDateBy(-7);
+                this._focusDateCell();
+                break;
+            case DOWN_ARROW:
+                this._dateUtilsService.incrementFocusedDateBy(7);
+                this._focusDateCell();
+                break;
+            case LEFT_ARROW:
+                this._dateUtilsService.incrementFocusedDateBy(-1);
+                this._focusDateCell();
+                break;
+            case RIGHT_ARROW:
+                this._dateUtilsService.incrementFocusedDateBy(1);
+                this._focusDateCell();
+                break;
+            default:
+                break; //No default case. TSLint x-(
+        }
+    }
+
+    //Credit: Material: https://github.com/angular/material2/blob/master/src/lib/datepicker/calendar.ts
+    _focusDateCell(): void {
+        this._ngZone.runOutsideAngular(() => {
+            first.call(this._ngZone.onStable.asObservable()).subscribe(() => {
+                const focusEl = this._elRef.nativeElement.querySelector('[tabindex="0"]');
+                if (focusEl) {
+                    focusEl.focus();
+                }
+            });
+        });
     }
 
     /**
@@ -109,12 +148,19 @@ export class DatepickerContent extends AbstractPopover {
         const calDate: CalendarDate = dateCell.calendarDate;
         const dUService: DateUtilsService = this._dateUtilsService;
         const selDate: CalendarDate = dUService.selectedDate;
+        const focusedDate: CalendarDate = dUService.focusedDate;
         const calViewMonth: number = dUService.calendarViewMonth;
         const calViewYear: number = dUService.calendarViewYear;
 
         // Nasty (but not THAT nasty) if else blocks.
         // Order important
-        if (selDate
+        if (focusedDate) {
+            if (calDate.isEqual(focusedDate)) {
+                return 0;
+            } else {
+                return -1;
+            }
+        } else if (selDate
             && selDate.month === calViewMonth
             && selDate.year === calViewYear) {
             if (calDate.isEqual(selDate)) {

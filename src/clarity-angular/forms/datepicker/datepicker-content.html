@@ -20,15 +20,18 @@
     <table class="datepicker-table" (keydown)="onDatepickerTableKeyDown($event)">
         <tr *ngFor="let row of calendarDates" class="datepicker-row">
             <td *ngFor="let dateCell of row" class="datepicker-cell">
-                <button *ngIf="isCalendarViewMonth(dateCell)"
+                <button type="button"
+                        *ngIf="isCalendarViewMonth(dateCell)"
                         class="date"
                         [attr.tabindex]="getTabIndex(dateCell)"
                         [class.is-today]="dateCell.isTodaysDate"
                         [class.active]="isSelectedDate(dateCell)"
-                        (click)="setDate(dateCell)">
+                        (click)="setDate(dateCell)"
+                        (focus)="onDateCellFocus(dateCell)">
                     {{dateCell.calendarDate.date}}
                 </button>
-                <button *ngIf="!isCalendarViewMonth(dateCell)"
+                <button type="button"
+                        *ngIf="!isCalendarViewMonth(dateCell)"
                         tabindex="-1"
                         class="date is-not-current"
                         (click)="setDate(dateCell)">

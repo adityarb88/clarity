@@ -99,6 +99,23 @@ export class DateUtilsService {
     }
 
     /**
+     * Date on which the user has focused.
+     */
+    private _focusedDate: CalendarDate;
+
+    get focusedDate(): CalendarDate {
+        return this._focusedDate;
+    }
+
+    set focusedDate(value: CalendarDate) {
+        this._focusedDate = value;
+    }
+
+    forgetFocus(): void {
+        this.focusedDate = null;
+    }
+
+    /**
      * Date selected by the user.
      */
     private _selectedDate: CalendarDate;
@@ -159,13 +176,6 @@ export class DateUtilsService {
      * Sets the dates for the previous month's calendar view.
      */
     changeViewToPreviousMonth(): void {
-        if (typeof this.calendarViewMonth === "undefined") {
-            this.calendarViewMonth = this.currentMonth;
-        }
-        if (typeof this.calendarViewYear === "undefined") {
-            this.calendarViewYear = this.currentYear;
-        }
-
         if (this._calendarViewMonth === 0) {
             this._calendarViewMonth = 11;
             this._calendarViewYear--;
@@ -180,13 +190,6 @@ export class DateUtilsService {
      * Sets the dates for the next month's calendar view.
      */
     changeViewToNextMonth(): void {
-        if (typeof this.calendarViewMonth === "undefined") {
-            this.calendarViewMonth = this.currentMonth;
-        }
-        if (typeof this.calendarViewYear === "undefined") {
-            this.calendarViewYear = this.currentYear;
-        }
-
         if (this._calendarViewMonth === 11) {
             this._calendarViewMonth = 0;
             this._calendarViewYear++;
@@ -194,6 +197,19 @@ export class DateUtilsService {
             this._calendarViewMonth++;
         }
         this.currentCalendarViewDates = this.getDatesInCalendarView();
+    }
+
+    incrementFocusedDateBy(incrementDays: number): void {
+        if (this.focusedDate) {
+            const newFocusedDate: Date = new Date(this.focusedDate.year, this.focusedDate.month, this.focusedDate.date);
+            newFocusedDate.setDate(newFocusedDate.getDate() + incrementDays);
+            const newDate: number = newFocusedDate.getDate();
+            const newMonth: number = newFocusedDate.getMonth();
+            const newYear: number = newFocusedDate.getFullYear();
+            this.calendarViewMonth = newMonth;
+            this.calendarViewYear = newYear;
+            this.focusedDate = new CalendarDate(newDate, newMonth, newYear);
+        }
     }
 
     /**
