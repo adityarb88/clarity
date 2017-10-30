@@ -3,9 +3,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Component} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, HostListener} from "@angular/core";
 import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
+import {DOWN_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+import {CalendarDate} from "./model/calendar-date";
 
 @Component({
     selector: "clr-yearpicker",
@@ -14,7 +16,8 @@ import {DateViewService} from "./providers/date-view.service";
             *ngFor="let year of years"
             class="year-cell"
             (click)="setYear(year)"
-            [class.active]="year === calendarViewYear">
+            [class.active]="year === calendarViewYear"
+            [attr.tabindex]="getTabIndex(year)">
             {{year}}
         </button>
     `,
@@ -22,24 +25,66 @@ import {DateViewService} from "./providers/date-view.service";
         "[class.yearpicker-content]": "true",
     }
 })
-export class YearPicker {
-    constructor(private dateUtilsService: DateUtilsService, private dateViewService: DateViewService) {}
+export class YearPicker implements AfterViewInit{
+    constructor(
+        private _dateUtilsService: DateUtilsService,
+        private _dateViewService: DateViewService,
+        private _elRef: ElementRef) {
+        this.initializeFocusYear();
+    }
+
+    ngAfterViewInit() {
+        this._dateViewService.focusCell(this._elRef);
+    }
 
     get years(): number[] {
-        return this.dateUtilsService.getYearStartingRange();
+        return this._dateUtilsService.getYearStartingRange();
     }
 
     set yearView(value: boolean) {
-        this.dateViewService.yearView = value;
+        this._dateViewService.yearView = value;
     }
 
     get calendarViewYear(): number {
-        const calViewYear: number = this.dateUtilsService.calendarViewYear || this.dateUtilsService.currentYear;
+        const calViewYear: number = this._dateUtilsService.calendarViewYear || this._dateUtilsService.currentYear;
         return calViewYear;
     }
 
     setYear(year: number): void {
-        this.dateUtilsService.calendarViewYear = year;
+        this._dateUtilsService.calendarViewYear = year;
         this.yearView = false;
+    }
+
+    @HostListener("keydown", ["$event"])
+    onKeyDown(event: KeyboardEvent) {
+        const keyCode: number = event.keyCode;
+        if (keyCode === UP_ARROW) {
+            this._focusedYear--;
+            this._dateViewService.focusCell(this._elRef);
+        } else if (keyCode === DOWN_ARROW) {
+            this._focusedYear++;
+            this._dateViewService.focusCell(this._elRef);
+        }
+    }
+
+    private _focusedYear: number;
+
+    private initializeFocusYear(): void {
+        const dUService: DateUtilsService = this._dateUtilsService;
+        const focusedDate: CalendarDate = dUService.focusedDate;
+        const selDate: CalendarDate = dUService.selectedDate;
+        const calViewYear: number = dUService.calendarViewYear;
+
+        if (focusedDate) {
+            this._focusedYear = focusedDate.year;
+        } else if (selDate) {
+            this._focusedYear = selDate.year;
+        } else {
+            this._focusedYear = calViewYear;
+        }
+    }
+
+    getTabIndex(year: number): number {
+        return year === this._focusedYear ? 0 : -1;
     }
 }

@@ -160,13 +160,23 @@
         color: $action-blues-light-midtone;
         outline-offset: -5px;
 
-        &:hover {
+        &:focus {
+            //Only because we have defined a background color for focus above
+            outline: 0;
+        }
+
+        &:hover,
+        &:focus {
             background: $gray-light
         }
 
         &.active {
             background: $action-blues-light-midtone;
             color: $clr-white;
+        }
+
+        &.active:focus {
+            background-color: $action-blues-dark;
         }
     }
 
