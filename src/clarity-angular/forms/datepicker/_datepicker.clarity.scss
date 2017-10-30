@@ -142,6 +142,12 @@
         overflow: auto;
     }
 
+    .yearpicker-content {
+        width: 324px;
+        padding: 0 36px;
+        margin-left: -36px;
+    }
+
     .monthpicker-content {
         flex-wrap: wrap;
     }

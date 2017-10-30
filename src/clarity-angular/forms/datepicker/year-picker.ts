@@ -58,10 +58,10 @@ export class YearPicker implements AfterViewInit{
     @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
         const keyCode: number = event.keyCode;
-        if (keyCode === UP_ARROW) {
+        if (keyCode === UP_ARROW && this._focusedYear > this.years[0]) {
             this._focusedYear--;
             this._dateViewService.focusCell(this._elRef);
-        } else if (keyCode === DOWN_ARROW) {
+        } else if (keyCode === DOWN_ARROW  && this._focusedYear < this.years[this.years.length - 1]) {
             this._focusedYear++;
             this._dateViewService.focusCell(this._elRef);
         }
