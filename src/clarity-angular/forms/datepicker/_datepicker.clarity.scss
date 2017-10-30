@@ -33,11 +33,41 @@
         margin-top: 6px;
         width: 278px;
         height: 314px;
+        overflow: hidden;
     }
 
     .datepicker-month-year-container {
         display: flex;
         justify-content: space-between;
+    }
+
+    .datepicker-table {
+        width: 100%;
+        flex: 1 1 auto;
+    }
+
+    .datepicker-month-year-container,
+    .datepicker-days-header {
+        flex: 0 0 36px;
+    }
+
+    .datepicker-date-view {
+        overflow: auto;
+        padding: 0 36px;
+        margin-left: -36px;
+        width: 324px;
+    }
+
+    .datepicker-row {
+        text-align: center;
+    }
+
+    .datepicker-cell {
+        min-width: 36px;
+        max-width: 36px;
+        width: 36px;
+        height: 36px;
+        padding: 0;
     }
 
     .datepicker-btn,
@@ -68,23 +98,10 @@
         font-weight: 200;
     }
 
-    .datepicker-table {
-        width: 100%;
-    }
-
-    .datepicker-row {
-        text-align: center;
-    }
-
-    .datepicker-cell {
-        width: 36px;
-        height: 36px;
-        padding: 0;
-    }
-
     .date {
         background: none;
         border: none;
+        color: inherit;
         width: 100%;
         height: 36px;
         line-height: 36px;

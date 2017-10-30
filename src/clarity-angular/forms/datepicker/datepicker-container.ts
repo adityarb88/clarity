@@ -15,7 +15,7 @@ import {IfOpenService} from "../../utils/conditional/if-open.service";
                 <clr-icon shape="calendar"></clr-icon>
             </button>
         </div>
-        <clr-datepicker-content *clrIfOpen></clr-datepicker-content>
+        <clr-datepicker-content clrFocusTrap *clrIfOpen></clr-datepicker-content>
         <!--clr-datepicker-content *clrIfOpen></clr-datepicker-content-->
     `,
     providers: [IfOpenService]
