@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Component, ElementRef, Injector, NgZone, SkipSelf} from "@angular/core";
+import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
 import {DateCell} from "./model/date-cell";
 import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
@@ -11,7 +11,6 @@ import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
 import {CalendarDate} from "./model/calendar-date";
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
-import {first} from 'rxjs/operator/first';
 
 @Component({
     selector: "clr-datepicker-content",
@@ -43,7 +42,6 @@ export class DatepickerContent extends AbstractPopover {
                 private _injector: Injector,
                 private _dateUtilsService: DateUtilsService,
                 private _dateViewService: DateViewService,
-                private _ngZone: NgZone,
                 private _elRef: ElementRef) {
         super(_injector, parentHost);
         this.anchorPoint = Point.BOTTOM_LEFT;
@@ -105,35 +103,23 @@ export class DatepickerContent extends AbstractPopover {
         switch(event.keyCode) {
             case UP_ARROW:
                 this._dateUtilsService.incrementFocusedDateBy(-7);
-                this._focusDateCell();
+                this._dateViewService.focusCell(this._elRef);
                 break;
             case DOWN_ARROW:
                 this._dateUtilsService.incrementFocusedDateBy(7);
-                this._focusDateCell();
+                this._dateViewService.focusCell(this._elRef);
                 break;
             case LEFT_ARROW:
                 this._dateUtilsService.incrementFocusedDateBy(-1);
-                this._focusDateCell();
+                this._dateViewService.focusCell(this._elRef);
                 break;
             case RIGHT_ARROW:
                 this._dateUtilsService.incrementFocusedDateBy(1);
-                this._focusDateCell();
+                this._dateViewService.focusCell(this._elRef);
                 break;
             default:
                 break; //No default case. TSLint x-(
         }
-    }
-
-    //Credit: Material: https://github.com/angular/material2/blob/master/src/lib/datepicker/calendar.ts
-    _focusDateCell(): void {
-        this._ngZone.runOutsideAngular(() => {
-            first.call(this._ngZone.onStable.asObservable()).subscribe(() => {
-                const focusEl = this._elRef.nativeElement.querySelector('[tabindex="0"]');
-                if (focusEl) {
-                    focusEl.focus();
-                }
-            });
-        });
     }
 
     /**
