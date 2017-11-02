@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, HostListener, Injector, SkipSelf} from "@angular/core";
 import {DateCell} from "./model/date-cell";
 import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
@@ -20,7 +20,7 @@ import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-cod
     },
     providers: [DateUtilsService, DateViewService]
 })
-export class DatepickerContent extends AbstractPopover {
+export class DatepickerContent extends AbstractPopover implements AfterViewInit {
 
     get monthView(): boolean {
         return this._dateViewService.monthView;
@@ -47,6 +47,10 @@ export class DatepickerContent extends AbstractPopover {
         this.anchorPoint = Point.BOTTOM_LEFT;
         this.popoverPoint = Point.LEFT_TOP;
         this.closeOnOutsideClick = true;
+    }
+
+    ngAfterViewInit() {
+        this._dateViewService.focusCell(this._elRef);
     }
 
     get calendarDates(): DateCell[][] {
@@ -132,7 +136,7 @@ export class DatepickerContent extends AbstractPopover {
      */
     getTabIndex(dateCell: DateCell): number {
         const calDate: CalendarDate = dateCell.calendarDate;
-        const dUService: DateUtilsService = this._dateUtilsService;
+        const dUService: DateUtilsService = this._dateUtilsService;0
         const selDate: CalendarDate = dUService.selectedDate;
         const focusedDate: CalendarDate = dUService.focusedDate;
         const calViewMonth: number = dUService.calendarViewMonth;

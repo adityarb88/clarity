@@ -34,6 +34,7 @@
         width: 278px;
         height: 314px;
         overflow: hidden;
+        outline: none; //doesnt really need a focus style
     }
 
     .datepicker-month-year-container {
@@ -120,13 +121,10 @@
             font-weight: 600;
         }
 
-        &.active {
+        &.active,
+        &.active:focus {
             background: $action-blues-light-midtone;
             color: $clr-white;
-        }
-
-        &.active:focus {
-            background-color: $action-blues-dark;
         }
     }
 
@@ -176,13 +174,10 @@
             background: $gray-light
         }
 
-        &.active {
+        &.active,
+        &.active:focus {
             background: $action-blues-light-midtone;
             color: $clr-white;
-        }
-
-        &.active:focus {
-            background-color: $action-blues-dark;
         }
     }
 
