@@ -12,18 +12,17 @@ import {CalendarDate} from "./model/calendar-date";
 @Component({
     selector: "clr-yearpicker",
     template: `
-        <button
-            *ngFor="let year of years"
-            class="year-cell"
-            (click)="setYear(year)"
-            [class.active]="year === calendarViewYear"
-            [attr.tabindex]="getTabIndex(year)">
-            {{year}}
-        </button>
-    `,
-    host: {
-        "[class.yearpicker-content]": "true",
-    }
+        <div class="yearpicker-content">
+            <button
+                *clrVirtualFor="let year of years"
+                class="year-cell"
+                (click)="setYear(year)"
+                [class.active]="year === calendarViewYear"
+                [attr.tabindex]="getTabIndex(year)">
+                {{year}}
+            </button>
+        </div>
+    `
 })
 export class YearPicker implements AfterViewInit{
     constructor(
@@ -37,8 +36,17 @@ export class YearPicker implements AfterViewInit{
         this._dateViewService.focusCell(this._elRef);
     }
 
+    /*
     get years(): number[] {
         return this._dateUtilsService.getYearStartingRange();
+    }
+    */
+
+    years = {
+        year: this.calendarViewYear,
+        get(index: number) {
+            return index + this.year;
+        }
     }
 
     set yearView(value: boolean) {
@@ -58,10 +66,12 @@ export class YearPicker implements AfterViewInit{
     @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
         const keyCode: number = event.keyCode;
-        if (keyCode === UP_ARROW && this._focusedYear > this.years[0]) {
+        //if (keyCode === UP_ARROW && this._focusedYear > this.years[0]) {
+        if (keyCode === UP_ARROW) {
             this._focusedYear--;
             this._dateViewService.focusCell(this._elRef);
-        } else if (keyCode === DOWN_ARROW  && this._focusedYear < this.years[this.years.length - 1]) {
+        } else if (keyCode === DOWN_ARROW) {
+            //else if (keyCode === DOWN_ARROW  && this._focusedYear < this.years[this.years.length - 1]) {
             this._focusedYear++;
             this._dateViewService.focusCell(this._elRef);
         }

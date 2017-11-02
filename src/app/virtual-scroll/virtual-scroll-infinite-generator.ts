@@ -29,7 +29,7 @@ import {Component} from "@angular/core";
 })
 export class VirtualScrollInfiniteGeneratorDemo {
     years = {
-        get(index: number) {
+        get(index: number):number {
             return index + 2017;
         }
     };
