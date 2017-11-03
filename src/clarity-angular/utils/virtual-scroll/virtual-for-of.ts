@@ -5,7 +5,6 @@
  */
 import {
     AfterViewInit,
-    ChangeDetectorRef,
     Directive,
     EmbeddedViewRef,
     Input,
@@ -31,7 +30,7 @@ enum Side {
 @Directive({selector: "[clrVirtualForOf]"})
 export class VirtualForOf<T> implements AfterViewInit {
     constructor(private viewContainer: ViewContainerRef, private template: TemplateRef<{$implicit: T}>,
-                private renderer: Renderer2, private cdr: ChangeDetectorRef) {
+                private renderer: Renderer2) {
         this.containerEl = <HTMLElement>renderer.parentNode(viewContainer.element.nativeElement);
     }
 
