@@ -17,13 +17,17 @@ export class FocusTrapDirective implements AfterViewInit, OnDestroy {
         this.focusTrapsTracker.current = this;
     }
 
-    @HostListener("document:focusin", ["$event"])
+    @HostListener("window:focusin", ["$event"])
     onFocusIn(event: any) {
         const nativeElement: HTMLElement = this.elementRef.nativeElement;
 
         if (this.focusTrapsTracker.current === this && !nativeElement.contains(event.target)) {
             nativeElement.focus();
         }
+    }
+
+    @HostListener("window:focusout", ["$event"])
+    onFocusOut(event: any) {
     }
 
     ngAfterViewInit() {

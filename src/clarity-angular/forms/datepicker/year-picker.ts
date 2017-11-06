@@ -9,6 +9,15 @@ import {DateViewService} from "./providers/date-view.service";
 import {DOWN_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 import {CalendarDate} from "./model/calendar-date";
 
+
+function yearViewGenerator(currentYear: number) {
+    return {
+        get(index: number) {
+            return index + currentYear;
+        }
+    };
+}
+
 @Component({
     selector: "clr-yearpicker",
     template: `
@@ -37,18 +46,7 @@ export class YearPicker implements AfterViewInit{
         this._dateViewService.focusCell(this._elRef);
     }
 
-    /*
-    get years(): number[] {
-        return this._dateUtilsService.getYearStartingRange();
-    }
-    */
-
-    years = {
-        year: this.calendarViewYear,
-        get(index: number) {
-            return index + this.year;
-        }
-    }
+    years = yearViewGenerator(this.calendarViewYear);
 
     set yearView(value: boolean) {
         this._dateViewService.yearView = value;
@@ -67,16 +65,30 @@ export class YearPicker implements AfterViewInit{
     @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
         const keyCode: number = event.keyCode;
-        //if (keyCode === UP_ARROW && this._focusedYear > this.years[0]) {
         if (keyCode === UP_ARROW) {
             event.preventDefault();
             this._focusedYear--;
-            this._dateViewService.focusCell(this._elRef);
+            this.years = yearViewGenerator(this._focusedYear - 1);
+            setTimeout(() => {
+                const focusEl = this._elRef.nativeElement.querySelector('[tabindex="0"]');
+                console.log(focusEl);
+                if (focusEl) {
+                    focusEl.focus();
+                }
+            }, 100);
+            //this._dateViewService.focusCell(this._elRef);
         } else if (keyCode === DOWN_ARROW) {
-            //else if (keyCode === DOWN_ARROW  && this._focusedYear < this.years[this.years.length - 1]) {
             event.preventDefault();
             this._focusedYear++;
-            this._dateViewService.focusCell(this._elRef);
+            this.years = yearViewGenerator(this._focusedYear - 1);
+            setTimeout(() => {
+                const focusEl = this._elRef.nativeElement.querySelector('[tabindex="0"]');
+                console.log(focusEl);
+                if (focusEl) {
+                    focusEl.focus();
+                }
+            }, 100);
+            //this._dateViewService.focusCell(this._elRef);
         }
     }
 
