@@ -3,14 +3,22 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Injectable} from "@angular/core";
+import {Inject, Injectable, LOCALE_ID} from "@angular/core";
 import {DateCell} from "../model/date-cell";
 import {CalendarDate} from "../model/calendar-date";
+import {
+    FormStyle, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames,
+    TranslationWidth, WeekDay
+} from "@angular/common";
 
 const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
+const NO_OF_DAYS_IN_A_WEEK: number = 7;
 
 @Injectable()
 export class DateUtilsService {
+
+    constructor(@Inject(LOCALE_ID) public locale: string) {
+    }
 
     //Today's Date
     todaysFullDate: Date = new Date();
@@ -25,20 +33,25 @@ export class DateUtilsService {
         this._currentCalendarViewDates = value;
     }
 
-    //TODO: Get this from Angular Locale Lib
     getLocaleDaysShort(): string[] {
-        return ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+        return getLocaleDayNames(this.locale, FormStyle.Format, TranslationWidth.Narrow);
     }
 
-    //TODO: Get this from Angular Locale Lib
     getLocaleMonthsLong(): string[] {
-        return ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
+        return getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Wide);
     }
 
+    //TODO: Remove this
     getYearStartingRange(): number[] {
         return [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+    }
+
+    /**
+     * Return first day of the week based on the en-US locale.
+     * 0 represents Sunday, 1 represents Monday and so on
+     */
+    getFirstDayOfTheWeek(): WeekDay {
+        return getLocaleFirstDayOfWeek(this.locale);
     }
 
     /**
@@ -53,14 +66,13 @@ export class DateUtilsService {
     }
 
     /**
-     * Returns the day for the date.
-     * For eg: 0 for Sunday, 1 for Monday and so on when locale is en_US
+     * Returns the day for the corresponding date where 0 represents Sunday.
      * @param {number} year
      * @param {number} month
      * @param {number} date
      * @returns {number}
      */
-    getDay(year: number, month: number, date: number): number {
+    getDay(year: number, month: number, date: number): WeekDay {
         return (new Date(year, month, date)).getDay();
     }
 
@@ -385,6 +397,8 @@ export class DateUtilsService {
             }
             finalCalendarArray.push(tempArr);
         }
+
+        console.log(finalCalendarArray);
 
         return finalCalendarArray;
     }

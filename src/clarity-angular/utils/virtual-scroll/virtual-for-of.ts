@@ -43,6 +43,8 @@ export class VirtualForOf<T> implements AfterViewInit {
     set items(value: Array<T>|NonNgIterable<T>) {
         this._items = value;
         this.viewContainer.clear();
+        this.start = -1;
+        this.end = 0;
         this.fill();
     }
 
