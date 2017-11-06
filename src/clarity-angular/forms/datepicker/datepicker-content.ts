@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {AfterViewInit, Component, ElementRef, HostListener, Injector, SkipSelf} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, Injector, SkipSelf} from "@angular/core";
 import {DateCell} from "./model/date-cell";
 import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
