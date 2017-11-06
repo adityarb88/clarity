@@ -123,10 +123,6 @@ export class DateUtilsService {
         this._focusedDate = value;
     }
 
-    forgetFocus(): void {
-        this.focusedDate = null;
-    }
-
     /**
      * Date selected by the user.
      */
@@ -174,13 +170,15 @@ export class DateUtilsService {
         }
     }
 
-    initializeCalendarViewData(): void {
+    initializeCalendarViewData(): DateCell[][] {
+        //TODO: Add option to parse user input and decide the calendar view month and year
         if (typeof this.calendarViewMonth === "undefined") {
-            this.calendarViewMonth = this.currentMonth;
+            this._calendarViewMonth = this.currentMonth;
         }
         if (typeof this.calendarViewYear === "undefined") {
-            this.calendarViewYear = this.currentYear;
+            this._calendarViewYear = this.currentYear;
         }
+        return this.getDatesInCalendarView();
     }
 
     /**
@@ -306,22 +304,8 @@ export class DateUtilsService {
      * @returns {DateCell[][]}
      */
     getDatesInCalendarView(): DateCell[][] {
-        let month: number;
-        let year: number;
-
-        // Get month for which the calendar view needs to be constructed
-        if (typeof this.calendarViewMonth !== "undefined") {
-            month = this.calendarViewMonth;
-        } else {
-            month = this.currentMonth;
-        }
-
-        // Get year for which the calendar view needs to be constructed
-        if (typeof this.calendarViewYear !== "undefined") {
-            year = this.calendarViewYear;
-        } else {
-            year = this.currentYear;
-        }
+        const month: number = this.calendarViewMonth;
+        const year: number = this.calendarViewYear;
 
         const noOfDaysInCurrMonth: number = this.getNumberOfDaysInTheMonth(year, month);
         const noOfDaysInPrevMonth: number = this.getNumberOfDaysInTheMonth(year, month - 1);

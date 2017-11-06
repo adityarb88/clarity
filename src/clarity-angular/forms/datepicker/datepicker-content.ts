@@ -58,9 +58,7 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
     }
 
     ngOnInit() {
-        this._dateUtilsService.initializeCalendarViewData();
-        this._dateUtilsService.currentCalendarViewDates
-            = this._dateUtilsService.getDatesInCalendarView();
+        this._dateUtilsService.currentCalendarViewDates = this._dateUtilsService.initializeCalendarViewData();
     }
 
     get daysShort(): string[] {
