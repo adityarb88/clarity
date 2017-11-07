@@ -18,6 +18,7 @@ const NO_OF_DAYS_IN_A_WEEK: number = 7;
 export class DateUtilsService {
 
     constructor(@Inject(LOCALE_ID) public locale: string) {
+        this.initializeLocaleDaysShort();
     }
 
     //Today's Date
@@ -33,17 +34,26 @@ export class DateUtilsService {
         this._currentCalendarViewDates = value;
     }
 
+    private initializeLocaleDaysShort(): void {
+        const tempArr: string[] = getLocaleDayNames(this.locale, FormStyle.Format, TranslationWidth.Narrow).slice(0);
+        const firstDayOfWeek: number = this.getFirstDayOfTheWeek();
+        if (firstDayOfWeek > 0) {
+            const prevDays = tempArr.splice(0, firstDayOfWeek);
+            prevDays.forEach((item) => {
+                tempArr.push(item);
+            });
+        }
+        this.localeDaysShort = tempArr;
+    }
+
+    private localeDaysShort: string[] = [];
+
     getLocaleDaysShort(): string[] {
-        return getLocaleDayNames(this.locale, FormStyle.Format, TranslationWidth.Narrow);
+        return this.localeDaysShort;
     }
 
     getLocaleMonthsLong(): string[] {
         return getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Wide);
-    }
-
-    //TODO: Remove this
-    getYearStartingRange(): number[] {
-        return [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
     }
 
     /**
@@ -51,7 +61,8 @@ export class DateUtilsService {
      * 0 represents Sunday, 1 represents Monday and so on
      */
     getFirstDayOfTheWeek(): WeekDay {
-        return getLocaleFirstDayOfWeek(this.locale);
+        //return getLocaleFirstDayOfWeek(this.locale);
+        return 1;
     }
 
     /**
@@ -298,6 +309,20 @@ export class DateUtilsService {
         }
     }
 
+    private carryOverFromPreviousMonth(): WeekDay {
+        const month: number = this.calendarViewMonth;
+        const year: number = this.calendarViewYear;
+
+        const firstDayOfCurrMonth: number = this.getDay(year, month, 1);
+        const firstDayOfTheWeek: number = this.getFirstDayOfTheWeek();
+
+        if (firstDayOfCurrMonth >= firstDayOfTheWeek) {
+            return firstDayOfCurrMonth - firstDayOfTheWeek;
+        } else {
+            return NO_OF_DAYS_IN_A_WEEK + firstDayOfCurrMonth - firstDayOfTheWeek;
+        }
+    }
+
     /**
      * Generates and returns the dates in the Calendar View selected by the user.
      * Depends on the month and year view selected by the user
@@ -314,16 +339,16 @@ export class DateUtilsService {
         // are needed to complete the Calendar View. For eg: Assuming the first day of the week is Sunday,
         // if first day of the current month is Wednesday (this.getDay function would return 3 since
         // first day of the week is 0), we need the 3 days from the previous month.
-        const firstDayOfCurrMonth: number = this.getDay(year, month, 1);
+        const carryOverFromPreviousMonth: number = this.carryOverFromPreviousMonth();
 
         // Gets the dates in the previous month of the calendar view
         const datesInPreviousMonth: DateCell[]
-            = Array(firstDayOfCurrMonth)
+            = Array(carryOverFromPreviousMonth)
             .fill(null)
             .map((date, index) => {
                 const previousMonth: [number, number] = this.getPreviousMonth(month, year);
                 const calDate: CalendarDate = new CalendarDate(
-                    noOfDaysInPrevMonth - (firstDayOfCurrMonth - (index + 1)),
+                    noOfDaysInPrevMonth - (carryOverFromPreviousMonth - (index + 1)),
                     previousMonth[0],
                     previousMonth[1]
                 );
