@@ -7,9 +7,12 @@ import {Inject, Injectable, LOCALE_ID} from "@angular/core";
 import {DateCell} from "../model/date-cell";
 import {CalendarDate} from "../model/calendar-date";
 import {
-    FormStyle, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames,
+    FormatWidth,
+    FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames,
     TranslationWidth, WeekDay
 } from "@angular/common";
+import {formatUserDate} from "../utils/format_date";
+import {formatDate} from "../utils/formatDate";
 
 const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
 const NO_OF_DAYS_IN_A_WEEK: number = 7;
@@ -18,7 +21,13 @@ const NO_OF_DAYS_IN_A_WEEK: number = 7;
 export class DateUtilsService {
 
     constructor(@Inject(LOCALE_ID) public locale: string) {
+        this.locale = "fr";
         this.initializeLocaleDaysShort();
+        console.log(getLocaleDateFormat(this.locale, FormatWidth.Short));
+        console.log(formatUserDate(new Date(1900, 11, 24), this.locale));
+        console.log(formatDate(new Date(2000, 11, 24), "shortDate", this.locale));
+        console.log(new Date(Date.parse(formatDate(new Date(2000, 11, 24), "shortDate", this.locale))));
+        console.log(new Date(Date.parse(formatUserDate(new Date(1900, 11, 24), this.locale))));
     }
 
     //Today's Date
@@ -35,7 +44,7 @@ export class DateUtilsService {
     }
 
     private initializeLocaleDaysShort(): void {
-        const tempArr: string[] = getLocaleDayNames(this.locale, FormStyle.Format, TranslationWidth.Narrow).slice(0);
+        const tempArr: string[] = getLocaleDayNames(this.locale, FormStyle.Format, TranslationWidth.Narrow);
         const firstDayOfWeek: number = this.getFirstDayOfTheWeek();
         if (firstDayOfWeek > 0) {
             const prevDays = tempArr.splice(0, firstDayOfWeek);
@@ -46,9 +55,9 @@ export class DateUtilsService {
         this.localeDaysShort = tempArr;
     }
 
-    private localeDaysShort: string[] = [];
+    private localeDaysShort: ReadonlyArray<string>;
 
-    getLocaleDaysShort(): string[] {
+    getLocaleDaysShort(): ReadonlyArray<string> {
         return this.localeDaysShort;
     }
 
@@ -61,8 +70,7 @@ export class DateUtilsService {
      * 0 represents Sunday, 1 represents Monday and so on
      */
     getFirstDayOfTheWeek(): WeekDay {
-        //return getLocaleFirstDayOfWeek(this.locale);
-        return 1;
+        return getLocaleFirstDayOfWeek(this.locale);
     }
 
     /**

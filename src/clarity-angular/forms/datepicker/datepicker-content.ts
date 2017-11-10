@@ -61,7 +61,7 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         this._dateUtilsService.currentCalendarViewDates = this._dateUtilsService.initializeCalendarViewData();
     }
 
-    get daysShort(): string[] {
+    get daysShort(): ReadonlyArray<string> {
         return this._dateUtilsService.getLocaleDaysShort();
     }
 
