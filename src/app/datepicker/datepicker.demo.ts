@@ -5,6 +5,11 @@
  */
 import {Component} from "@angular/core";
 
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr);
+
 @Component({
     selector: "clr-datepicker-demo",
     // Note the .css extension here, not .scss. That's the best we can have at the moment.
