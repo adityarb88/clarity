@@ -4,13 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {
-    ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef,
+    ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, HostBinding,
     Optional,
     ViewContainerRef
 } from "@angular/core";
 import {DatepickerContainer} from "./datepicker-container";
 import {EmptyAnchor} from "../../utils/host-wrapping/empty-anchor";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
+import {DatepickerActiveService} from "./providers/datepicker-active.service";
 
 @Directive({
     selector: "[clrDatepicker]",
@@ -20,7 +21,9 @@ import {IfOpenService} from "../../utils/conditional/if-open.service";
 })
 export class Datepicker {
 
-    private _ifOpenService: IfOpenService; //Not injected because the container is created after this directive is detected.
+    //Not injected because the container is created after this directive is detected.
+    private _ifOpenService: IfOpenService;
+    private _isActiveService: DatepickerActiveService;
 
     constructor(@Optional() private container: DatepickerContainer,
                 private vcr: ViewContainerRef,
@@ -35,6 +38,12 @@ export class Datepicker {
             // We can now remove the useless anchor
             this.vcr.remove(0);
             this._ifOpenService = componentRef.injector.get(IfOpenService);
+            this._isActiveService = componentRef.injector.get(DatepickerActiveService);
         }
+    }
+
+    @HostBinding("attr.type")
+    get isActive(): string {
+        return this._isActiveService.active ? "text" : "date";
     }
 }

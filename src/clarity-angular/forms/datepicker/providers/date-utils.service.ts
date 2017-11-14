@@ -21,7 +21,7 @@ const NO_OF_DAYS_IN_A_WEEK: number = 7;
 export class DateUtilsService {
 
     constructor(@Inject(LOCALE_ID) public locale: string) {
-        this.locale = "fr";
+        console.log(this.locale);
         this.initializeLocaleDaysShort();
         console.log(getLocaleDateFormat(this.locale, FormatWidth.Short));
         console.log(formatUserDate(new Date(1900, 11, 24), this.locale));
