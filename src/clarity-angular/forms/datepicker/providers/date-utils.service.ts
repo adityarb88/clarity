@@ -189,7 +189,7 @@ export class DateUtilsService {
         }
     }
 
-    initializeCalendarViewData(): DateCell[][] {
+    initializeMonthAndYear(): void {
         //TODO: Add option to parse user input and decide the calendar view month and year
         if (typeof this.calendarViewMonth === "undefined") {
             this._calendarViewMonth = this.currentMonth;
@@ -197,6 +197,10 @@ export class DateUtilsService {
         if (typeof this.calendarViewYear === "undefined") {
             this._calendarViewYear = this.currentYear;
         }
+    }
+
+    initializeCalendarViewData(): DateCell[][] {
+        this.initializeMonthAndYear();
         return this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
     }
 
@@ -317,10 +321,7 @@ export class DateUtilsService {
         }
     }
 
-    private carryOverFromPreviousMonth(): WeekDay {
-        const month: number = this.calendarViewMonth;
-        const year: number = this.calendarViewYear;
-
+    private carryOverFromPreviousMonth(month: number, year: number): WeekDay {
         const firstDayOfCurrMonth: number = this.getDay(year, month, 1);
         const firstDayOfTheWeek: number = this.getFirstDayOfTheWeek();
 
@@ -347,7 +348,7 @@ export class DateUtilsService {
         // are needed to complete the Calendar View. For eg: Assuming the first day of the week is Sunday,
         // if first day of the current month is Wednesday (this.getDay function would return 3 since
         // first day of the week is 0), we need the 3 days from the previous month.
-        const carryOverFromPreviousMonth: number = this.carryOverFromPreviousMonth();
+        const carryOverFromPreviousMonth: number = this.carryOverFromPreviousMonth(month, year);
 
         // Gets the dates in the previous month of the calendar view
         const datesInPreviousMonth: DateCell[]

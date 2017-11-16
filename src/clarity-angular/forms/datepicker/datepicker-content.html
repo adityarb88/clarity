@@ -17,8 +17,10 @@
             </td>
         </tr>
     </table>
-    <div class="datepicker-date-view">
-        <table class="datepicker-table" (keydown)="onDatepickerTableKeyDown($event)">
+    <div class="datepicker-date-view" (scroll)="onScroll($event)">
+        <table *clrVirtualFor="let calendarDates of calendars"
+            class="datepicker-table"
+            (keydown)="onDatepickerTableKeyDown($event)">
             <tr *ngFor="let row of calendarDates" class="datepicker-row">
                 <td *ngFor="let dateCell of row" class="datepicker-cell">
                     <button type="button"
@@ -41,17 +43,6 @@
                 </td>
             </tr>
         </table>
-        <!--<table class="datepicker-table">
-            <tr *ngFor="let row of calendarDates" class="datepicker-row">
-                <td *ngFor="let dateCell of row" class="datepicker-cell">
-                    <button type="button"
-                            class="date"
-                            tabindex="-1">
-                        1
-                    </button>
-                </td>
-            </tr>
-        </table>-->
     </div>
 </ng-container>
 <ng-container *ngIf="yearView">
