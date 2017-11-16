@@ -9,11 +9,13 @@
  */
 
 export function ratioBottomReady(container: HTMLElement, offset: number = 0) {
-    return (container.scrollHeight - container.scrollTop + offset) / container.clientHeight - 1;
+    const result = (container.scrollHeight - container.scrollTop + offset) / container.clientHeight - 1;
+    return result;
 }
 
 export function ratioTopReady(container: HTMLElement, offset: number = 0) {
-    return (container.scrollTop + offset) / container.clientHeight;
+    const result = (container.scrollTop + offset) / container.clientHeight;
+    return result;
 }
 
 export function offsetHeight(nodes: HTMLElement[]) {

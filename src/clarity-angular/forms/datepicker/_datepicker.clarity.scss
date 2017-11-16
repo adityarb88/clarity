@@ -53,10 +53,18 @@
     }
 
     .datepicker-date-view {
-        overflow: auto;
         padding: 0 36px;
         margin-left: -36px;
         width: 324px;
+        height: 216px;
+        max-height: 216px;
+        min-height: 216px;
+        //overflow: auto;
+        overflow: hidden;
+    }
+
+    .datepicker-date-view .datepicker-table{
+        box-shadow: 1px 1px 1px red;
     }
 
     .datepicker-row {

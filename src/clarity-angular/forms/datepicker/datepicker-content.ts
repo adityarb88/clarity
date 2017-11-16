@@ -38,27 +38,35 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         this._dateViewService.yearView = value;
     }
 
+    calendars;
+
     constructor(@SkipSelf() parentHost: ElementRef,
                 private _injector: Injector,
                 private _dateUtilsService: DateUtilsService,
                 private _dateViewService: DateViewService,
                 private _elRef: ElementRef) {
         super(_injector, parentHost);
+        this._dateUtilsService.initializeMonthAndYear();
         this.anchorPoint = Point.BOTTOM_LEFT;
         this.popoverPoint = Point.LEFT_TOP;
         this.closeOnOutsideClick = true;
+        this.calendars = this.generateCalendar(this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear);
     }
 
     ngAfterViewInit() {
         this._dateViewService.focusCell(this._elRef);
     }
 
+    /*
     get calendarDates(): DateCell[][] {
         return this._dateUtilsService.currentCalendarViewDates;
     }
+    */
 
     ngOnInit() {
-        this._dateUtilsService.currentCalendarViewDates = this._dateUtilsService.initializeCalendarViewData();
+        console.log(this.calendars);
+        //this._dateUtilsService.currentCalendarViewDates = this._dateUtilsService.initializeCalendarViewData();
+        //this.calendars = this.generateCalendar(this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear);
     }
 
     get daysShort(): ReadonlyArray<string> {
@@ -124,6 +132,22 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         }
     }
 
+    private generateCalendar(month: number, year: number) {
+        const get = (index: number) => {
+            let m: number = month + index;
+            let y: number = year;
+            if (m > 11) {
+                m = 0;
+                y++;
+            } else if (m < 0) {
+                m = 11;
+                y--;
+            }
+            return this._dateUtilsService.getDatesInCalendarView(m, y);
+        };
+        return {get};
+    }
+
     /**
      * Gets the tab index of the date cell. Only returns 0 or -1.
      * Used to determine which button to focus on when the user is navigating
@@ -170,5 +194,9 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
                 return -1;
             }
         }
+    }
+
+    onScroll(event: any) {
+        console.log(event);
     }
 }
