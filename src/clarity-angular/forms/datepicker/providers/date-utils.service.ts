@@ -169,7 +169,7 @@ export class DateUtilsService {
     set calendarViewMonth(value: number) {
         if (value !== this.calendarViewMonth) {
             this._calendarViewMonth = value;
-            this.currentCalendarViewDates = this.getDatesInCalendarView();
+            this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
         }
     }
 
@@ -185,7 +185,7 @@ export class DateUtilsService {
     set calendarViewYear(value: number) {
         if (value !== this.calendarViewYear) {
             this._calendarViewYear = value;
-            this.currentCalendarViewDates = this.getDatesInCalendarView();
+            this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
         }
     }
 
@@ -197,7 +197,7 @@ export class DateUtilsService {
         if (typeof this.calendarViewYear === "undefined") {
             this._calendarViewYear = this.currentYear;
         }
-        return this.getDatesInCalendarView();
+        return this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
     }
 
     /**
@@ -211,7 +211,7 @@ export class DateUtilsService {
         } else {
             this._calendarViewMonth--;
         }
-        this.currentCalendarViewDates = this.getDatesInCalendarView();
+        this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
     }
 
     /**
@@ -225,7 +225,7 @@ export class DateUtilsService {
         } else {
             this._calendarViewMonth++;
         }
-        this.currentCalendarViewDates = this.getDatesInCalendarView();
+        this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
     }
 
     incrementFocusedDateBy(incrementDays: number): void {
@@ -336,9 +336,9 @@ export class DateUtilsService {
      * Depends on the month and year view selected by the user
      * @returns {DateCell[][]}
      */
-    getDatesInCalendarView(): DateCell[][] {
-        const month: number = this.calendarViewMonth;
-        const year: number = this.calendarViewYear;
+    getDatesInCalendarView(month: number, year: number): DateCell[][] {
+        //const month: number = this.calendarViewMonth;
+        //const year: number = this.calendarViewYear;
 
         const noOfDaysInCurrMonth: number = this.getNumberOfDaysInTheMonth(year, month);
         const noOfDaysInPrevMonth: number = this.getNumberOfDaysInTheMonth(year, month - 1);
@@ -415,7 +415,7 @@ export class DateUtilsService {
             finalCalendarArray.push(tempArr);
         }
 
-        console.log(finalCalendarArray);
+        //console.log(finalCalendarArray);
 
         return finalCalendarArray;
     }

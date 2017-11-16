@@ -10,10 +10,10 @@ import {DOWN_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 import {CalendarDate} from "./model/calendar-date";
 
 
-function yearViewGenerator(currentYear: number) {
+function yearGenerator(year: number) {
     return {
         get(index: number) {
-            return index + currentYear;
+            return index + year - 2;
         }
     };
 }
@@ -46,7 +46,7 @@ export class YearPicker implements AfterViewInit{
         this._dateViewService.focusCell(this._elRef);
     }
 
-    years = yearViewGenerator(this.calendarViewYear);
+    years = yearGenerator(this.calendarViewYear);
 
     set yearView(value: boolean) {
         this._dateViewService.yearView = value;
@@ -68,7 +68,7 @@ export class YearPicker implements AfterViewInit{
         if (keyCode === UP_ARROW) {
             event.preventDefault();
             this._focusedYear--;
-            this.years = yearViewGenerator(this._focusedYear - 1);
+            this.years = yearGenerator(this._focusedYear - 1);
             setTimeout(() => {
                 const focusEl = this._elRef.nativeElement.querySelector('[tabindex="0"]');
                 console.log(focusEl);
@@ -80,7 +80,7 @@ export class YearPicker implements AfterViewInit{
         } else if (keyCode === DOWN_ARROW) {
             event.preventDefault();
             this._focusedYear++;
-            this.years = yearViewGenerator(this._focusedYear - 1);
+            this.years = yearGenerator(this._focusedYear - 1);
             setTimeout(() => {
                 const focusEl = this._elRef.nativeElement.querySelector('[tabindex="0"]');
                 console.log(focusEl);
