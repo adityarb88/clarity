@@ -196,7 +196,18 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         }
     }
 
-    onScroll(event: any) {
-        console.log(event);
+    scrollEnabled: boolean = false;
+
+    scrollUp(): void {
+        /*this.scrollEnabled = true;
+        console.log("Scrolling Up");
+        console.log();
+        this.scrollEnabled = false;*/
+    }
+
+    scrollDown(): void {
+        /*this.scrollEnabled = true;
+        console.log("Scrolling Down");
+        this.scrollEnabled = false;*/
     }
 }

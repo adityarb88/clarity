@@ -15,9 +15,10 @@ import {YearPicker} from "./year-picker";
 import {ClrIconModule} from "../../icon/icon.module";
 import {ClrFocusTrapModule} from "../../utils/focus-trap/focus-trap.module";
 import {ClrVirtualScrollModule} from "../../utils/virtual-scroll/virtual-scroll.module";
+import {ClrSnapScrollModule} from "../../utils/snap-scroll/snap-scroll.module";
 
 @NgModule({
-    imports: [CommonModule, ClrHostWrappingModule, ClrConditionalModule, ClrIconModule, ClrFocusTrapModule, ClrVirtualScrollModule],
+    imports: [CommonModule, ClrHostWrappingModule, ClrConditionalModule, ClrIconModule, ClrFocusTrapModule, ClrVirtualScrollModule, ClrSnapScrollModule],
     declarations: [Datepicker, DatepickerContainer, DatepickerContent, MonthPicker, YearPicker],
     exports: [Datepicker, DatepickerContainer, DatepickerContent, MonthPicker, YearPicker],
     entryComponents: [DatepickerContainer]
