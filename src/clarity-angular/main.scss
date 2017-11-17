@@ -207,5 +207,8 @@
 //Fonts
 @import "./typography/fonts.clarity"; // no dependencies on other clarity scss
 
-// Signposts
+//Signposts
 @import "popover/signpost/signposts.clarity";
+
+//Snap Scroll
+@import "utils/snap-scroll/snap-scroll.clarity";

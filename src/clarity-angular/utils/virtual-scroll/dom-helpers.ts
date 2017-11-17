@@ -35,8 +35,8 @@ export function prependAndPreserveScroll<T>(container: HTMLElement, operation: (
 }
 
 export function appendAndPreserveScroll<T>(container: HTMLElement, operation: () => T): T {
-    const previousScroll = container.scrollTop;
+    //const previousScroll = container.scrollTop;
     const result = operation();
-    container.scrollTop = previousScroll;
+    //container.scrollTop = previousScroll;
     return result;
 }

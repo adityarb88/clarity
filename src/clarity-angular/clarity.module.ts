@@ -19,12 +19,13 @@ import {ClrIfExpandModule} from "./utils/expand/if-expand.module";
 import {ClrFocusTrapModule} from "./utils/focus-trap/focus-trap.module";
 import {ClrLoadingModule} from "./utils/loading/loading.module";
 import {ClrWizardModule} from "./wizard/wizard.module";
+import {ClrSnapScrollModule} from "./utils/snap-scroll/snap-scroll.module";
 
 @NgModule({
     exports: [
         ClrEmphasisModule, ClrDataModule, ClrIconModule, ClrModalModule, ClrLoadingModule, ClrIfExpandModule,
         ClrConditionalModule, ClrFocusTrapModule, ClrButtonModule, ClrCodeModule, ClrFormsModule, ClrLayoutModule,
-        ClrPopoverModule, ClrWizardModule
+        ClrPopoverModule, ClrWizardModule, ClrSnapScrollModule
     ]
 })
 export class ClarityModule {
