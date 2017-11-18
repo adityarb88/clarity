@@ -17,10 +17,7 @@
             </td>
         </tr>
     </table>
-    <div class="datepicker-date-view"
-         [clrSnapScroll]="scrollEnabled"
-         (clrMouseWheelUpChange)="scrollUp()"
-         (clrMouseWheelDownChange)="scrollDown()">
+    <div class="datepicker-date-view">
         <table *clrVirtualFor="let calendarDates of calendars"
             class="datepicker-table"
             (keydown)="onDatepickerTableKeyDown($event)">
