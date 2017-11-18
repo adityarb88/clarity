@@ -134,16 +134,13 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
 
     private generateCalendar(month: number, year: number) {
         const get = (index: number) => {
-            let m: number = month + index;
-            let y: number = year;
-            if (m > 11) {
-                m = 0;
-                y++;
-            } else if (m < 0) {
-                m = 11;
-                y--;
+            const m: number = month + index;
+            const y: number = year + Math.floor(m / 12);
+            let mod: number = m % 12;
+            if (mod < 0) {
+                mod += 12;
             }
-            return this._dateUtilsService.getDatesInCalendarView(m, y);
+            return this._dateUtilsService.getDatesInCalendarView(mod, y);
         };
         return {get};
     }

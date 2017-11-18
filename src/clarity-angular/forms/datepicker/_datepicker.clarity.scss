@@ -59,7 +59,8 @@
         height: 216px;
         max-height: 216px;
         min-height: 216px;
-        overflow: hidden;
+        //overflow: hidden;
+        overflow: auto;
     }
 
     .datepicker-date-view .datepicker-table{
