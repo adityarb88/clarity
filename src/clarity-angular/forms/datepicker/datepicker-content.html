@@ -17,10 +17,13 @@
             </td>
         </tr>
     </table>
-    <div class="datepicker-date-view">
+    <div
+        class="datepicker-date-view"
+        (scroll)="onCalendarScroll($event)"
+        #dateView>
         <table *clrVirtualFor="let calendarDates of calendars"
             class="datepicker-table"
-            (keydown)="onDatepickerTableKeyDown($event)">
+            (keydown)="onDatepickerTableKeyDown()">
             <tr *ngFor="let row of calendarDates" class="datepicker-row">
                 <td *ngFor="let dateCell of row" class="datepicker-cell">
                     <button type="button"
