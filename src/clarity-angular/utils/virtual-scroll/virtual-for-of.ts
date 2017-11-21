@@ -51,6 +51,8 @@ export class VirtualForOf<T> implements AfterViewInit {
     private start = -1;
     private end = 0;
 
+    private cache = {};
+
     /**
      * Removes the first/last item from the view
      * @param {boolean} side: indicates which item to remove, first or last
@@ -61,8 +63,14 @@ export class VirtualForOf<T> implements AfterViewInit {
         this.viewContainer.remove(index);
         if (side === Side.START) {
             this.start++;
+            if (this.start in this.cache) {
+                delete this.cache[this.start];
+            }
         } else {
             this.end--;
+            if (this.end in this.cache) {
+                delete this.cache[this.end];
+            }
         }
         return removed;
     }
@@ -73,6 +81,7 @@ export class VirtualForOf<T> implements AfterViewInit {
      * @returns {boolean}: returns true while there are more items, false when the iterator is done
      */
     private add(side: Side): boolean {
+        console.log("Adding", this.viewContainer.length);
         const index = side === Side.START ? this.start : this.end;
         let added;
         if (isNonNgIterable(this._items)) {
@@ -84,8 +93,10 @@ export class VirtualForOf<T> implements AfterViewInit {
             return false;
         }
         if (side === Side.START) {
+            this.cache[this.start] = added;
             this.start--;
         } else {
+            this.cache[this.end] = added;
             this.end++;
         }
         this.viewContainer.createEmbeddedView(this.template, {$implicit: added}, side === Side.START ? 0 : undefined)
@@ -114,12 +125,14 @@ export class VirtualForOf<T> implements AfterViewInit {
         // We load "one viewport" ahead at the bottom
         while (ratioBottomReady(this.containerEl) < 1) {
             if (!appendAndPreserveScroll(this.containerEl, () => this.add(Side.END))) {
+                console.log("Breaking Add End");
                 break;
             }
         }
         // We load "one viewport" ahead at the top
         while (ratioTopReady(this.containerEl) < 1) {
             if (!prependAndPreserveScroll(this.containerEl, () => this.add(Side.START))) {
+                console.log("Breaking Add Start");
                 break;
             }
         }
@@ -131,6 +144,7 @@ export class VirtualForOf<T> implements AfterViewInit {
         this.scrollListener = this.renderer.listen(this.containerEl, "scroll", (e: any) => {
             this.trim();
             this.fill();
+            console.log(this.cache);
         });
     }
 

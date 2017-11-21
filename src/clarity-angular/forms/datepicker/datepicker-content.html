@@ -24,7 +24,7 @@
         <table *clrVirtualFor="let calendarDates of calendars"
             class="datepicker-table"
             (keydown)="onDatepickerTableKeyDown()">
-            <tr *ngFor="let row of calendarDates" class="datepicker-row">
+            <tr *ngFor="let row of calendarDates.dateRows" class="datepicker-row">
                 <td *ngFor="let dateCell of row" class="datepicker-cell">
                     <button type="button"
                             *ngIf="isCalendarViewMonth(dateCell)"

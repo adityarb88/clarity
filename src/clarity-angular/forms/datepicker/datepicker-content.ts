@@ -12,6 +12,7 @@ import {Point} from "../../popover/common/popover";
 import {CalendarDate} from "./model/calendar-date";
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 import {DatepickerScrollService} from "./providers/datepicker-scroll.service";
+import {NonNgIterable} from "../../utils/virtual-scroll/non-ng-iterable";
 
 @Component({
     selector: "clr-datepicker-content",
@@ -136,12 +137,32 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         }
     }
 
-    private currentCalIndexInView: number = 0;
-
     private generateCalendar(month: number, year: number) {
+        /*
+        const obj: NonNgIterable<any> = {
+            month: 0,
+            year: 0,
+            setMonth: function(m: number) {
+                this.month = m;
+            },
+            setYear: function(y: number) {
+                this.year = y;
+            },
+            get: function(index: number) {
+                const m: number = month + index;
+                const y: number = year + Math.floor(m / 12);
+                let mod: number = m % 12;
+                if (mod < 0) {
+                    mod += 12;
+                }
+                this.setMonth(mod);
+                this.setYear(y);
+                return dateService.getDatesInCalendarView(mod, y);
+            }
+        };
+        */
+        /*
         const get = (index: number) => {
-            console.log("Index", index);
-            this.currentCalIndexInView = index;
             const m: number = month + index;
             const y: number = year + Math.floor(m / 12);
             let mod: number = m % 12;
@@ -150,7 +171,23 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
             }
             return this._dateUtilsService.getDatesInCalendarView(mod, y);
         };
+        */
+        const get = (index: number) => {
+            const m: number = month + index;
+            const y: number = year + Math.floor(m / 12);
+            let mod: number = m % 12;
+            if (mod < 0) {
+                mod += 12;
+            }
+            const dateRows = this._dateUtilsService.getDatesInCalendarView(mod, y);
+            return {
+                month: mod,
+                year: y,
+                dateRows: dateRows
+            };
+        };
         return {get};
+        //return obj;
     }
 
     /**
