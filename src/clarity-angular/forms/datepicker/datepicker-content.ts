@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {AfterViewInit, Component, ElementRef, Injector, SkipSelf} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, Injector, SkipSelf, ViewChild} from "@angular/core";
 import {DateCell} from "./model/date-cell";
 import {DateUtilsService} from "./providers/date-utils.service";
 import {DateViewService} from "./providers/date-view.service";
@@ -11,6 +11,7 @@ import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
 import {CalendarDate} from "./model/calendar-date";
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+import {DatepickerScrollService} from "./providers/datepicker-scroll.service";
 
 @Component({
     selector: "clr-datepicker-content",
@@ -18,9 +19,11 @@ import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-cod
     host: {
         "[class.datepicker-content]": "true",
     },
-    providers: [DateUtilsService, DateViewService]
+    providers: [DateUtilsService, DateViewService, DatepickerScrollService]
 })
 export class DatepickerContent extends AbstractPopover implements AfterViewInit {
+
+    @ViewChild("dateView") dateView: ElementRef;
 
     get monthView(): boolean {
         return this._dateViewService.monthView;
@@ -44,7 +47,8 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
                 private _injector: Injector,
                 private _dateUtilsService: DateUtilsService,
                 private _dateViewService: DateViewService,
-                private _elRef: ElementRef) {
+                private _elRef: ElementRef,
+                private _datepickerScrollService: DatepickerScrollService) {
         super(_injector, parentHost);
         this._dateUtilsService.initializeMonthAndYear();
         this.anchorPoint = Point.BOTTOM_LEFT;
@@ -132,8 +136,12 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         }
     }
 
+    private currentCalIndexInView: number = 0;
+
     private generateCalendar(month: number, year: number) {
         const get = (index: number) => {
+            console.log("Index", index);
+            this.currentCalIndexInView = index;
             const m: number = month + index;
             const y: number = year + Math.floor(m / 12);
             let mod: number = m % 12;
@@ -193,18 +201,7 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         }
     }
 
-    scrollEnabled: boolean = false;
-
-    scrollUp(): void {
-        /*this.scrollEnabled = true;
-        console.log("Scrolling Up");
-        console.log();
-        this.scrollEnabled = false;*/
-    }
-
-    scrollDown(): void {
-        /*this.scrollEnabled = true;
-        console.log("Scrolling Down");
-        this.scrollEnabled = false;*/
+    onCalendarScroll(): void {
+        this._datepickerScrollService.processScrollEvent(this.dateView);
     }
 }

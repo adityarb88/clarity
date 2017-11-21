@@ -64,7 +64,7 @@
     }
 
     .datepicker-date-view .datepicker-table{
-        box-shadow: 1px 1px 1px red;
+        box-shadow: inset 0 0 5px red;
     }
 
     .datepicker-row {
@@ -150,6 +150,8 @@
 
     .yearpicker-content {
         width: 324px;
+        min-height: 288px;
+        max-height: 288px;
         height: 288px;
         padding: 0 36px;
         margin-left: -36px;
