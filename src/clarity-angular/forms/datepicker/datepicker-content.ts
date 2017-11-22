@@ -13,6 +13,8 @@ import {CalendarDate} from "./model/calendar-date";
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 import {DatepickerScrollService} from "./providers/datepicker-scroll.service";
 import {NonNgIterable} from "../../utils/virtual-scroll/non-ng-iterable";
+import {VirtualForOf} from "../../utils/virtual-scroll/virtual-for-of";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
     selector: "clr-datepicker-content",
@@ -44,6 +46,8 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
 
     calendars;
 
+    private _subscriptions: Subscription[] = [];
+
     constructor(@SkipSelf() parentHost: ElementRef,
                 private _injector: Injector,
                 private _dateUtilsService: DateUtilsService,
@@ -56,10 +60,20 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         this.popoverPoint = Point.LEFT_TOP;
         this.closeOnOutsideClick = true;
         this.calendars = this.generateCalendar(this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear);
+        this._subscriptions.push(this._datepickerScrollService.scrollMonth.subscribe((month) => {
+            this._dateUtilsService.calendarViewMonth = month;
+        }));
+        this._subscriptions.push(this._datepickerScrollService.scrollYear.subscribe((year) => {
+            this._dateUtilsService.calendarViewYear = year;
+        }));
     }
 
     ngAfterViewInit() {
         this._dateViewService.focusCell(this._elRef);
+    }
+
+    ngOnDestroy() {
+        this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     }
 
     /*
@@ -238,7 +252,9 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         }
     }
 
+    @ViewChild(VirtualForOf) virtualFor: VirtualForOf<any>;
+
     onCalendarScroll(): void {
-        this._datepickerScrollService.processScrollEvent(this.dateView);
+        this._datepickerScrollService.processScrollEvent(this.dateView, this.virtualFor);
     }
 }

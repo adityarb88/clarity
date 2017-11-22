@@ -5,11 +5,14 @@
  */
 
 import {ElementRef, Injectable} from "@angular/core";
+import {VirtualForOf} from "../../../utils/virtual-scroll/virtual-for-of";
+import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
 
-const WAIT_TIME: number = 300; //ms
+const WAIT_TIME: number = 100; //ms
 const CHILD_HEIGHT: number = 216; //Hardcoded. Should be updated if the height changes.
-const STEP: number = 1; //Amount by which scrollTop should increment/decrement
-const MIN_PROGRESS = 5;
+const STEP: number = 5; //Amount by which scrollTop should increment/decrement
+const MIN_PROGRESS = 10;
 
 @Injectable()
 export class DatepickerScrollService {
@@ -19,7 +22,18 @@ export class DatepickerScrollService {
     private scrollInterval: number;
     private container: HTMLElement;
 
-    processScrollEvent(elRef: ElementRef): void {
+    private _scrollMonth: Subject<number> = new Subject<number>();
+    private _scrollYear: Subject<number> = new Subject<number>();
+
+    get scrollMonth(): Observable<number> {
+        return this._scrollMonth.asObservable();
+    }
+
+    get scrollYear(): Observable<number> {
+        return this._scrollYear.asObservable();
+    }
+
+    processScrollEvent(elRef: ElementRef, virtualFor: VirtualForOf<any>): void {
         this.container = elRef.nativeElement;
         if (this.container) {
             if (this.timeoutId) {
@@ -32,6 +46,14 @@ export class DatepickerScrollService {
                 if (mod !== 0) {
                     this.childToScrollTop = Math.round(q) * CHILD_HEIGHT;
                     this.animateContainer();
+                }
+                const model = virtualFor.sortedViewModel;
+                if (model.length === 3) {
+                    const final: {month, year, dateRows} = model[1];
+                    const finalMonth: number = final.month;
+                    const finalYear: number = final.year;
+                    this._scrollMonth.next(finalMonth);
+                    this._scrollYear.next(finalYear);
                 }
             }, WAIT_TIME);
         }
@@ -73,8 +95,7 @@ export class DatepickerScrollService {
                         ? (this.childToScrollTop - scrollTop)
                         : (scrollTop - this.childToScrollTop)
                 );
-            console.log("Progress", progress);
-            if (!(progress >= MIN_PROGRESS)) {
+            if ((progress >= MIN_PROGRESS)) {
                 if (this.container.scrollTop < this.childToScrollTop) {
                     this.container.scrollTop = this.container.scrollTop + STEP;
                 } else {
