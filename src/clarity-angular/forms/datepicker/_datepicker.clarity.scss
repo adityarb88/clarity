@@ -118,10 +118,7 @@
         margin: 0;
         border-radius: $clr-default-borderradius;
         cursor: pointer;
-
-        &.is-not-current {
-            opacity: 0.25;
-        }
+        opacity: 0.25;
 
         &.is-today {
             color: $clr-black;
@@ -132,6 +129,16 @@
         &.active:focus {
             background: $action-blues-light-midtone;
             color: $clr-white;
+        }
+    }
+
+    .datepicker-table.is-visible {
+        .date {
+            opacity: 1;
+
+            &.is-not-current {
+                opacity: 0.25;
+            }
         }
     }
 

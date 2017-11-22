@@ -252,6 +252,11 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         }
     }
 
+    isTableInView(month: number, year: number): boolean {
+        return (month === this._dateUtilsService.calendarViewMonth)
+            && (year === this._dateUtilsService.calendarViewYear);
+    }
+
     @ViewChild(VirtualForOf) virtualFor: VirtualForOf<any>;
 
     onCalendarScroll(): void {
