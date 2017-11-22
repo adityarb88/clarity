@@ -51,7 +51,20 @@ export class VirtualForOf<T> implements AfterViewInit {
     private start = -1;
     private end = 0;
 
-    private cache = {};
+    private viewModelCache = {};
+
+    get sortedViewModel(): Array<any> {
+        const temp = [];
+        const keys: string[] = Object.keys(this.viewModelCache);
+        keys.sort((a, b) => {
+            return (parseInt(a, 10) - parseInt(b, 10));
+        });
+        keys.forEach(key => {
+            const val = this.viewModelCache[key];
+            temp.push(val);
+        });
+        return temp;
+    }
 
     /**
      * Removes the first/last item from the view
@@ -63,13 +76,13 @@ export class VirtualForOf<T> implements AfterViewInit {
         this.viewContainer.remove(index);
         if (side === Side.START) {
             this.start++;
-            if (this.start in this.cache) {
-                delete this.cache[this.start];
+            if (this.start in this.viewModelCache) {
+                delete this.viewModelCache[this.start];
             }
         } else {
             this.end--;
-            if (this.end in this.cache) {
-                delete this.cache[this.end];
+            if (this.end in this.viewModelCache) {
+                delete this.viewModelCache[this.end];
             }
         }
         return removed;
@@ -93,10 +106,10 @@ export class VirtualForOf<T> implements AfterViewInit {
             return false;
         }
         if (side === Side.START) {
-            this.cache[this.start] = added;
+            this.viewModelCache[this.start] = added;
             this.start--;
         } else {
-            this.cache[this.end] = added;
+            this.viewModelCache[this.end] = added;
             this.end++;
         }
         this.viewContainer.createEmbeddedView(this.template, {$implicit: added}, side === Side.START ? 0 : undefined)
@@ -144,7 +157,8 @@ export class VirtualForOf<T> implements AfterViewInit {
         this.scrollListener = this.renderer.listen(this.containerEl, "scroll", (e: any) => {
             this.trim();
             this.fill();
-            console.log(this.cache);
+            //console.log(this.viewModelCache);
+            //console.log("In Virtual Scroll", this.sortedViewModel);
         });
     }
 
