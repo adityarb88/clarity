@@ -53,6 +53,7 @@ export class MonthPicker implements AfterViewInit {
     setMonth(month: string): void {
         const calViewMonthIndex: number = this.months.indexOf(month);
         this._dateUtilsService.calendarViewMonth = calViewMonthIndex;
+        this._dateUtilsService.updateCalendar();
         this.monthView = false;
     }
 

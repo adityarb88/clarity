@@ -13,6 +13,8 @@ import {
 } from "@angular/common";
 import {formatUserDate} from "../utils/format_date";
 import {formatDate} from "../utils/formatDate";
+import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
 
 const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
 const NO_OF_DAYS_IN_A_WEEK: number = 7;
@@ -169,7 +171,7 @@ export class DateUtilsService {
     set calendarViewMonth(value: number) {
         if (value !== this.calendarViewMonth) {
             this._calendarViewMonth = value;
-            this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
+            //this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
         }
     }
 
@@ -185,7 +187,7 @@ export class DateUtilsService {
     set calendarViewYear(value: number) {
         if (value !== this.calendarViewYear) {
             this._calendarViewYear = value;
-            this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
+            //this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
         }
     }
 
@@ -419,5 +421,33 @@ export class DateUtilsService {
         //console.log(finalCalendarArray);
 
         return finalCalendarArray;
+    }
+
+    private _changeCalendar: Subject<void> = new Subject<void>();
+
+    updateCalendar(): void {
+        this._changeCalendar.next();
+    }
+
+    get calendarChange(): Observable<void> {
+        return this._changeCalendar.asObservable();
+    }
+
+    generateCalendar(month: number, year: number) {
+        const get = (index: number) => {
+            const m: number = month + index;
+            const y: number = year + Math.floor(m / 12);
+            let mod: number = m % 12;
+            if (mod < 0) {
+                mod += 12;
+            }
+            const dateRows = this.getDatesInCalendarView(mod, y);
+            return {
+                month: mod,
+                year: y,
+                dateRows: dateRows
+            };
+        };
+        return {get};
     }
 }

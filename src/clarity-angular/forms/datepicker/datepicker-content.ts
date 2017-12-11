@@ -56,15 +56,32 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
                 private _datepickerScrollService: DatepickerScrollService) {
         super(_injector, parentHost);
         this._dateUtilsService.initializeMonthAndYear();
+        this.configurePopover();
+        this.initializeCalendar();
+        this.initializeSubscriptions();
+    }
+
+    private configurePopover(): void {
         this.anchorPoint = Point.BOTTOM_LEFT;
         this.popoverPoint = Point.LEFT_TOP;
         this.closeOnOutsideClick = true;
-        this.calendars = this.generateCalendar(this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear);
+    }
+
+    private initializeCalendar(): void {
+        this.calendars
+            = this._dateUtilsService.generateCalendar(
+                this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear);
+    }
+
+    private initializeSubscriptions(): void {
         this._subscriptions.push(this._datepickerScrollService.scrollMonth.subscribe((month) => {
             this._dateUtilsService.calendarViewMonth = month;
         }));
         this._subscriptions.push(this._datepickerScrollService.scrollYear.subscribe((year) => {
             this._dateUtilsService.calendarViewYear = year;
+        }));
+        this._subscriptions.push(this._dateUtilsService.calendarChange.subscribe( () => {
+            this.initializeCalendar();
         }));
     }
 
@@ -74,18 +91,6 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
 
     ngOnDestroy() {
         this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
-    }
-
-    /*
-    get calendarDates(): DateCell[][] {
-        return this._dateUtilsService.currentCalendarViewDates;
-    }
-    */
-
-    ngOnInit() {
-        console.log(this.calendars);
-        //this._dateUtilsService.currentCalendarViewDates = this._dateUtilsService.initializeCalendarViewData();
-        //this.calendars = this.generateCalendar(this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear);
     }
 
     get daysShort(): ReadonlyArray<string> {
@@ -151,59 +156,6 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         }
     }
 
-    private generateCalendar(month: number, year: number) {
-        /*
-        const obj: NonNgIterable<any> = {
-            month: 0,
-            year: 0,
-            setMonth: function(m: number) {
-                this.month = m;
-            },
-            setYear: function(y: number) {
-                this.year = y;
-            },
-            get: function(index: number) {
-                const m: number = month + index;
-                const y: number = year + Math.floor(m / 12);
-                let mod: number = m % 12;
-                if (mod < 0) {
-                    mod += 12;
-                }
-                this.setMonth(mod);
-                this.setYear(y);
-                return dateService.getDatesInCalendarView(mod, y);
-            }
-        };
-        */
-        /*
-        const get = (index: number) => {
-            const m: number = month + index;
-            const y: number = year + Math.floor(m / 12);
-            let mod: number = m % 12;
-            if (mod < 0) {
-                mod += 12;
-            }
-            return this._dateUtilsService.getDatesInCalendarView(mod, y);
-        };
-        */
-        const get = (index: number) => {
-            const m: number = month + index;
-            const y: number = year + Math.floor(m / 12);
-            let mod: number = m % 12;
-            if (mod < 0) {
-                mod += 12;
-            }
-            const dateRows = this._dateUtilsService.getDatesInCalendarView(mod, y);
-            return {
-                month: mod,
-                year: y,
-                dateRows: dateRows
-            };
-        };
-        return {get};
-        //return obj;
-    }
-
     /**
      * Gets the tab index of the date cell. Only returns 0 or -1.
      * Used to determine which button to focus on when the user is navigating
@@ -253,6 +205,8 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
     }
 
     isTableInView(month: number, year: number): boolean {
+        //console.log(month, this._dateUtilsService.calendarViewMonth);
+        //console.log(year, this._dateUtilsService.calendarViewYear);
         return (month === this._dateUtilsService.calendarViewMonth)
             && (year === this._dateUtilsService.calendarViewYear);
     }
