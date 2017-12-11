@@ -15,6 +15,7 @@ import {DatepickerScrollService} from "./providers/datepicker-scroll.service";
 import {NonNgIterable} from "../../utils/virtual-scroll/non-ng-iterable";
 import {VirtualForOf} from "../../utils/virtual-scroll/virtual-for-of";
 import {Subscription} from "rxjs/Subscription";
+import {DateInputService} from "./providers/date-input.service";
 
 @Component({
     selector: "clr-datepicker-content",
@@ -22,7 +23,7 @@ import {Subscription} from "rxjs/Subscription";
     host: {
         "[class.datepicker-content]": "true",
     },
-    providers: [DateUtilsService, DateViewService, DatepickerScrollService]
+    providers: [DateUtilsService, DateViewService, DatepickerScrollService, DateInputService]
 })
 export class DatepickerContent extends AbstractPopover implements AfterViewInit {
 
@@ -50,10 +51,11 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
 
     constructor(@SkipSelf() parentHost: ElementRef,
                 private _injector: Injector,
+                private _elRef: ElementRef,
                 private _dateUtilsService: DateUtilsService,
                 private _dateViewService: DateViewService,
-                private _elRef: ElementRef,
-                private _datepickerScrollService: DatepickerScrollService) {
+                private _datepickerScrollService: DatepickerScrollService,
+                private _dateInputService: DateInputService) {
         super(_injector, parentHost);
         this._dateUtilsService.initializeMonthAndYear();
         this.configurePopover();
