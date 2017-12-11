@@ -58,6 +58,7 @@ export class YearPicker implements AfterViewInit{
     }
 
     setYear(year: number): void {
+        this._focusedYear = year;
         this._dateUtilsService.calendarViewYear = year;
         this._dateUtilsService.updateCalendar();
         this.yearView = false;
@@ -96,11 +97,12 @@ export class YearPicker implements AfterViewInit{
     private _focusedYear: number;
 
     private initializeFocusYear(): void {
+        this._focusedYear = this._dateUtilsService.calendarViewYear;
+        /*
         const dUService: DateUtilsService = this._dateUtilsService;
         const focusedDate: CalendarDate = dUService.focusedDate;
         const selDate: CalendarDate = dUService.selectedDate;
         const calViewYear: number = dUService.calendarViewYear;
-
         if (focusedDate) {
             this._focusedYear = focusedDate.year;
         } else if (selDate) {
@@ -108,6 +110,7 @@ export class YearPicker implements AfterViewInit{
         } else {
             this._focusedYear = calViewYear;
         }
+        */
     }
 
     getTabIndex(year: number): number {
