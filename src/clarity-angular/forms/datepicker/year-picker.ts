@@ -59,6 +59,7 @@ export class YearPicker implements AfterViewInit{
 
     setYear(year: number): void {
         this._dateUtilsService.calendarViewYear = year;
+        this._dateUtilsService.updateCalendar();
         this.yearView = false;
     }
 
