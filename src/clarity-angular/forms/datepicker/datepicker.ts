@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {
-    ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, HostBinding,
+    ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, HostBinding, HostListener,
     Optional,
     ViewContainerRef
 } from "@angular/core";
@@ -12,6 +12,7 @@ import {DatepickerContainer} from "./datepicker-container";
 import {EmptyAnchor} from "../../utils/host-wrapping/empty-anchor";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {DatepickerActiveService} from "./providers/datepicker-active.service";
+import {DateInputService} from "./providers/date-input.service";
 
 @Directive({
     selector: "[clrDatepicker]",
@@ -24,6 +25,7 @@ export class Datepicker {
     //Not injected because the container is created after this directive is detected.
     private _ifOpenService: IfOpenService;
     private _isActiveService: DatepickerActiveService;
+    private _dateInputService: DateInputService;
 
     constructor(@Optional() private container: DatepickerContainer,
                 private vcr: ViewContainerRef,
@@ -39,11 +41,17 @@ export class Datepicker {
             this.vcr.remove(0);
             this._ifOpenService = componentRef.injector.get(IfOpenService);
             this._isActiveService = componentRef.injector.get(DatepickerActiveService);
+            this._dateInputService = componentRef.injector.get(DateInputService);
         }
     }
 
     @HostBinding("attr.type")
     get isActive(): string {
         return this._isActiveService.active ? "text" : "date";
+    }
+
+    @HostListener("input")
+    onValueChange() {
+        this._dateInputService = this.el.nativeElement.value;
     }
 }

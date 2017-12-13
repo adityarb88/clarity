@@ -11,8 +11,10 @@ import {
     FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames,
     TranslationWidth, WeekDay
 } from "@angular/common";
+/*
 import {formatUserDate} from "../utils/format_date";
 import {formatDate} from "../utils/formatDate";
+*/
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 
@@ -23,13 +25,15 @@ const NO_OF_DAYS_IN_A_WEEK: number = 7;
 export class DateUtilsService {
 
     constructor(@Inject(LOCALE_ID) public locale: string) {
-        console.log(this.locale);
+        //console.log(this.locale);
         this.initializeLocaleDaysShort();
-        console.log(getLocaleDateFormat(this.locale, FormatWidth.Short));
+        //console.log(getLocaleDateFormat(this.locale, FormatWidth.Short));
+        /*
         console.log(formatUserDate(new Date(1900, 11, 24), this.locale));
         console.log(formatDate(new Date(2000, 11, 24), "shortDate", this.locale));
         console.log(new Date(Date.parse(formatDate(new Date(2000, 11, 24), "shortDate", this.locale))));
         console.log(new Date(Date.parse(formatUserDate(new Date(1900, 11, 24), this.locale))));
+        */
     }
 
     //Today's Date
@@ -82,8 +86,10 @@ export class DateUtilsService {
      * @returns {number}
      */
     getNumberOfDaysInTheMonth(year: number, month: number): number {
-        // +1 because date starts at 1 and 0 means the previous months last date.
-        return (new Date(year, month + 1, 0)).getDate();
+        //month + 1 because we want to go to the next month
+        //date 0 because date is 1 based and 0 means we are getting the last date of the previous month.
+        //confusing but works
+        return (new Date(year,  month + 1, 0)).getDate();
     }
 
     /**

@@ -23,7 +23,7 @@ import {DateInputService} from "./providers/date-input.service";
     host: {
         "[class.datepicker-content]": "true",
     },
-    providers: [DateUtilsService, DateViewService, DatepickerScrollService, DateInputService]
+    providers: [DateUtilsService, DateViewService, DatepickerScrollService]
 })
 export class DatepickerContent extends AbstractPopover implements AfterViewInit {
 
