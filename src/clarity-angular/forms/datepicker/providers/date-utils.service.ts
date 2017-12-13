@@ -17,6 +17,7 @@ import {formatDate} from "../utils/formatDate";
 */
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
+import {getDay, getNumberOfDaysInTheMonth} from "../utils/date-utils";
 
 const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
 const NO_OF_DAYS_IN_A_WEEK: number = 7;
@@ -79,12 +80,7 @@ export class DateUtilsService {
         return getLocaleFirstDayOfWeek(this.locale);
     }
 
-    /**
-     * Returns the number of days in a month. 28, 29, 30 or 31
-     * @param {number} year
-     * @param {number} month
-     * @returns {number}
-     */
+    /*
     getNumberOfDaysInTheMonth(year: number, month: number): number {
         //month + 1 because we want to go to the next month
         //date 0 because date is 1 based and 0 means we are getting the last date of the previous month.
@@ -92,16 +88,10 @@ export class DateUtilsService {
         return (new Date(year,  month + 1, 0)).getDate();
     }
 
-    /**
-     * Returns the day for the corresponding date where 0 represents Sunday.
-     * @param {number} year
-     * @param {number} month
-     * @param {number} date
-     * @returns {number}
-     */
     getDay(year: number, month: number, date: number): WeekDay {
         return (new Date(year, month, date)).getDay();
     }
+    */
 
     /**
      * Returns the string value of the month
@@ -330,7 +320,7 @@ export class DateUtilsService {
     }
 
     private carryOverFromPreviousMonth(month: number, year: number): WeekDay {
-        const firstDayOfCurrMonth: number = this.getDay(year, month, 1);
+        const firstDayOfCurrMonth: number = getDay(year, month, 1);
         const firstDayOfTheWeek: number = this.getFirstDayOfTheWeek();
 
         if (firstDayOfCurrMonth >= firstDayOfTheWeek) {
@@ -349,8 +339,8 @@ export class DateUtilsService {
         //const month: number = this.calendarViewMonth;
         //const year: number = this.calendarViewYear;
 
-        const noOfDaysInCurrMonth: number = this.getNumberOfDaysInTheMonth(year, month);
-        const noOfDaysInPrevMonth: number = this.getNumberOfDaysInTheMonth(year, month - 1);
+        const noOfDaysInCurrMonth: number = getNumberOfDaysInTheMonth(year, month);
+        const noOfDaysInPrevMonth: number = getNumberOfDaysInTheMonth(year, month - 1);
 
         // Gets the first day of the current month to figure out how many dates of previous month
         // are needed to complete the Calendar View. For eg: Assuming the first day of the week is Sunday,

@@ -11,6 +11,7 @@ import {
     MIDDLE_ENDIAN_REGEX,
     SEPARATORS
 } from "../utils/constants";
+import {getNumberOfDaysInTheMonth} from "../utils/date-utils";
 
 @Injectable()
 export class DateInputService {
@@ -43,6 +44,7 @@ export class DateInputService {
             //everything else is set to BIG-ENDIAN FORMAT
             this.localeDisplayFormat = BIG_ENDIAN;
         }
+        //console.log(this.localeDisplayFormat);
     }
 
     private detectSeparator(date: string): string {
@@ -65,17 +67,43 @@ export class DateInputService {
         const separator: string = this.detectSeparator(date);
         if (separator) {
             const dateParts: string[] = date.split(separator);
-            if (this.localeDisplayFormat === LITTLE_ENDIAN) {
-
-            } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
-
-            } else {
-
+            if (dateParts.length === 3 && this.areDatePartsNumbers(dateParts)) {
+                const firstPart: number = +dateParts[0];
+                const secondPart: number = +dateParts[1];
+                const thirdPart: number = +dateParts[2];
+                if (this.localeDisplayFormat === LITTLE_ENDIAN) {
+                    if (this.isValidMonth(secondPart) && this.isValidDate(thirdPart, secondPart, firstPart)) {
+                        return true;
+                    }
+                } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
+                    if (this.isValidMonth(firstPart) && this.isValidDate(thirdPart, firstPart, secondPart)) {
+                        return true;
+                    }
+                } else {
+                    if (this.isValidMonth(secondPart) && this.isValidDate(firstPart, secondPart, firstPart)) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
     }
 
+    private areDatePartsNumbers(dateParts: string[]): boolean {
+        for (const part of dateParts) {
+            if (this.isNonNegativeNumber(part)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the month entered by the user is valid or not.
+     * Note: User would enter the date in 1 based format unlike what the javascript date object accepts
+     * @param {number} month
+     * @returns {boolean}
+     */
     isValidMonth(month: number): boolean {
         if (month > 0 && month < 13) {
             return true;
@@ -84,7 +112,13 @@ export class DateInputService {
     }
 
     isValidDate(year: number, month: number, date: number): boolean {
-
+        if (date > 0 && date < getNumberOfDaysInTheMonth(year, month)) {
+            return true;
+        }
         return false;
+    }
+
+    isNonNegativeNumber(num: string): boolean {
+        return /^\+?(0|[1-9]\d*)$/.test(num);
     }
 }
