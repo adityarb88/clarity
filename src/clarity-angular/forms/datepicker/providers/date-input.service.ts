@@ -5,36 +5,86 @@
  */
 import {Inject, Injectable, LOCALE_ID} from "@angular/core";
 import {FormatWidth, getLocaleDateFormat} from "@angular/common";
-
-//This is the en-001 short locale date format. Setting as default.
-const DEFAULT_LOCALE_FORMAT: string = "dd/MM/y";
-const SEPARATORS: string[] = ["/", "-"];
-const LITTLE_ENDIAN_FORMAT = /d+.m+.y+/;
-const MIDDLE_ENDIAN_FORMAT = /m+.d+.y+/;
-//const BIG_ENDIAN_FORMAT = /y+.m+.d+/;
+import {
+    BIG_ENDIAN,
+    DEFAULT_LOCALE_FORMAT, InputDateDisplayFormat, LITTLE_ENDIAN, LITTLE_ENDIAN_REGEX, MIDDLE_ENDIAN,
+    MIDDLE_ENDIAN_REGEX,
+    SEPARATORS
+} from "../utils/constants";
 
 @Injectable()
 export class DateInputService {
-    public localeDateFormat: string = DEFAULT_LOCALE_FORMAT;
-    private localeDisplayFormat: string = "yyyy/mm/dd";
+    public cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
+
+    private localeDisplayFormat: InputDateDisplayFormat = BIG_ENDIAN;
+
+    public inputDate: string;
 
     constructor(@Inject(LOCALE_ID) public locale: string) {
         //this.locale = "fr-BE";
-        this.localeDateFormat = getLocaleDateFormat(this.locale, FormatWidth.Short);
-        console.log(this.localeDateFormat);
-        this.processLocaleFormat(this.localeDateFormat);
+        this.cldrLocaleDateFormat = getLocaleDateFormat(this.locale, FormatWidth.Short);
+        //console.log(this.cldrLocaleDateFormat);
+        this.processLocaleFormat(this.cldrLocaleDateFormat);
     }
 
+    /**
+     * Process the locale format provided by CLDR to order the basic date components.
+     * The order results in either of these 3 formats: MIDDLE_ENDIAN, LITTLE_ENDIAN, or BIG_ENDIAN
+     * More info here: https://en.wikipedia.org/wiki/Date_format_by_country
+     * @param {string} format
+     */
     processLocaleFormat(format: string): void {
         format = format.toLocaleLowerCase();
-        if (LITTLE_ENDIAN_FORMAT.test(format)) {
-            this.localeDisplayFormat = "dd/mm/yyyy";
-        } else if (MIDDLE_ENDIAN_FORMAT.test(format)) {
-            this.localeDisplayFormat = "mm/dd/yyyy";
+        if (LITTLE_ENDIAN_REGEX.test(format)) {
+            this.localeDisplayFormat = LITTLE_ENDIAN;
+        } else if (MIDDLE_ENDIAN_REGEX.test(format)) {
+            this.localeDisplayFormat = MIDDLE_ENDIAN;
         } else {
-            //BIG-ENDIAN FORMAT
-            this.localeDisplayFormat = "yyyy/mm/dd";
+            //everything else is set to BIG-ENDIAN FORMAT
+            this.localeDisplayFormat = BIG_ENDIAN;
         }
-        console.log(this.localeDisplayFormat);
+    }
+
+    private detectSeparator(date: string): string {
+        let isSeparatorPresent: boolean = false;
+        let separatorUsed: string;
+        for (const separator of SEPARATORS) {
+            if (date.indexOf(separator) > -1) {
+                isSeparatorPresent = true;
+                separatorUsed = separator;
+                break;
+            }
+        }
+        if (isSeparatorPresent) {
+            return separatorUsed;
+        }
+        return null;
+    }
+
+    isValidInput(date: string): boolean {
+        const separator: string = this.detectSeparator(date);
+        if (separator) {
+            const dateParts: string[] = date.split(separator);
+            if (this.localeDisplayFormat === LITTLE_ENDIAN) {
+
+            } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
+
+            } else {
+
+            }
+        }
+        return false;
+    }
+
+    isValidMonth(month: number): boolean {
+        if (month > 0 && month < 13) {
+            return true;
+        }
+        return false;
+    }
+
+    isValidDate(year: number, month: number, date: number): boolean {
+
+        return false;
     }
 }

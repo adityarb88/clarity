@@ -52,6 +52,7 @@ export class MonthPicker implements AfterViewInit {
 
     setMonth(month: string): void {
         const calViewMonthIndex: number = this.months.indexOf(month);
+        this._focusedMonth = calViewMonthIndex;
         this._dateUtilsService.calendarViewMonth = calViewMonthIndex;
         this._dateUtilsService.updateCalendar();
         this.monthView = false;
@@ -78,6 +79,8 @@ export class MonthPicker implements AfterViewInit {
     }
 
     private initializeFocusedMonth(): void {
+        this._focusedMonth = this._dateUtilsService.calendarViewMonth;
+        /*
         const dUService: DateUtilsService = this._dateUtilsService;
         const focusedDate: CalendarDate = dUService.focusedDate;
         const selDate: CalendarDate = dUService.selectedDate;
@@ -90,6 +93,7 @@ export class MonthPicker implements AfterViewInit {
         } else {
             this._focusedMonth = calViewMonth;
         }
+        */
     }
 
     getTabIndex(month: string): number {

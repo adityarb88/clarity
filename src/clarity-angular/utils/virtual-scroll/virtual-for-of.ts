@@ -94,7 +94,7 @@ export class VirtualForOf<T> implements AfterViewInit {
      * @returns {boolean}: returns true while there are more items, false when the iterator is done
      */
     private add(side: Side): boolean {
-        console.log("Adding", this.viewContainer.length);
+        //console.log("Adding", this.viewContainer.length);
         const index = side === Side.START ? this.start : this.end;
         let added;
         if (isNonNgIterable(this._items)) {
