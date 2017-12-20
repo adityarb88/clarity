@@ -50,8 +50,14 @@ export class Datepicker {
         return this._isActiveService.active ? "text" : "date";
     }
 
+    @HostBinding("attr.placeholder")
+    get placeholderText(): string {
+        return this._dateInputService.placeholderText;
+    }
+
     @HostListener("input")
     onValueChange() {
-        this._dateInputService = this.el.nativeElement.value;
+        this._dateInputService = this.el.nativeElement.value; //Is there a better way to retrieve this?
+        //console.log(this._dateInputService);
     }
 }

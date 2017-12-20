@@ -19,18 +19,23 @@ export class DateInputService {
 
     private localeDisplayFormat: InputDateDisplayFormat = BIG_ENDIAN;
 
+    get placeholderText(): string {
+        return this.localeDisplayFormat.format;
+    }
+
     public inputDate: string;
 
     constructor(@Inject(LOCALE_ID) public locale: string) {
         //this.locale = "fr-BE";
         this.cldrLocaleDateFormat = getLocaleDateFormat(this.locale, FormatWidth.Short);
-        //console.log(this.cldrLocaleDateFormat);
+        console.log(this.cldrLocaleDateFormat);
         this.processLocaleFormat(this.cldrLocaleDateFormat);
     }
 
     /**
      * Process the locale format provided by CLDR to order the basic date components.
-     * The order results in either of these 3 formats: MIDDLE_ENDIAN, LITTLE_ENDIAN, or BIG_ENDIAN
+     * The order of the date parts results in either of these 3 formats:
+     * MIDDLE_ENDIAN, LITTLE_ENDIAN, or BIG_ENDIAN
      * More info here: https://en.wikipedia.org/wiki/Date_format_by_country
      * @param {string} format
      */
@@ -44,7 +49,17 @@ export class DateInputService {
             //everything else is set to BIG-ENDIAN FORMAT
             this.localeDisplayFormat = BIG_ENDIAN;
         }
-        //console.log(this.localeDisplayFormat);
+        console.log(this.localeDisplayFormat);
+        /*
+        console.log(this.isValidInput("02/29/2017"));
+        console.log(this.isValidInput("02/28/2017"));
+        console.log(this.isValidInput("03/30/2017"));
+        console.log(this.isValidInput("03/31/2017"));
+        console.log(this.isValidInput("03/32/2017"));
+        console.log(this.isValidInput("04/1/2017"));
+        console.log(this.isValidInput("04/30/2017"));
+        console.log(this.isValidInput("04/31/2017"));
+        */
     }
 
     private detectSeparator(date: string): string {
@@ -63,32 +78,46 @@ export class DateInputService {
         return null;
     }
 
-    isValidInput(date: string): boolean {
+    /**
+     * Checks if the input provided by the user is valid.
+     * @param {string} date
+     * @returns {boolean}
+     */
+    isValidInput(date: string): Date {
         const separator: string = this.detectSeparator(date);
         if (separator) {
             const dateParts: string[] = date.split(separator);
             if (dateParts.length === 3 && this.areDatePartsNumbers(dateParts)) {
-                const firstPart: number = +dateParts[0];
-                const secondPart: number = +dateParts[1];
+                let firstPart: number = +dateParts[0];
+                let secondPart: number = +dateParts[1];
                 const thirdPart: number = +dateParts[2];
                 if (this.localeDisplayFormat === LITTLE_ENDIAN) {
+                    secondPart--; //Convert month to 0 based.
                     if (this.isValidMonth(secondPart) && this.isValidDate(thirdPart, secondPart, firstPart)) {
-                        return true;
+                        return new Date(thirdPart, secondPart, firstPart);
                     }
                 } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
+                    firstPart--; //Convert month to 0 based.
                     if (this.isValidMonth(firstPart) && this.isValidDate(thirdPart, firstPart, secondPart)) {
-                        return true;
+                        return new Date(thirdPart, firstPart, secondPart);
                     }
                 } else {
-                    if (this.isValidMonth(secondPart) && this.isValidDate(firstPart, secondPart, firstPart)) {
-                        return true;
+                    secondPart--; //Convert month to 0 based.
+                    if (this.isValidMonth(secondPart) && this.isValidDate(firstPart, secondPart, thirdPart)) {
+                        return new Date(firstPart, secondPart, thirdPart);
                     }
                 }
             }
         }
-        return false;
+        return null;
     }
 
+    /**
+     * Breaks the date input provided by the user using the allowed separators and checks if the parts
+     * are numbers.
+     * @param {string[]} dateParts
+     * @returns {boolean}
+     */
     private areDatePartsNumbers(dateParts: string[]): boolean {
         for (const part of dateParts) {
             if (this.isNonNegativeNumber(part)) {
@@ -100,24 +129,36 @@ export class DateInputService {
 
     /**
      * Checks if the month entered by the user is valid or not.
-     * Note: User would enter the date in 1 based format unlike what the javascript date object accepts
+     * Note: Month is 0 based.
      * @param {number} month
      * @returns {boolean}
      */
     isValidMonth(month: number): boolean {
-        if (month > 0 && month < 13) {
+        if (month > -1 && month < 12) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Checks if the date is valid depending on the year and month provided.
+     * @param {number} year
+     * @param {number} month
+     * @param {number} date
+     * @returns {boolean}
+     */
     isValidDate(year: number, month: number, date: number): boolean {
-        if (date > 0 && date < getNumberOfDaysInTheMonth(year, month)) {
+        if (date > 0 && date <= getNumberOfDaysInTheMonth(year, month)) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Checks if the string is a non negative number.
+     * @param {string} num
+     * @returns {boolean}
+     */
     isNonNegativeNumber(num: string): boolean {
         return /^\+?(0|[1-9]\d*)$/.test(num);
     }
