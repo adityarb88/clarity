@@ -19,6 +19,16 @@ export class DateInputService {
 
     private localeDisplayFormat: InputDateDisplayFormat = BIG_ENDIAN;
 
+    toLocaleDisplayFormatString(date: Date): string {
+        if (this.localeDisplayFormat === LITTLE_ENDIAN) {
+            return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+        } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
+            return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+        } else {
+            return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+        }
+    }
+
     get placeholderText(): string {
         return this.localeDisplayFormat.format;
     }
@@ -78,33 +88,39 @@ export class DateInputService {
         return null;
     }
 
+    processInput(): Date {
+        return this.isValidInput(this.inputDate);
+    }
+
     /**
      * Checks if the input provided by the user is valid.
      * @param {string} date
      * @returns {boolean}
      */
     isValidInput(date: string): Date {
-        const separator: string = this.detectSeparator(date);
-        if (separator) {
-            const dateParts: string[] = date.split(separator);
-            if (dateParts.length === 3 && this.areDatePartsNumbers(dateParts)) {
-                let firstPart: number = +dateParts[0];
-                let secondPart: number = +dateParts[1];
-                const thirdPart: number = +dateParts[2];
-                if (this.localeDisplayFormat === LITTLE_ENDIAN) {
-                    secondPart--; //Convert month to 0 based.
-                    if (this.isValidMonth(secondPart) && this.isValidDate(thirdPart, secondPart, firstPart)) {
-                        return new Date(thirdPart, secondPart, firstPart);
-                    }
-                } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
-                    firstPart--; //Convert month to 0 based.
-                    if (this.isValidMonth(firstPart) && this.isValidDate(thirdPart, firstPart, secondPart)) {
-                        return new Date(thirdPart, firstPart, secondPart);
-                    }
-                } else {
-                    secondPart--; //Convert month to 0 based.
-                    if (this.isValidMonth(secondPart) && this.isValidDate(firstPart, secondPart, thirdPart)) {
-                        return new Date(firstPart, secondPart, thirdPart);
+        if (date) {
+            const separator: string = this.detectSeparator(date);
+            if (separator) {
+                const dateParts: string[] = date.split(separator);
+                if (dateParts.length === 3 && this.areDatePartsNumbers(dateParts)) {
+                    let firstPart: number = +dateParts[0];
+                    let secondPart: number = +dateParts[1];
+                    const thirdPart: number = +dateParts[2];
+                    if (this.localeDisplayFormat === LITTLE_ENDIAN) {
+                        secondPart--; //Convert month to 0 based.
+                        if (this.isValidMonth(secondPart) && this.isValidDate(thirdPart, secondPart, firstPart)) {
+                            return new Date(thirdPart, secondPart, firstPart);
+                        }
+                    } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
+                        firstPart--; //Convert month to 0 based.
+                        if (this.isValidMonth(firstPart) && this.isValidDate(thirdPart, firstPart, secondPart)) {
+                            return new Date(thirdPart, firstPart, secondPart);
+                        }
+                    } else {
+                        secondPart--; //Convert month to 0 based.
+                        if (this.isValidMonth(secondPart) && this.isValidDate(firstPart, secondPart, thirdPart)) {
+                            return new Date(firstPart, secondPart, thirdPart);
+                        }
                     }
                 }
             }

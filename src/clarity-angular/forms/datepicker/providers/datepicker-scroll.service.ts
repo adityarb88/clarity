@@ -19,7 +19,6 @@ export class DatepickerScrollService {
 
     private childToScrollTop: number;
     private timeoutId: number;
-    private scrollInterval: number;
     private container: HTMLElement;
 
     private _scrollMonth: Subject<number> = new Subject<number>();
