@@ -7,6 +7,7 @@ import {Component} from "@angular/core";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {DatepickerActiveService} from "./providers/datepicker-active.service";
 import {DateInputService} from "./providers/date-input.service";
+import {DateUtilsService} from "./providers/date-utils.service";
 
 @Component({
     selector: "clr-datepicker-container",
@@ -20,7 +21,7 @@ import {DateInputService} from "./providers/date-input.service";
         <clr-datepicker-content *clrIfOpen clrFocusTrap></clr-datepicker-content>
         <!--clr-datepicker-content *clrIfOpen></clr-datepicker-content-->
     `,
-    providers: [IfOpenService, DatepickerActiveService, DateInputService]
+    providers: [IfOpenService, DatepickerActiveService, DateInputService, DateUtilsService]
 })
 export class DatepickerContainer {
     constructor(

@@ -24,4 +24,19 @@ export class CalendarDate {
             return false;
         }
     }
+
+    isTodaysDate(): boolean {
+        const todaysDate: Date = new Date();
+        return ((this.date === todaysDate.getDate())
+            && (this.month === todaysDate.getMonth())
+            && (this.year === todaysDate.getFullYear()));
+    }
+
+    toDate(): Date {
+        const date: Date = new Date();
+        date.setMonth(this.month);
+        date.setFullYear(this.year);
+        date.setDate(this.date);
+        return date;
+    }
 }

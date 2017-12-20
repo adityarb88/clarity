@@ -40,6 +40,7 @@ export class DateUtilsService {
     //Today's Date
     todaysFullDate: Date = new Date();
 
+    /*
     private _currentCalendarViewDates: DateCell[][] = [];
 
     get currentCalendarViewDates(): DateCell[][] {
@@ -49,6 +50,7 @@ export class DateUtilsService {
     set currentCalendarViewDates(value: DateCell[][]) {
         this._currentCalendarViewDates = value;
     }
+    */
 
     private initializeLocaleDaysShort(): void {
         const tempArr: string[] = getLocaleDayNames(this.locale, FormStyle.Format, TranslationWidth.Narrow);
@@ -206,6 +208,7 @@ export class DateUtilsService {
      * Changes the calendar view to the previous month.
      * Sets the dates for the previous month's calendar view.
      */
+    /*
     changeViewToPreviousMonth(): void {
         if (this._calendarViewMonth === 0) {
             this._calendarViewMonth = 11;
@@ -215,11 +218,13 @@ export class DateUtilsService {
         }
         this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
     }
+    */
 
     /**
      * Changes the calendar view to the next month.
      * Sets the dates for the next month's calendar view.
      */
+    /*
     changeViewToNextMonth(): void {
         if (this._calendarViewMonth === 11) {
             this._calendarViewMonth = 0;
@@ -229,6 +234,7 @@ export class DateUtilsService {
         }
         this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
     }
+    */
 
     incrementFocusedDateBy(incrementDays: number): void {
         if (this.focusedDate) {

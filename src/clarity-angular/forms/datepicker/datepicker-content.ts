@@ -16,6 +16,7 @@ import {NonNgIterable} from "../../utils/virtual-scroll/non-ng-iterable";
 import {VirtualForOf} from "../../utils/virtual-scroll/virtual-for-of";
 import {Subscription} from "rxjs/Subscription";
 import {DateInputService} from "./providers/date-input.service";
+import {IfOpenService} from "../../utils/conditional/if-open.service";
 
 @Component({
     selector: "clr-datepicker-content",
@@ -23,7 +24,7 @@ import {DateInputService} from "./providers/date-input.service";
     host: {
         "[class.datepicker-content]": "true",
     },
-    providers: [DateUtilsService, DateViewService, DatepickerScrollService]
+    providers: [DateViewService, DatepickerScrollService]
 })
 export class DatepickerContent extends AbstractPopover implements AfterViewInit {
 
@@ -55,10 +56,12 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
                 private _dateUtilsService: DateUtilsService,
                 private _dateViewService: DateViewService,
                 private _datepickerScrollService: DatepickerScrollService,
-                private _dateInputService: DateInputService) {
+                private _dateInputService: DateInputService,
+                private _ifOpenService: IfOpenService) {
         super(_injector, parentHost);
         this._dateUtilsService.initializeMonthAndYear();
         this.configurePopover();
+        this.processInput();
         this.initializeCalendar();
         this.initializeSubscriptions();
     }
@@ -70,9 +73,15 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
     }
 
     private initializeCalendar(): void {
+        const year: number
+            = this._dateUtilsService.selectedDate
+            ? this._dateUtilsService.selectedDate.year : this._dateUtilsService.calendarViewYear;
+        const month: number
+            = this._dateUtilsService.selectedDate
+            ? this._dateUtilsService.selectedDate.month : this._dateUtilsService.calendarViewMonth;
         this.calendars
             = this._dateUtilsService.generateCalendar(
-                this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear);
+                month, year);
     }
 
     private initializeSubscriptions(): void {
@@ -85,6 +94,15 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         this._subscriptions.push(this._dateUtilsService.calendarChange.subscribe( () => {
             this.initializeCalendar();
         }));
+    }
+
+    private processInput(): void {
+        const inputDateObj: Date = this._dateInputService.processInput();
+        if (inputDateObj) {
+            const calDate: CalendarDate
+                = new CalendarDate(inputDateObj.getDate(), inputDateObj.getMonth(), inputDateObj.getFullYear());
+            this._dateUtilsService.selectedDate = calDate;
+        }
     }
 
     ngAfterViewInit() {
@@ -101,12 +119,15 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
 
     setDate(dateCell: DateCell): void {
         const date: CalendarDate = dateCell.calendarDate;
+        /*
         if (this._dateUtilsService.isPreviousViewMonth(date)) {
             this._dateUtilsService.changeViewToPreviousMonth();
         } else if (this._dateUtilsService.isNextViewMonth(date)) {
             this._dateUtilsService.changeViewToNextMonth();
         }
+        */
         this._dateUtilsService.selectedDate = date;
+        this._ifOpenService.open = false;
     }
 
     get month(): string {
