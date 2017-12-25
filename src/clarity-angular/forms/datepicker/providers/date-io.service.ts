@@ -12,9 +12,11 @@ import {
     SEPARATORS
 } from "../utils/constants";
 import {getNumberOfDaysInTheMonth} from "../utils/date-utils";
+import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
-export class DateInputService {
+export class DateIOService {
     public cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
 
     private localeDisplayFormat: InputDateDisplayFormat = BIG_ENDIAN;
@@ -177,5 +179,15 @@ export class DateInputService {
      */
     isNonNegativeNumber(num: string): boolean {
         return /^\+?(0|[1-9]\d*)$/.test(num);
+    }
+
+    private _dateChanged: Subject<Date> = new Subject<Date>();
+
+    get dateChanged(): Observable<Date> {
+        return this._dateChanged.asObservable();
+    }
+
+    emitDate(date: Date) {
+        this._dateChanged.next(date);
     }
 }
