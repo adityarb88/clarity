@@ -4,19 +4,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {
-    ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, HostBinding, HostListener,
+    ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, EventEmitter, HostBinding,
+    HostListener,
     OnDestroy,
-    Optional,
+    Optional, Output,
     ViewContainerRef
 } from "@angular/core";
 import {DatepickerContainer} from "./datepicker-container";
 import {EmptyAnchor} from "../../utils/host-wrapping/empty-anchor";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {DatepickerActiveService} from "./providers/datepicker-active.service";
-import {DateInputService} from "./providers/date-input.service";
-import {DateUtilsService} from "./providers/date-utils.service";
+import {DateIOService} from "./providers/date-io.service";
 import {Subscription} from "rxjs/Subscription";
-import {CalendarDate} from "./model/calendar-date";
 
 @Directive({
     selector: "[clrDatepicker]",
@@ -29,8 +28,7 @@ export class Datepicker implements OnDestroy {
     //Not injected because the container is created after this directive is detected.
     private _ifOpenService: IfOpenService;
     private _isActiveService: DatepickerActiveService;
-    private _dateInputService: DateInputService;
-    private _dateUtilsService: DateUtilsService;
+    private _dateIOService: DateIOService;
 
     private _sub: Subscription;
 
@@ -48,7 +46,17 @@ export class Datepicker implements OnDestroy {
             this.vcr.remove(0);
             this._ifOpenService = componentRef.injector.get(IfOpenService);
             this._isActiveService = componentRef.injector.get(DatepickerActiveService);
-            this._dateInputService = componentRef.injector.get(DateInputService);
+            this._dateIOService = componentRef.injector.get(DateIOService);
+
+            this._dateIOService.dateChanged.subscribe((date: Date) => {
+               if (date) {
+                   const inputVal: string = this._dateIOService.toLocaleDisplayFormatString(date);
+                   this.el.nativeElement.value = inputVal;
+                   this._dateIOService.inputDate = inputVal;
+               }
+            });
+
+            /*
             this._dateUtilsService = componentRef.injector.get(DateUtilsService);
             this._sub = this._ifOpenService.openChange.subscribe(state => {
                 if (!state) {
@@ -60,6 +68,7 @@ export class Datepicker implements OnDestroy {
                     }
                 }
             });
+            */
         }
     }
 
@@ -70,16 +79,21 @@ export class Datepicker implements OnDestroy {
 
     @HostBinding("attr.placeholder")
     get placeholderText(): string {
-        return this._dateInputService.placeholderText;
+        return this._dateIOService.placeholderText;
     }
 
     @HostListener("input")
     onValueChange() {
         const value: string = this.el.nativeElement.value; //Is there a better way to retrieve this?
         if (value) {
-            this._dateInputService.inputDate = value.trim();
+            this._dateIOService.inputDate = value.trim();
+        } else {
+            this._dateIOService.inputDate = "";
         }
     }
+
+    @Output("clrDatepickerChange")
+    dateChange: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
     ngOnDestroy(): void {
         if (this._sub) {

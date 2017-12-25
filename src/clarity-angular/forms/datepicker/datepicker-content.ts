@@ -12,10 +12,9 @@ import {Point} from "../../popover/common/popover";
 import {CalendarDate} from "./model/calendar-date";
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 import {DatepickerScrollService} from "./providers/datepicker-scroll.service";
-import {NonNgIterable} from "../../utils/virtual-scroll/non-ng-iterable";
 import {VirtualForOf} from "../../utils/virtual-scroll/virtual-for-of";
 import {Subscription} from "rxjs/Subscription";
-import {DateInputService} from "./providers/date-input.service";
+import {DateIOService} from "./providers/date-io.service";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 
 @Component({
@@ -24,7 +23,7 @@ import {IfOpenService} from "../../utils/conditional/if-open.service";
     host: {
         "[class.datepicker-content]": "true",
     },
-    providers: [DateViewService, DatepickerScrollService]
+    providers: [DateViewService, DatepickerScrollService, DateUtilsService]
 })
 export class DatepickerContent extends AbstractPopover implements AfterViewInit {
 
@@ -56,7 +55,7 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
                 private _dateUtilsService: DateUtilsService,
                 private _dateViewService: DateViewService,
                 private _datepickerScrollService: DatepickerScrollService,
-                private _dateInputService: DateInputService,
+                private _dateIOService: DateIOService,
                 private _ifOpenService: IfOpenService) {
         super(_injector, parentHost);
         this._dateUtilsService.initializeMonthAndYear();
@@ -66,12 +65,20 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         this.initializeSubscriptions();
     }
 
+    /**
+     * Configure popover settings. Datepicker always opens on the bottom left and closes when the user
+     * clicks outside of the datepicker popover.
+     */
     private configurePopover(): void {
         this.anchorPoint = Point.BOTTOM_LEFT;
         this.popoverPoint = Point.LEFT_TOP;
         this.closeOnOutsideClick = true;
     }
 
+    /**
+     * Initializes the calendar by first checking the user input. If the user input is not provided,
+     * it opens the calendar pointing at today's date.
+     */
     private initializeCalendar(): void {
         const year: number
             = this._dateUtilsService.selectedDate
@@ -84,6 +91,18 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
                 month, year);
     }
 
+    /**
+     * Updates the datepicker to open the user selected calendar view.
+     */
+    private updateCalendarView(): void {
+        this.calendars = this._dateUtilsService.generateCalendar(
+            this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear
+        );
+    }
+
+    /**
+     * Initializes the scroll service and date utils subscriptions.
+     */
     private initializeSubscriptions(): void {
         this._subscriptions.push(this._datepickerScrollService.scrollMonth.subscribe((month) => {
             this._dateUtilsService.calendarViewMonth = month;
@@ -92,12 +111,17 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
             this._dateUtilsService.calendarViewYear = year;
         }));
         this._subscriptions.push(this._dateUtilsService.calendarChange.subscribe( () => {
-            this.initializeCalendar();
+            //this.initializeCalendar();
+            this.updateCalendarView();
         }));
     }
 
+    /**
+     * Processes the input provided by the user and updates the calendar view according to the input.
+     * If the input is null, then the calendar is opened w.r.t today's date.
+     */
     private processInput(): void {
-        const inputDateObj: Date = this._dateInputService.processInput();
+        const inputDateObj: Date = this._dateIOService.processInput();
         if (inputDateObj) {
             const calDate: CalendarDate
                 = new CalendarDate(inputDateObj.getDate(), inputDateObj.getMonth(), inputDateObj.getFullYear());
@@ -127,6 +151,7 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         }
         */
         this._dateUtilsService.selectedDate = date;
+        this._dateIOService.emitDate(date.toDate());
         this._ifOpenService.open = false;
     }
 
@@ -152,11 +177,11 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         return dateCell.calendarDate.isEqual(this._dateUtilsService.selectedDate);
     }
 
-    onDateCellFocus(dateCell: DateCell) {
+    onDateCellFocus(dateCell: DateCell): void {
         this._dateUtilsService.focusedDate = dateCell.calendarDate;
     }
 
-    onDatepickerTableKeyDown(event: KeyboardEvent) {
+    onDatepickerTableKeyDown(event: KeyboardEvent): void {
         switch(event.keyCode) {
             case UP_ARROW:
                 this._dateUtilsService.incrementFocusedDateBy(-7);
@@ -188,6 +213,7 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
      * @returns {number}
      */
     getTabIndex(dateCell: DateCell): number {
+        /*
         const calDate: CalendarDate = dateCell.calendarDate;
         const dUService: DateUtilsService = this._dateUtilsService;0
         const selDate: CalendarDate = dUService.selectedDate;
@@ -225,17 +251,20 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
                 return -1;
             }
         }
+        */
+        return -1;
     }
 
     isTableInView(month: number, year: number): boolean {
-        //console.log(month, this._dateUtilsService.calendarViewMonth);
-        //console.log(year, this._dateUtilsService.calendarViewYear);
         return (month === this._dateUtilsService.calendarViewMonth)
             && (year === this._dateUtilsService.calendarViewYear);
     }
 
     @ViewChild(VirtualForOf) virtualFor: VirtualForOf<any>;
 
+    /**
+     * Method to process the scroll events by the user on the datepicker.
+     */
     onCalendarScroll(): void {
         this._datepickerScrollService.processScrollEvent(this.dateView, this.virtualFor);
     }
