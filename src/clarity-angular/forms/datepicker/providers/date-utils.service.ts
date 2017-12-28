@@ -162,52 +162,18 @@ export class DateUtilsService {
         }
     }
 
-    initializeMonthAndYear(): void {
-        //TODO: Add option to parse user input and decide the calendar view month and year
-        if (typeof this.calendarViewMonth === "undefined") {
-            this._calendarViewMonth = this.currentMonth;
-        }
-        if (typeof this.calendarViewYear === "undefined") {
-            this._calendarViewYear = this.currentYear;
-        }
-    }
-
-    initializeCalendarViewData(): DateCell[][] {
-        this.initializeMonthAndYear();
-        return this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
-    }
-
     /**
-     * Changes the calendar view to the previous month.
-     * Sets the dates for the previous month's calendar view.
+     * Initializes the display calendar view month and year
      */
-    /*
-    changeViewToPreviousMonth(): void {
-        if (this._calendarViewMonth === 0) {
-            this._calendarViewMonth = 11;
-            this._calendarViewYear--;
+    initializeCalendarViewMonthAndYear(): void {
+        if (this.selectedDate) {
+            this.calendarViewMonth = this.selectedDate.month;
+            this.calendarViewYear = this.selectedDate.year;
         } else {
-            this._calendarViewMonth--;
+            this.calendarViewMonth = this.currentMonth;
+            this.calendarViewYear = this.currentYear;
         }
-        this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
     }
-    */
-
-    /**
-     * Changes the calendar view to the next month.
-     * Sets the dates for the next month's calendar view.
-     */
-    /*
-    changeViewToNextMonth(): void {
-        if (this._calendarViewMonth === 11) {
-            this._calendarViewMonth = 0;
-            this._calendarViewYear++;
-        } else {
-            this._calendarViewMonth++;
-        }
-        this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
-    }
-    */
 
     incrementFocusedDateBy(incrementDays: number): void {
         if (this.focusedDate) {

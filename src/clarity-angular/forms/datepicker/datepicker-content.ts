@@ -58,7 +58,6 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
                 private _dateIOService: DateIOService,
                 private _ifOpenService: IfOpenService) {
         super(_injector, parentHost);
-        this._dateUtilsService.initializeMonthAndYear();
         this.configurePopover();
         this.processInput();
         this.initializeCalendar();
@@ -80,15 +79,10 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
      * it opens the calendar pointing at today's date.
      */
     private initializeCalendar(): void {
-        const year: number
-            = this._dateUtilsService.selectedDate
-            ? this._dateUtilsService.selectedDate.year : this._dateUtilsService.calendarViewYear;
-        const month: number
-            = this._dateUtilsService.selectedDate
-            ? this._dateUtilsService.selectedDate.month : this._dateUtilsService.calendarViewMonth;
+        this._dateUtilsService.initializeCalendarViewMonthAndYear();
         this.calendars
             = this._dateUtilsService.generateCalendar(
-                month, year);
+            this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear);
     }
 
     /**
