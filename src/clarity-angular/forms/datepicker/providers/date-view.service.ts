@@ -37,6 +37,7 @@ export class DateViewService {
         this._ngZone.runOutsideAngular(() => {
             first.call(this._ngZone.onStable.asObservable()).subscribe(() => {
                 const focusEl = elRef.nativeElement.querySelector('[tabindex="0"]');
+                console.log("Focus On: ", focusEl);
                 if (focusEl) {
                     focusEl.focus();
                 }

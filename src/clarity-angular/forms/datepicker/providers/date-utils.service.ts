@@ -182,9 +182,12 @@ export class DateUtilsService {
             const newDate: number = newFocusedDate.getDate();
             const newMonth: number = newFocusedDate.getMonth();
             const newYear: number = newFocusedDate.getFullYear();
-            this.calendarViewMonth = newMonth;
-            this.calendarViewYear = newYear;
             this.focusedDate = new CalendarDate(newDate, newMonth, newYear);
+            if(this.calendarViewMonth !== newMonth || this.calendarViewYear !== newYear) {
+                this.calendarViewMonth = newMonth;
+                this.calendarViewYear = newYear;
+                //this.updateCalendar();
+            }
         }
     }
 
@@ -220,48 +223,12 @@ export class DateUtilsService {
 
     /**
      * Compares with the current Calendar View and returns if the passed CalendarDate is
-     * of the previous Calendar View month or not
-     * @param {CalendarDate} calDate
-     * @returns {boolean}
-     */
-    isPreviousViewMonth(calDate: CalendarDate): boolean {
-        const month: number = calDate.month;
-        const year: number = calDate.year;
-        const viewMonth: number = this.calendarViewMonth;
-        const viewYear: number = this.calendarViewYear;
-        if (this.calendarViewMonth === 0) {
-            return (month === 11 && year === viewYear - 1);
-        } else {
-            return (month === viewMonth - 1);
-        }
-    }
-
-    /**
-     * Compares with the current Calendar View and returns if the passed CalendarDate is
      * of the same month or not
      * @param {CalendarDate} calDate
      * @returns {boolean}
      */
     isCurrentViewMonth(calDate: CalendarDate): boolean {
         return (calDate.month === this.calendarViewMonth && calDate.year === this.calendarViewYear);
-    }
-
-    /**
-     * Compares with the current Calendar View and returns if the passed CalendarDate is
-     * of the next Calendar View month or not
-     * @param {CalendarDate} calDate
-     * @returns {boolean}
-     */
-    isNextViewMonth(calDate: CalendarDate): boolean {
-        const month: number = calDate.month;
-        const year: number = calDate.year;
-        const viewMonth: number = this.calendarViewMonth;
-        const viewYear: number = this.calendarViewYear;
-        if (this.calendarViewMonth === 11) {
-            return (month === 0 && year === viewYear + 1);
-        } else {
-            return ((month === viewMonth + 1) && (year === viewYear));
-        }
     }
 
     private carryOverFromPreviousMonth(month: number, year: number): WeekDay {
