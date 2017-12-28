@@ -40,18 +40,6 @@ export class DateUtilsService {
     //Today's Date
     todaysFullDate: Date = new Date();
 
-    /*
-    private _currentCalendarViewDates: DateCell[][] = [];
-
-    get currentCalendarViewDates(): DateCell[][] {
-        return this._currentCalendarViewDates;
-    }
-
-    set currentCalendarViewDates(value: DateCell[][]) {
-        this._currentCalendarViewDates = value;
-    }
-    */
-
     private initializeLocaleDaysShort(): void {
         const tempArr: string[] = getLocaleDayNames(this.locale, FormStyle.Format, TranslationWidth.Narrow);
         const firstDayOfWeek: number = this.getFirstDayOfTheWeek();
@@ -81,19 +69,6 @@ export class DateUtilsService {
     getFirstDayOfTheWeek(): WeekDay {
         return getLocaleFirstDayOfWeek(this.locale);
     }
-
-    /*
-    getNumberOfDaysInTheMonth(year: number, month: number): number {
-        //month + 1 because we want to go to the next month
-        //date 0 because date is 1 based and 0 means we are getting the last date of the previous month.
-        //confusing but works
-        return (new Date(year,  month + 1, 0)).getDate();
-    }
-
-    getDay(year: number, month: number, date: number): WeekDay {
-        return (new Date(year, month, date)).getDay();
-    }
-    */
 
     /**
      * Returns the string value of the month
@@ -169,7 +144,6 @@ export class DateUtilsService {
     set calendarViewMonth(value: number) {
         if (value !== this.calendarViewMonth) {
             this._calendarViewMonth = value;
-            //this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
         }
     }
 
@@ -185,7 +159,6 @@ export class DateUtilsService {
     set calendarViewYear(value: number) {
         if (value !== this.calendarViewYear) {
             this._calendarViewYear = value;
-            //this.currentCalendarViewDates = this.getDatesInCalendarView(this.calendarViewMonth, this.calendarViewYear);
         }
     }
 
