@@ -111,7 +111,6 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
             this._dateUtilsService.calendarViewYear = year;
         }));
         this._subscriptions.push(this._dateUtilsService.calendarChange.subscribe( () => {
-            //this.initializeCalendar();
             this.updateCalendarView();
         }));
     }
@@ -143,13 +142,6 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
 
     setDate(dateCell: DateCell): void {
         const date: CalendarDate = dateCell.calendarDate;
-        /*
-        if (this._dateUtilsService.isPreviousViewMonth(date)) {
-            this._dateUtilsService.changeViewToPreviousMonth();
-        } else if (this._dateUtilsService.isNextViewMonth(date)) {
-            this._dateUtilsService.changeViewToNextMonth();
-        }
-        */
         this._dateUtilsService.selectedDate = date;
         this._dateIOService.emitDate(date.toDate());
         this._ifOpenService.open = false;
@@ -213,6 +205,7 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
      * @returns {number}
      */
     getTabIndex(dateCell: DateCell): number {
+        return -1;
         /*
         const calDate: CalendarDate = dateCell.calendarDate;
         const dUService: DateUtilsService = this._dateUtilsService;0
@@ -251,8 +244,8 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
                 return -1;
             }
         }
-        */
         return -1;
+        */
     }
 
     isTableInView(month: number, year: number): boolean {

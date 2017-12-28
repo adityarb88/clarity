@@ -58,33 +58,6 @@ export class DatepickerScrollService {
         }
     }
 
-    /*
-    animateContainer(): void {
-        if (this.scrollInterval) {
-            clearInterval(this.scrollInterval);
-        }
-        //TODO: Find something instead of setInterval
-        this.scrollInterval = setInterval(() => {
-            //console.log("Animating: ", this.container);
-            if (!this.container) {
-                //console.log("Clearing: ", this.scrollInterval);
-                clearInterval(this.scrollInterval);
-            } else {
-                const diff = this.container.scrollTop - this.childToScrollTop;
-                if (diff >= -1 * STEP && diff <= STEP) {
-                    this.container.scrollTop = this.childToScrollTop;
-                    clearInterval(this.scrollInterval);
-                }
-                if (this.container.scrollTop > this.childToScrollTop) {
-                    this.container.scrollTop = this.container.scrollTop - STEP;
-                } else if (this.container.scrollTop < this.childToScrollTop) {
-                    this.container.scrollTop = this.container.scrollTop + STEP;
-                }
-            }
-        }, 10);
-    }
-    */
-
     animateContainer(): void {
         if (this.container) {
             const scrollTop: number = this.container.scrollTop;
