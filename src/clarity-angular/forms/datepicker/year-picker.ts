@@ -60,6 +60,7 @@ export class YearPicker implements AfterViewInit{
     setYear(year: number): void {
         this._focusedYear = year;
         this._dateUtilsService.calendarViewYear = year;
+        this._dateUtilsService.focusedDate = null;
         this._dateUtilsService.updateCalendar();
         this.yearView = false;
     }

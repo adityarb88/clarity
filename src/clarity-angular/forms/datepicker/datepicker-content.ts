@@ -92,6 +92,7 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
         this.calendars = this._dateUtilsService.generateCalendar(
             this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear
         );
+        this._dateViewService.focusCell(this._elRef);
     }
 
     /**
@@ -168,25 +169,29 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
     }
 
     onDatepickerTableKeyDown(event: KeyboardEvent): void {
-        switch(event.keyCode) {
-            case UP_ARROW:
-                this._dateUtilsService.incrementFocusedDateBy(-7);
-                this._dateViewService.focusCell(this._elRef);
-                break;
-            case DOWN_ARROW:
-                this._dateUtilsService.incrementFocusedDateBy(7);
-                this._dateViewService.focusCell(this._elRef);
-                break;
-            case LEFT_ARROW:
-                this._dateUtilsService.incrementFocusedDateBy(-1);
-                this._dateViewService.focusCell(this._elRef);
-                break;
-            case RIGHT_ARROW:
-                this._dateUtilsService.incrementFocusedDateBy(1);
-                this._dateViewService.focusCell(this._elRef);
-                break;
-            default:
-                break; //No default case. TSLint x-(
+        console.log(event);
+        if (event) {
+            event.preventDefault();
+            switch(event.keyCode) {
+                case UP_ARROW:
+                    this._dateUtilsService.incrementFocusedDateBy(-7);
+                    this._dateViewService.focusCell(this._elRef);
+                    break;
+                case DOWN_ARROW:
+                    this._dateUtilsService.incrementFocusedDateBy(7);
+                    this._dateViewService.focusCell(this._elRef);
+                    break;
+                case LEFT_ARROW:
+                    this._dateUtilsService.incrementFocusedDateBy(-1);
+                    this._dateViewService.focusCell(this._elRef);
+                    break;
+                case RIGHT_ARROW:
+                    this._dateUtilsService.incrementFocusedDateBy(1);
+                    this._dateViewService.focusCell(this._elRef);
+                    break;
+                default:
+                    break; //No default case. TSLint x-(
+            }
         }
     }
 
@@ -199,8 +204,6 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
      * @returns {number}
      */
     getTabIndex(dateCell: DateCell): number {
-        return -1;
-        /*
         const calDate: CalendarDate = dateCell.calendarDate;
         const dUService: DateUtilsService = this._dateUtilsService;0
         const selDate: CalendarDate = dUService.selectedDate;
@@ -238,8 +241,6 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
                 return -1;
             }
         }
-        return -1;
-        */
     }
 
     isTableInView(month: number, year: number): boolean {

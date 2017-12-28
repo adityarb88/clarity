@@ -24,7 +24,7 @@
         <table *clrVirtualFor="let calendarDates of calendars"
             class="datepicker-table"
             [class.is-visible]="isTableInView(calendarDates.month, calendarDates.year)"
-            (keydown)="onDatepickerTableKeyDown()">
+            (keydown)="onDatepickerTableKeyDown($event)">
             <tr *ngFor="let row of calendarDates.dateRows" class="datepicker-row">
                 <td *ngFor="let dateCell of row" class="datepicker-cell">
                     <button type="button"
