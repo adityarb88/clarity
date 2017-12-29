@@ -10,7 +10,7 @@ import {DateViewService} from "./providers/date-view.service";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
 import {CalendarDate} from "./model/calendar-date";
-import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+import {DOWN_ARROW, ENTER, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 import {DatepickerScrollService} from "./providers/datepicker-scroll.service";
 import {VirtualForOf} from "../../utils/virtual-scroll/virtual-for-of";
 import {Subscription} from "rxjs/Subscription";
@@ -151,7 +151,9 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
     }
 
     isCalendarViewMonth(dateCell: DateCell): boolean {
-        return this._dateUtilsService.isCurrentViewMonth(dateCell.calendarDate);
+        return (
+            dateCell.cellDisplayedInCalendarView(this._dateUtilsService.calendarViewMonth, this._dateUtilsService.calendarViewYear)
+            && this._dateUtilsService.dateInCalendarView(dateCell.calendarDate));
     }
 
     /**
@@ -169,30 +171,33 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
     }
 
     onDatepickerTableKeyDown(event: KeyboardEvent): void {
-        console.log(event);
         if (event) {
-            event.preventDefault();
             switch(event.keyCode) {
                 case UP_ARROW:
-                    this._dateUtilsService.incrementFocusedDateBy(-7);
-                    this._dateViewService.focusCell(this._elRef);
+                    event.preventDefault();
+                    this.incrementDateAndFocus(-7);
                     break;
                 case DOWN_ARROW:
-                    this._dateUtilsService.incrementFocusedDateBy(7);
-                    this._dateViewService.focusCell(this._elRef);
+                    event.preventDefault();
+                    this.incrementDateAndFocus(7);
                     break;
                 case LEFT_ARROW:
-                    this._dateUtilsService.incrementFocusedDateBy(-1);
-                    this._dateViewService.focusCell(this._elRef);
+                    event.preventDefault();
+                    this.incrementDateAndFocus(-1);
                     break;
                 case RIGHT_ARROW:
-                    this._dateUtilsService.incrementFocusedDateBy(1);
-                    this._dateViewService.focusCell(this._elRef);
+                    event.preventDefault();
+                    this.incrementDateAndFocus(1);
                     break;
                 default:
                     break; //No default case. TSLint x-(
             }
         }
+    }
+
+    private incrementDateAndFocus(incrementDaysBy: number): void {
+        this._dateUtilsService.incrementFocusedDateBy(incrementDaysBy);
+        this._dateViewService.focusCell(this._elRef);
     }
 
     /**

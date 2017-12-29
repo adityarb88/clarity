@@ -18,6 +18,7 @@ import {formatDate} from "../utils/formatDate";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 import {getDay, getNumberOfDaysInTheMonth} from "../utils/date-utils";
+import {CalendarView} from "../model/calendar-view";
 
 const TOTAL_DAYS_IN_MONTH_VIEW: number = 42;
 const NO_OF_DAYS_IN_A_WEEK: number = 7;
@@ -198,11 +199,11 @@ export class DateUtilsService {
      * @param {number} year
      * @returns {[number , number]}
      */
-    getPreviousMonth(month: number, year: number): [number, number] {
+    getPreviousMonth(month: number, year: number): CalendarView {
         if (month === 0) {
-            return [11, year - 1];
+            return {month: 11, year: year - 1};
         } else {
-            return [month - 1, year];
+            return {month: month - 1, year: year};
         }
     }
 
@@ -213,11 +214,11 @@ export class DateUtilsService {
      * @param {number} year
      * @returns {[number , number]}
      */
-    getNextMonth(month: number, year: number): [number, number] {
+    getNextMonth(month: number, year: number): CalendarView {
         if (month === 11) {
-            return [0, year + 1];
+            return {month: 0, year: year + 1};
         } else {
-            return [month + 1, year];
+            return {month: month + 1, year: year};
         }
     }
 
@@ -227,7 +228,7 @@ export class DateUtilsService {
      * @param {CalendarDate} calDate
      * @returns {boolean}
      */
-    isCurrentViewMonth(calDate: CalendarDate): boolean {
+    dateInCalendarView(calDate: CalendarDate): boolean {
         return (calDate.month === this.calendarViewMonth && calDate.year === this.calendarViewYear);
     }
 
@@ -248,9 +249,6 @@ export class DateUtilsService {
      * @returns {DateCell[][]}
      */
     getDatesInCalendarView(month: number, year: number): DateCell[][] {
-        //const month: number = this.calendarViewMonth;
-        //const year: number = this.calendarViewYear;
-
         const noOfDaysInCurrMonth: number = getNumberOfDaysInTheMonth(year, month);
         const noOfDaysInPrevMonth: number = getNumberOfDaysInTheMonth(year, month - 1);
 
@@ -261,19 +259,20 @@ export class DateUtilsService {
         const carryOverFromPreviousMonth: number = this.carryOverFromPreviousMonth(month, year);
 
         // Gets the dates in the previous month of the calendar view
+        const previousMonth: CalendarView = this.getPreviousMonth(month, year);
         const datesInPreviousMonth: DateCell[]
             = Array(carryOverFromPreviousMonth)
             .fill(null)
             .map((date, index) => {
-                const previousMonth: [number, number] = this.getPreviousMonth(month, year);
                 const calDate: CalendarDate = new CalendarDate(
                     noOfDaysInPrevMonth - (carryOverFromPreviousMonth - (index + 1)),
-                    previousMonth[0],
-                    previousMonth[1]
+                    previousMonth.month,
+                    previousMonth.year
                 );
                 return new DateCell(
                     calDate,
-                    false
+                    false,
+                    {month, year}
                 );
             });
 
@@ -288,7 +287,7 @@ export class DateUtilsService {
                     month,
                     year
                 );
-                return new DateCell(calDate, false);
+                return new DateCell(calDate, false, {month, year});
             });
 
         //Check for today's date
@@ -299,17 +298,17 @@ export class DateUtilsService {
         const leftDatesLength: number = TOTAL_DAYS_IN_MONTH_VIEW - (datesInCurrentMonth.length + datesInPreviousMonth.length);
 
         // Gets the dates in the next month of the calendar view
+        const nextMonth: CalendarView = this.getNextMonth(month, year);
         const datesInNextMonth: DateCell[]
             = Array(leftDatesLength)
             .fill(null)
             .map((date, index) => {
-                const nextMonth: [number, number] = this.getNextMonth(month, year);
                 const calDate: CalendarDate = new CalendarDate(
                     index + 1,
-                    nextMonth[0],
-                    nextMonth[1]
+                    nextMonth.month,
+                    nextMonth.year
                 );
-                return new DateCell(calDate, false);
+                return new DateCell(calDate, false, {month, year});
             });
 
         //Combine Final Array
@@ -325,8 +324,6 @@ export class DateUtilsService {
             }
             finalCalendarArray.push(tempArr);
         }
-
-        //console.log(finalCalendarArray);
 
         return finalCalendarArray;
     }
