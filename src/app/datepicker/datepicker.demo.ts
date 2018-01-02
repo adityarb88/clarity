@@ -7,8 +7,14 @@ import {Component} from "@angular/core";
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import localeRu from "@angular/common/locales/ru";
+import localeAk from "@angular/common/locales/ak";
+import localeHi from "@angular/common/locales/hi";
 
 registerLocaleData(localeFr);
+registerLocaleData(localeRu);
+registerLocaleData(localeAk);
+registerLocaleData(localeHi);
 
 @Component({
     selector: "clr-datepicker-demo",
