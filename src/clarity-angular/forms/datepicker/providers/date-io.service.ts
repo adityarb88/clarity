@@ -38,9 +38,11 @@ export class DateIOService {
     public inputDate: string;
 
     constructor(@Inject(LOCALE_ID) public locale: string) {
-        //this.locale = "fr-BE";
+        //this.locale = "fr-BE"; //dd/mm/yyyy
+        //this.locale = "ru-UA"; //dd/mm/yyyy
+        //this.locale = "ak"; //yyyy/mm/dd
         this.cldrLocaleDateFormat = getLocaleDateFormat(this.locale, FormatWidth.Short);
-        console.log(this.cldrLocaleDateFormat);
+        //console.log(this.cldrLocaleDateFormat);
         this.processLocaleFormat(this.cldrLocaleDateFormat);
     }
 
@@ -61,7 +63,7 @@ export class DateIOService {
             //everything else is set to BIG-ENDIAN FORMAT
             this.localeDisplayFormat = BIG_ENDIAN;
         }
-        console.log(this.localeDisplayFormat);
+        //console.log(this.localeDisplayFormat);
         /*
         console.log(this.isValidInput("02/29/2017"));
         console.log(this.isValidInput("02/28/2017"));
