@@ -7,10 +7,15 @@
 import {CommonModule} from "@angular/common";
 import {NgModule, Type} from "@angular/core";
 import {ClrCheckbox} from "./checkbox";
+import {ClrDatepickerModule} from "./datepicker/datepicker.module";
 
 export const CLR_CHECKBOX_DIRECTIVES: Type<any>[] = [ClrCheckbox];
 
-@NgModule({imports: [CommonModule], declarations: [CLR_CHECKBOX_DIRECTIVES], exports: [CLR_CHECKBOX_DIRECTIVES]})
+@NgModule({
+    imports: [CommonModule],
+    declarations: [CLR_CHECKBOX_DIRECTIVES],
+    exports: [CLR_CHECKBOX_DIRECTIVES, ClrDatepickerModule]
+})
 export class ClrFormsModule {}
 
 /* tslint:disable variable-name */

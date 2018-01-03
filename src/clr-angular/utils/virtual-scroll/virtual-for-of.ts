@@ -73,6 +73,21 @@ export class VirtualForOf<T> implements AfterViewInit {
     private start = -1;
     private end = 0;
 
+    private viewModelCache = {};
+
+    get sortedViewModel(): Array<any> {
+        const temp = [];
+        const keys: string[] = Object.keys(this.viewModelCache);
+        keys.sort((a, b) => {
+            return (parseInt(a, 10) - parseInt(b, 10));
+        });
+        keys.forEach(key => {
+            const val = this.viewModelCache[key];
+            temp.push(val);
+        });
+        return temp;
+    }
+
     /**
      * Computes the offset height of the first/last item in the view
      * @param {Side} side: indicates which item to measure, first or last
@@ -91,8 +106,14 @@ export class VirtualForOf<T> implements AfterViewInit {
         this.viewContainer.remove(index);
         if (side === Side.START) {
             this.start++;
+            if (this.start in this.viewModelCache) {
+                delete this.viewModelCache[this.start];
+            }
         } else {
             this.end--;
+            if (this.end in this.viewModelCache) {
+                delete this.viewModelCache[this.end];
+            }
         }
     }
 
@@ -116,8 +137,10 @@ export class VirtualForOf<T> implements AfterViewInit {
             return false;
         }
         if (side === Side.START) {
+            this.viewModelCache[this.start] = added;
             this.start--;
         } else {
+            this.viewModelCache[this.end] = added;
             this.end++;
         }
         // We have to detect changes immediately for the height to be correct before adding more items.

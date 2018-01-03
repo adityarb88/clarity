@@ -9,10 +9,10 @@ import {VirtualForOf} from "../../../utils/virtual-scroll/virtual-for-of";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 
-const WAIT_TIME: number = 100; //ms
+const WAIT_TIME: number = 75; //ms
 const CHILD_HEIGHT: number = 216; //Hardcoded. Should be updated if the height changes.
-const STEP: number = 5; //Amount by which scrollTop should increment/decrement
-const MIN_PROGRESS = 10;
+const STEP: number = 15; //Amount by which scrollTop should increment/decrement
+const MIN_PROGRESS = 30;
 
 @Injectable()
 export class DatepickerScrollService {

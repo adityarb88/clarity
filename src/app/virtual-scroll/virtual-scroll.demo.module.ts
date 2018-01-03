@@ -5,20 +5,14 @@
  */
 import {CommonModule} from "@angular/common";
 import {NgModule} from "@angular/core";
-
-<<<<<<< HEAD
-import {ClrAlertModule} from "../../clr-angular/emphasis/alert/alert.module";
-import {ClrVirtualScrollModule} from "../../clr-angular/utils/virtual-scroll/virtual-scroll.module";
-=======
-import {ClrAlertModule} from "../../clarity-angular/emphasis/alert/alert.module";
 import {ClrVirtualScrollModule} from "../../clarity-angular/utils/virtual-scroll/virtual-scroll.module";
->>>>>>> Virtual Scroll
 
 import {VirtualScrollArrayDemo} from "./virtual-scroll-array";
 import {VirtualScrollInfiniteGeneratorDemo} from "./virtual-scroll-infinite-generator";
 import {VirtualScrollSlotMachineDemo} from "./virtual-scroll-slot-machine";
 import {VirtualScrollDemo} from "./virtual-scroll.demo";
 import {ROUTING} from "./virtual-scroll.demo.routing";
+import {ClrAlertModule} from "../../clr-angular/emphasis/alert";
 
 @NgModule({
     imports: [CommonModule, ClrVirtualScrollModule, ClrAlertModule, ROUTING],

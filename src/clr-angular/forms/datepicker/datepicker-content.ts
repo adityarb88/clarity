@@ -210,7 +210,7 @@ export class DatepickerContent extends AbstractPopover implements AfterViewInit 
      */
     getTabIndex(dateCell: DateCell): number {
         const calDate: CalendarDate = dateCell.calendarDate;
-        const dUService: DateUtilsService = this._dateUtilsService;0
+        const dUService: DateUtilsService = this._dateUtilsService;
         const selDate: CalendarDate = dUService.selectedDate;
         const focusedDate: CalendarDate = dUService.focusedDate;
         const calViewMonth: number = dUService.calendarViewMonth;
