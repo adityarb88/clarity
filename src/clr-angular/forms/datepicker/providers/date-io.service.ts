@@ -22,12 +22,16 @@ export class DateIOService {
     private localeDisplayFormat: InputDateDisplayFormat = BIG_ENDIAN;
 
     toLocaleDisplayFormatString(date: Date): string {
+        const dateNo: number = date.getDate();
+        const monthNo: number = date.getMonth() + 1;
+        const dateStr: string = dateNo > 9 ? dateNo.toString() : "0" + dateNo;
+        const monthStr: string = monthNo > 9 ? monthNo.toString() : "0" + monthNo;
         if (this.localeDisplayFormat === LITTLE_ENDIAN) {
-            return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+            return dateStr + "/" + monthStr + "/" + date.getFullYear();
         } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
-            return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+            return monthStr + "/" + dateStr + "/" + date.getFullYear();
         } else {
-            return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+            return date.getFullYear() + "/" + monthStr + "/" + dateStr;
         }
     }
 

@@ -55,20 +55,6 @@ export class Datepicker implements OnDestroy {
                    this._dateIOService.inputDate = inputVal;
                }
             });
-
-            /*
-            this._dateUtilsService = componentRef.injector.get(DateUtilsService);
-            this._sub = this._ifOpenService.openChange.subscribe(state => {
-                if (!state) {
-                    const selDate: CalendarDate = this._dateUtilsService.selectedDate;
-                    if (selDate) {
-                        const inputVal: string = this._dateInputService.toLocaleDisplayFormatString(selDate.toDate());
-                        this.el.nativeElement.value = inputVal;
-                        this._dateInputService.inputDate = inputVal;
-                    }
-                }
-            });
-            */
         }
     }
 
