@@ -13,7 +13,8 @@ import {LocaleHelperService} from "./providers/locale-helper.service";
 export class ClrCalendar {
 
     constructor(
-        private _localeHelperService: LocaleHelperService) {}
+        private _localeHelperService: LocaleHelperService) {
+    }
 
     get localeDaysNarrow(): ReadonlyArray<string> {
         return this._localeHelperService.localeDaysNarrow;
