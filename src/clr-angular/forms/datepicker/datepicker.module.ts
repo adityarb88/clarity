@@ -13,11 +13,21 @@ import {ClrIconModule} from "../../icon/icon.module";
 import {ClrConditionalModule} from "../../utils/conditional/conditional.module";
 import {ClrDateContainer} from "./date-container";
 import {ClrDatepicker} from "./datepicker";
+import {ClrDatepickerViewManager} from "./datepicker-view-manager";
+import {ClrMonthpicker} from "./monthpicker";
+import {ClrYearpicker} from "./yearpicker";
+import {ClrDaypicker} from "./daypicker";
+import {ClrCalendar} from "./calendar";
 
 export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
     ClrDay,
     ClrDateContainer,
-    ClrDatepicker
+    ClrDatepicker,
+    ClrDatepickerViewManager,
+    ClrMonthpicker,
+    ClrYearpicker,
+    ClrDaypicker,
+    ClrCalendar
 ];
 
 @NgModule({

@@ -1,0 +1,92 @@
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import {Inject, Injectable, LOCALE_ID} from "@angular/core";
+import {
+    FormStyle, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames,
+    TranslationWidth
+} from "@angular/common";
+
+@Injectable()
+export class LocaleHelperService {
+
+    constructor(@Inject(LOCALE_ID) public locale: string) {
+        this.initializeLocaleData();
+    }
+
+    private _firstDayOfWeek: number = 0;
+    private _localeDaysNarrow: ReadonlyArray<string>;
+    private _localeDaysAbbreviated: ReadonlyArray<string>;
+    private _localeDaysWide: ReadonlyArray<string>;
+
+    get firstDayOfWeek(): number {
+        return this._firstDayOfWeek;
+    }
+
+    get localeDaysNarrow(): ReadonlyArray<string> {
+        return this._localeDaysNarrow;
+    }
+
+    get localeDaysAbbreviated(): ReadonlyArray<string> {
+        return this._localeDaysAbbreviated;
+    }
+
+    get localeDaysWide(): ReadonlyArray<string> {
+        return this._localeDaysWide;
+    }
+
+    /**
+     * Initializes the locale data.
+     */
+    private initializeLocaleData(): void {
+        this.initializeLocaleDaysNarrow();
+        this.initializeFirstDayOfWeek();
+        this.initializeLocaleMonthsAbbreviated();
+        this.initializeLocaleMonthsWide();
+    }
+
+    /**
+     * Initialize day names in the TranslationWidth.Narrow format based on the locale.
+     * eg: [S, M, T...] for en-US.
+     */
+    private initializeLocaleDaysNarrow(): void {
+        // Get locale day names starting with Sunday
+        const tempArr: string[] = getLocaleDayNames(this.locale, FormStyle.Format, TranslationWidth.Narrow);
+        // Get first day of the week based on the locale
+        const firstDayOfWeek: number = this.firstDayOfWeek;
+        // Rearrange the tempArr to start with the first day of the week based on the locale.
+        if (firstDayOfWeek > 0) {
+            const prevDays: string[] = tempArr.splice(0, firstDayOfWeek);
+            prevDays.forEach((item) => {
+                tempArr.push(item);
+            });
+        }
+        this._localeDaysNarrow = tempArr;
+    }
+
+    /**
+     * Initializes the array of month names in the TranslationWidth.Abbreviated format.
+     * e.g. `[Jan, Feb, ...]` for en-US
+     */
+    private initializeLocaleMonthsAbbreviated(): void {
+        this._localeDaysAbbreviated = getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Abbreviated);
+    }
+
+    /**
+     * Initializes the array of month names in the TranslationWidth.Wide format.
+     * e.g. `[January, February, ...]` for en-US
+     */
+    private initializeLocaleMonthsWide(): void {
+        this._localeDaysWide = getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Wide);
+    }
+
+    /**
+     * Initializes the first day of the week based on the locale.
+     */
+    private initializeFirstDayOfWeek(): void {
+        this._firstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
+    }
+}
