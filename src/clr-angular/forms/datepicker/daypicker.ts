@@ -5,10 +5,12 @@
  */
 import {Component} from "@angular/core";
 import {ViewManagerService} from "./providers/view-manager.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
 
 @Component({
     selector: "clr-daypicker",
     templateUrl: "./daypicker.html",
+    providers: [DateNavigationService],
     host: {
         "[class.daypicker]": "true",
     }
