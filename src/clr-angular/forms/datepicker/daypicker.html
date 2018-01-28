@@ -1,0 +1,20 @@
+<div class="calendar-header">
+    <div class="calendar-switchers">
+        <button class="calendar-btn" type="button">
+            <clr-icon shape="angle" dir="left"></clr-icon>
+        </button>
+        <button class="calendar-btn monthpicker-trigger" type="button" (click)="changeToMonthView()">
+            Jan
+        </button>
+        <button class="calendar-btn" type="button">
+            <clr-icon shape="angle" dir="right"></clr-icon>
+        </button>
+        <button class="calendar-btn" type="button">
+            <clr-icon shape="event"></clr-icon>
+        </button>
+    </div>
+    <button class="calendar-btn yearpicker-trigger" type="button" (click)="changeToYearView()">
+        2018
+    </button>
+</div>
+<clr-calendar></clr-calendar>

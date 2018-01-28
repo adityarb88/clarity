@@ -24,7 +24,10 @@ import {Subscription} from "rxjs/Subscription";
 import {EmptyAnchor} from "../../utils/host-wrapping/empty-anchor";
 import {ClrDateContainer} from "./date-container";
 
-@Directive({selector: "[clrDatepicker]", host: {"[class.datepicker]": "true"}})
+@Directive({
+    selector: "[clrDatepicker]",
+    host: {"[class.datepicker]": "true"}
+})
 export class ClrDatepicker implements OnDestroy {
     /**
      * Subscriptions to all the services and queries changes
