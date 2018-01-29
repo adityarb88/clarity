@@ -11,12 +11,14 @@ import {ViewManagerService} from "./providers/view-manager.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DayModel} from "./model/day.model";
 import {DateIOService} from "./providers/date-io.service";
+import {DatepickerViewService} from "./providers/datepicker-view.service";
 
 @Component({
     selector: "clr-datepicker-view-manager",
     templateUrl: "./datepicker-view-manager.html",
     providers: [
         ViewManagerService,
+        DatepickerViewService,
         DateNavigationService
     ],
     host: {
@@ -33,11 +35,11 @@ export class ClrDatepickerViewManager extends AbstractPopover {
         private _dateIOService: DateIOService) {
         super(_injector, parent);
         this.configurePopover();
-        this.processInput();
+        this.processUserInput();
         this._dateNavigationService.initializeCalendar();
     }
 
-    private processInput(): void {
+    private processUserInput(): void {
         const date: Date = this._dateIOService.processInput();
         if (date) {
             const dayModel: DayModel = new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
