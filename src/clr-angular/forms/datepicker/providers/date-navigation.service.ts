@@ -7,8 +7,6 @@
 import {Injectable} from "@angular/core";
 import {CalendarModel} from "../model/calendar.model";
 import {DayModel} from "../model/day.model";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class DateNavigationService {
@@ -60,34 +58,15 @@ export class DateNavigationService {
         return this.todaysFullDate.getFullYear();
     }
 
-    private _selectedDay: DayModel;
+    public selectedDay: DayModel;
 
-    get selectedDay(): DayModel {
-        return this._selectedDay;
-    }
-
-    set selectedDay(day: DayModel) {
-        if (day && day.isEqual(this._selectedDay)) {
-            if (this._selectedDay) {
-
-            }
-            this._selectedDay = day;
-        }
-    }
+    public focusedDay: DayModel;
 
     changeMonth(month: number): void {
         this.calendar.month = month;
-        this._calendarChanged.next();
     }
 
     changeYear(year: number): void {
         this.calendar.year = year;
-        this._calendarChanged.next();
-    }
-
-    private _calendarChanged: Subject<void> = new Subject();
-
-    get calendarChanged(): Observable<void> {
-        return this._calendarChanged.asObservable();
     }
 }
