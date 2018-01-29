@@ -127,16 +127,22 @@ export class CalendarViewModel {
     /**
      * If the Day exists in the CalendarView, sets its selected flag
      */
-    updateSelectedFlag(newSelectedDay: DayModel, flag: boolean): void {
-        if (this.isDayInCalendarView(newSelectedDay)) {
-            this.currMonthDayViews[newSelectedDay.date - 1].isSelected = flag;
+    updateSelectedDay(day: DayModel, flag: boolean): void {
+        if (!day) {
+            return;
+        }
+        if (this.isDayInCalendarView(day)) {
+            this.currMonthDayViews[day.date - 1].isSelected = flag;
         }
     }
 
     /**
      * If the DayModel exists in the matrix, sets its focusable flag
      */
-    updateFocusableFlag(day: DayModel, flag: boolean): void {
+    updateFocusableDay(day: DayModel, flag: boolean): void {
+        if (!day) {
+            return;
+        }
         if (this.isDayInCalendarView(day)) {
             this.currMonthDayViews[day.date - 1].isFocusable = flag;
         }
