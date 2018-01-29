@@ -7,6 +7,8 @@
 import {Injectable} from "@angular/core";
 import {CalendarModel} from "../model/calendar.model";
 import {DayModel} from "../model/day.model";
+import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class DateNavigationService {
@@ -68,5 +70,26 @@ export class DateNavigationService {
 
     changeYear(year: number): void {
         this.calendar.year = year;
+    }
+
+    moveToNextMonth(): void {
+        this.calendar = this.calendar.nextMonth();
+        this._calendarChanged.next();
+    }
+
+    moveToPreviousMonth(): void {
+        this.calendar = this.calendar.previousMonth();
+        this._calendarChanged.next();
+    }
+
+    moveToCurrentMonth(): void {
+        this.calendar = this.calendar.currentMonth();
+        this._calendarChanged.next();
+    }
+
+    private _calendarChanged: Subject<void> = new Subject<void>();
+
+    get calendarChanged(): Observable<void> {
+        return this._calendarChanged.asObservable();
     }
 }
