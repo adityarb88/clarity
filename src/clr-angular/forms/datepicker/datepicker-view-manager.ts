@@ -9,6 +9,8 @@ import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
 import {ViewManagerService} from "./providers/view-manager.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
+import {DayModel} from "./model/day.model";
+import {DateIOService} from "./providers/date-io.service";
 
 @Component({
     selector: "clr-datepicker-view-manager",
@@ -26,9 +28,21 @@ export class ClrDatepickerViewManager extends AbstractPopover {
         @SkipSelf() parent: ElementRef,
         private _injector: Injector,
         private _elRef: ElementRef,
-        private _viewManagerService: ViewManagerService) {
+        private _viewManagerService: ViewManagerService,
+        private _dateNavigationService: DateNavigationService,
+        private _dateIOService: DateIOService) {
         super(_injector, parent);
         this.configurePopover();
+        this.processInput();
+        this._dateNavigationService.initializeCalendar();
+    }
+
+    private processInput(): void {
+        const date: Date = this._dateIOService.processInput();
+        if (date) {
+            const dayModel: DayModel = new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
+            this._dateNavigationService.selectedDay = dayModel;
+        }
     }
 
     /**

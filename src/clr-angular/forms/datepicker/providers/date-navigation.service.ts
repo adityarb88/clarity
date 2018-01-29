@@ -12,13 +12,11 @@ import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class DateNavigationService {
-    constructor() {
-        this.initializeCalendar();
-    }
+    constructor() {}
 
     calendar: CalendarModel;
 
-    private initializeCalendar(): void {
+    initializeCalendar(): void {
         if (this.selectedDay) {
             this.calendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
         } else {
