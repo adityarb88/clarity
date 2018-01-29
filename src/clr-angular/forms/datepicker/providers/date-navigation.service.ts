@@ -5,8 +5,8 @@
  */
 
 import {Injectable} from "@angular/core";
-import {Calendar} from "../model/calendar.model";
-import {Day} from "../model/day.model";
+import {CalendarModel} from "../model/calendar.model";
+import {DayModel} from "../model/day.model";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 
@@ -16,13 +16,13 @@ export class DateNavigationService {
         this.initializeCalendar();
     }
 
-    calendar: Calendar;
+    calendar: CalendarModel;
 
     private initializeCalendar(): void {
         if (this.selectedDay) {
-            this.calendar = new Calendar(this.selectedDay.year, this.selectedDay.month);
+            this.calendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
         } else {
-            this.calendar = new Calendar(this.currentYear, this.currentMonth);
+            this.calendar = new CalendarModel(this.currentYear, this.currentMonth);
         }
     }
 
@@ -31,8 +31,8 @@ export class DateNavigationService {
      */
     private todaysFullDate: Date = new Date();
 
-    get today(): Day {
-        return new Day(this.todaysFullDate.getFullYear(), this.todaysFullDate.getMonth(),
+    get today(): DayModel {
+        return new DayModel(this.todaysFullDate.getFullYear(), this.todaysFullDate.getMonth(),
             this.todaysFullDate.getDate());
     }
 
@@ -60,13 +60,13 @@ export class DateNavigationService {
         return this.todaysFullDate.getFullYear();
     }
 
-    private _selectedDay: Day;
+    private _selectedDay: DayModel;
 
-    get selectedDay(): Day {
+    get selectedDay(): DayModel {
         return this._selectedDay;
     }
 
-    set selectedDay(day: Day) {
+    set selectedDay(day: DayModel) {
         if (day && day.isEqual(this._selectedDay)) {
             if (this._selectedDay) {
 
