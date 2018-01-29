@@ -4,13 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export class Day {
+export class DayModel {
     constructor(public year: number, public month: number, public date: number) {}
 
     /**
      * Checks if the passed CalendarDate is equal to itself.
      */
-    isEqual(day: Day) {
+    isEqual(day: DayModel) {
         if (day) {
             return ((this.year === day.year) && (this.month === day.month) && (this.date === day.date));
         }
