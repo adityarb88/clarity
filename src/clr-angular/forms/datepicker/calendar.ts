@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Component} from "@angular/core";
+import {Component, OnDestroy} from "@angular/core";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {CalendarViewModel} from "./model/calendar-view.model";
 import {DateNavigationService} from "./providers/date-navigation.service";
@@ -11,21 +11,23 @@ import {DayModel} from "./model/day.model";
 import {Subscription} from "rxjs/Subscription";
 import {DayViewModel} from "./model/day-view.model";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
+import {DateIOService} from "./providers/date-io.service";
 
 @Component({
     selector: "clr-calendar",
     templateUrl: "./calendar.html"
 })
-export class ClrCalendar {
+export class ClrCalendar implements OnDestroy {
 
     private sub: Subscription;
 
     constructor(
         private _localeHelperService: LocaleHelperService,
         private _dateNavigationService: DateNavigationService,
-        private _ifOpenService: IfOpenService) {
+        private _ifOpenService: IfOpenService,
+        private _dateIOService: DateIOService) {
         this.generateCalendarView();
-        this._dateNavigationService.calendarChanged.subscribe(() => {
+        this.sub = this._dateNavigationService.calendarChanged.subscribe(() => {
              this.generateCalendarView();
         });
     }
@@ -103,5 +105,11 @@ export class ClrCalendar {
     setDay(dayView: DayViewModel): void {
         const day: DayModel = dayView.dayModel;
         this.selectedDay = day;
+        this._dateIOService.updateDate(day.toDate());
+        this._ifOpenService.open = false;
+    }
+
+    ngOnDestroy(): void {
+        this.sub.unsubscribe();
     }
 }

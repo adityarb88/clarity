@@ -6,7 +6,8 @@
 
 import {Inject, Injectable, LOCALE_ID} from "@angular/core";
 import {
-    FormStyle, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames,
+    FormatWidth,
+    FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames,
     TranslationWidth
 } from "@angular/common";
 
@@ -21,6 +22,7 @@ export class LocaleHelperService {
     private _localeDaysNarrow: ReadonlyArray<string>;
     private _localeMonthsAbbreviated: ReadonlyArray<string>;
     private _localeMonthsWide: ReadonlyArray<string>;
+    private _localeDateFormat: string;
 
     get firstDayOfWeek(): number {
         return this._firstDayOfWeek;
@@ -38,6 +40,10 @@ export class LocaleHelperService {
         return this._localeMonthsWide;
     }
 
+    get localeDateFormat(): string {
+        return this._localeDateFormat;
+    }
+
     /**
      * Initializes the locale data.
      */
@@ -46,6 +52,7 @@ export class LocaleHelperService {
         this.initializeFirstDayOfWeek();
         this.initializeLocaleMonthsAbbreviated();
         this.initializeLocaleMonthsWide();
+        this.initializeLocaleDateFormat();
     }
 
     /**
@@ -88,5 +95,9 @@ export class LocaleHelperService {
      */
     private initializeFirstDayOfWeek(): void {
         this._firstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
+    }
+
+    private initializeLocaleDateFormat(): void {
+        this._localeDateFormat = getLocaleDateFormat(this.locale, FormatWidth.Short);
     }
 }
