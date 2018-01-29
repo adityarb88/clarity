@@ -8,12 +8,14 @@ import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
 import {ViewManagerService} from "./providers/view-manager.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
 
 @Component({
     selector: "clr-datepicker-view-manager",
     templateUrl: "./datepicker-view-manager.html",
     providers: [
-        ViewManagerService
+        ViewManagerService,
+        DateNavigationService
     ],
     host: {
         "[class.calendar]": "true"

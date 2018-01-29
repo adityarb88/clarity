@@ -5,7 +5,7 @@
  */
 
 import {WeekDay} from "@angular/common";
-import {CalendarView} from "../model/calendar-view";
+import {Calendar} from "../model/calendar.model";
 
 /**
  * Returns the number of days in a month.
@@ -25,26 +25,26 @@ export function getDay(year: number, month: number, date: number): WeekDay {
 }
 
 /**
- * Returns a [month, year] tuple of the previous month based on the month and year passed to
+ * Returns Calendar of the previous month based on the month and year passed to
  * this method.
  */
-export function getPreviousMonth(year: number, month: number): CalendarView {
+export function getPreviousMonth(year: number, month: number): Calendar {
     if (month === 0) {
-        return new CalendarView(year - 1, 11);
+        return new Calendar(year - 1, 11);
     } else {
-        return new CalendarView(year, month - 1);
+        return new Calendar(year, month - 1);
     }
 }
 
 /**
- * Returns a [month, year] tuple of the next month based on the month and year passed to
+ * Returns Calendar of the next month based on the month and year passed to
  * this method.
  */
-export function getNextMonth(year: number, month: number): CalendarView {
+export function getNextMonth(year: number, month: number): Calendar {
     if (month === 11) {
-        return new CalendarView(year + 1, 0);
+        return new Calendar(year + 1, 0);
     } else {
-        return new CalendarView(year, month + 1);
+        return new Calendar(year, month + 1);
     }
 }
 
