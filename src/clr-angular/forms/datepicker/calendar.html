@@ -16,7 +16,8 @@
                 [class.is-disabled]="dayView.isDisabled"
                 [class.is-active]="dayView.isSelected"
                 [attr.tabindex]="dayView.tabIndex"
-                (click)="setDay(dayView)">
+                (click)="setDay(dayView)"
+                (focus)="onDayViewFocus(dayView)">
                 {{dayView.dayModel.date}}
             </button>
         </td>

@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Component, OnDestroy} from "@angular/core";
+import {Component, ElementRef, OnDestroy} from "@angular/core";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {CalendarViewModel} from "./model/calendar-view.model";
 import {DateNavigationService} from "./providers/date-navigation.service";
@@ -12,6 +12,7 @@ import {Subscription} from "rxjs/Subscription";
 import {DayViewModel} from "./model/day-view.model";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {DateIOService} from "./providers/date-io.service";
+import {DatepickerViewService} from "./providers/datepicker-view.service";
 
 @Component({
     selector: "clr-calendar",
@@ -25,7 +26,9 @@ export class ClrCalendar implements OnDestroy {
         private _localeHelperService: LocaleHelperService,
         private _dateNavigationService: DateNavigationService,
         private _ifOpenService: IfOpenService,
-        private _dateIOService: DateIOService) {
+        private _dateIOService: DateIOService,
+        private _datepickerViewService: DatepickerViewService,
+        private _elRef: ElementRef) {
         this.generateCalendarView();
         this.sub = this._dateNavigationService.calendarChanged.subscribe(() => {
              this.generateCalendarView();
@@ -102,11 +105,19 @@ export class ClrCalendar implements OnDestroy {
         }
     }
 
+    onDayViewFocus(dayView: DayViewModel): void {
+        this.focusedDay = dayView.dayModel;
+    }
+
     setDay(dayView: DayViewModel): void {
         const day: DayModel = dayView.dayModel;
         this.selectedDay = day;
         this._dateIOService.updateDate(day.toDate());
         this._ifOpenService.open = false;
+    }
+
+    ngAfterViewInit() {
+        this._datepickerViewService.focusCell(this._elRef);
     }
 
     ngOnDestroy(): void {

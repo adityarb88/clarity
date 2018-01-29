@@ -3,10 +3,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Component} from "@angular/core";
+import {AfterViewInit, Component, ElementRef} from "@angular/core";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {YearRangeModel} from "./model/year-range.model";
 import {ViewManagerService} from "./providers/view-manager.service";
+import {DatepickerViewService} from "./providers/datepicker-view.service";
 
 @Component({
     selector: "clr-yearpicker",
@@ -27,6 +28,7 @@ import {ViewManagerService} from "./providers/view-manager.service";
                 *ngFor="let year of yearRangeModel.yearRange"
                 type="button"
                 class="calendar-btn year"
+                [attr.tabindex]="getTabIndex(year)"
                 [class.is-active]="year === calendarYear"
                 (click)="changeYear(year)">
                 {{year}}
@@ -37,14 +39,19 @@ import {ViewManagerService} from "./providers/view-manager.service";
         "[class.yearpicker]": "true",
     }
 })
-export class ClrYearpicker {
+export class ClrYearpicker implements AfterViewInit {
     constructor(
         private _dateNavigationService: DateNavigationService,
-        private _viewManagerService: ViewManagerService) {
+        private _viewManagerService: ViewManagerService,
+        private _datepickerViewService: DatepickerViewService,
+        private _elfRef: ElementRef) {
         this.yearRangeModel = new YearRangeModel(this._dateNavigationService.calendar.year);
+        this._focusedYear = this._dateNavigationService.calendar.year;
     }
 
     yearRangeModel: YearRangeModel;
+
+    private _focusedYear: number;
 
     /**
      * Gets the year which the user is currently on.
@@ -68,5 +75,13 @@ export class ClrYearpicker {
 
     nextDecade(): void {
         this.yearRangeModel = this.yearRangeModel.nextDecade();
+    }
+
+    getTabIndex(year: number): number {
+        return year === this._focusedYear ? 0 : -1;
+    }
+
+    ngAfterViewInit() {
+        this._datepickerViewService.focusCell(this._elfRef);
     }
 }
