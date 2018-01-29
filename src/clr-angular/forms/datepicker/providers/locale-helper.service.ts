@@ -19,8 +19,8 @@ export class LocaleHelperService {
 
     private _firstDayOfWeek: number = 0;
     private _localeDaysNarrow: ReadonlyArray<string>;
-    private _localeDaysAbbreviated: ReadonlyArray<string>;
-    private _localeDaysWide: ReadonlyArray<string>;
+    private _localeMonthsAbbreviated: ReadonlyArray<string>;
+    private _localeMonthsWide: ReadonlyArray<string>;
 
     get firstDayOfWeek(): number {
         return this._firstDayOfWeek;
@@ -30,12 +30,12 @@ export class LocaleHelperService {
         return this._localeDaysNarrow;
     }
 
-    get localeDaysAbbreviated(): ReadonlyArray<string> {
-        return this._localeDaysAbbreviated;
+    get localeMonthsAbbreviated(): ReadonlyArray<string> {
+        return this._localeMonthsAbbreviated;
     }
 
-    get localeDaysWide(): ReadonlyArray<string> {
-        return this._localeDaysWide;
+    get localeMonthsWide(): ReadonlyArray<string> {
+        return this._localeMonthsWide;
     }
 
     /**
@@ -72,7 +72,7 @@ export class LocaleHelperService {
      * e.g. `[Jan, Feb, ...]` for en-US
      */
     private initializeLocaleMonthsAbbreviated(): void {
-        this._localeDaysAbbreviated = getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Abbreviated);
+        this._localeMonthsAbbreviated = getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Abbreviated);
     }
 
     /**
@@ -80,7 +80,7 @@ export class LocaleHelperService {
      * e.g. `[January, February, ...]` for en-US
      */
     private initializeLocaleMonthsWide(): void {
-        this._localeDaysWide = getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Wide);
+        this._localeMonthsWide = getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Wide);
     }
 
     /**

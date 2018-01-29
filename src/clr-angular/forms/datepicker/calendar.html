@@ -7,12 +7,16 @@
 </table>
 <table
     class="calendar-table calendar-dates">
-    <tr class="calendar-row">
-        <td class="calendar-cell">
+    <tr class="calendar-row" *ngFor="let row of calendarView.calendarView">
+        <td *ngFor="let dayView of row" class="calendar-cell">
             <button
                 class="date"
-                type="button">
-                1
+                type="button"
+                [class.is-today]="dayView.isTodaysDate"
+                [class.is-disabled]="dayView.isDisabled"
+                [class.is-active]="dayView.isActive"
+                [attr.tabindex]="dayView.tabIndex">
+                {{dayView.day.date}}
             </button>
         </td>
     </tr>
