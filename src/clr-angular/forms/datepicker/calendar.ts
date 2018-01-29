@@ -8,6 +8,7 @@ import {LocaleHelperService} from "./providers/locale-helper.service";
 import {CalendarViewModel} from "./model/calendar-view.model";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DayModel} from "./model/day.model";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
     selector: "clr-calendar",
@@ -15,10 +16,15 @@ import {DayModel} from "./model/day.model";
 })
 export class ClrCalendar {
 
+    private sub: Subscription;
+
     constructor(
         private _localeHelperService: LocaleHelperService,
         private _dateNavigationService: DateNavigationService) {
-        this.initializeCalendarView();
+        this.generateCalendarView();
+        this._dateNavigationService.calendarChanged.subscribe(() => {
+             this.generateCalendarView();
+        });
     }
 
     get localeDaysNarrow(): ReadonlyArray<string> {
@@ -27,7 +33,7 @@ export class ClrCalendar {
 
     calendarViewModel: CalendarViewModel;
 
-    private initializeCalendarView(): void {
+    private generateCalendarView(): void {
         this.calendarViewModel = new CalendarViewModel(this._dateNavigationService.calendar, this._localeHelperService.firstDayOfWeek);
         this.updateCalendarFlags();
     }
