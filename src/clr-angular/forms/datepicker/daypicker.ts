@@ -19,7 +19,8 @@ export class ClrDaypicker {
     constructor(
         private _viewManagerService: ViewManagerService,
         private _dateNavigationService: DateNavigationService,
-        private _localeHelperService: LocaleHelperService) {}
+        private _localeHelperService: LocaleHelperService) {
+    }
 
     changeToMonthView(): void {
         this._viewManagerService.changeToMonthView();

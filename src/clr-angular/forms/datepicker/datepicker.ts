@@ -23,6 +23,8 @@ import {Subscription} from "rxjs/Subscription";
 
 import {EmptyAnchor} from "../../utils/host-wrapping/empty-anchor";
 import {ClrDateContainer} from "./date-container";
+import {DateIOService} from "./providers/date-io.service";
+import {LocaleHelperService} from "./providers/locale-helper.service";
 
 @Directive({
     selector: "[clrDatepicker]",
@@ -33,14 +35,26 @@ export class ClrDatepicker implements OnDestroy {
      * Subscriptions to all the services and queries changes
      */
     private _subscriptions: Subscription[] = [];
+    private compRef: ComponentRef<ClrDateContainer>;
 
-    constructor(@Optional() private container: ClrDateContainer, private vcr: ViewContainerRef,
-                private elRef: ElementRef, private cfr: ComponentFactoryResolver, @Optional() private _ngModel: NgModel) {
+    constructor(@Optional() private container: ClrDateContainer,
+                private vcr: ViewContainerRef,
+                private elRef: ElementRef,
+                private cfr: ComponentFactoryResolver,
+                @Optional() private _ngModel: NgModel,
+                @Optional() private _localeHelperService: LocaleHelperService,
+                @Optional() private _dateIOService: DateIOService) {
         if (!container) {
-            const compRef: ComponentRef<ClrDateContainer> = this.wrapContainer();
-            this.populateContainerServices(compRef);
+            this.compRef = this.wrapContainer();
+            this.populateContainerServices();
         }
+        this._dateIOService.localeHelperService = this._localeHelperService;
         this.initializeSubscriptions();
+    }
+
+    private populateContainerServices(): void {
+        this._localeHelperService = this.compRef.injector.get(LocaleHelperService);
+        this._dateIOService = this.compRef.injector.get(DateIOService);
     }
 
     /**
@@ -59,18 +73,9 @@ export class ClrDatepicker implements OnDestroy {
     }
 
     /**
-     * Populates references to the DatepickerContainer services.
-     */
-    private populateContainerServices(componentRef: ComponentRef<ClrDateContainer>): void {
-        //this._dateIOService = componentRef.injector.get(DateIOService);
-        //this._datepickerActiveService = componentRef.injector.get(DatepickerActiveService);
-    }
-
-    /**
      * Initialize DateIO Subscriptions
      */
     private initializeSubscriptions(): void {
-        /*
         if (this._dateIOService) {
             this._subscriptions.push(this._dateIOService.dateStrUpdated.subscribe((dateStr) => {
                 this.elRef.nativeElement.value = dateStr;
@@ -84,25 +89,6 @@ export class ClrDatepicker implements OnDestroy {
                 this._dateUpdated.emit(date);
             }));
         }
-        */
-    }
-
-    @HostBinding("attr.placeholder")
-    get placeholderText(): string {
-        //return this._dateIOService.placeholderText;
-        return "";
-    }
-
-    @HostListener("change", ["$event.target"])
-    onValueChange(target: HTMLInputElement) {
-        /*
-        const value: string = target.value;
-        if (value) {
-            this.inputDate = value.trim();
-        } else {
-            this.inputDate = "";
-        }
-        */
     }
 
     @HostBinding("attr.type")
@@ -110,18 +96,26 @@ export class ClrDatepicker implements OnDestroy {
         return "text";
     }
 
+    @HostListener("change", ["$event.target"])
+    onValueChange(target: HTMLInputElement) {
+        const value: string = target.value;
+        if (value) {
+            this.inputDate = value.trim();
+        } else {
+            this.inputDate = "";
+        }
+    }
+
     set inputDate(value: string) {
-        //this._dateIOService.inputDate = value;
+        this._dateIOService.inputDate = value;
     }
 
     @Input("clrDatepicker")
     set date(value: Date) {
-        /*
         if (value) {
             const dateStr: string = this._dateIOService.processDate(value);
             this.elRef.nativeElement.value = dateStr;
         }
-        */
     }
 
     @Output("clrDatepickerChange") _dateUpdated: EventEmitter<Date> = new EventEmitter<Date>(false);

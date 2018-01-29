@@ -6,6 +6,7 @@
 import {Component} from "@angular/core";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
+import {DateIOService} from "./providers/date-io.service";
 
 @Component({
     selector: "clr-date-container",
@@ -19,7 +20,7 @@ import {LocaleHelperService} from "./providers/locale-helper.service";
         </button>
         <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>
     `,
-    providers: [IfOpenService, LocaleHelperService],
+    providers: [IfOpenService, LocaleHelperService, DateIOService],
     host: {"[class.date-container]": "true"}
 })
 export class ClrDateContainer {
