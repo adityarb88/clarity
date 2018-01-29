@@ -8,7 +8,7 @@ import {NO_OF_DAYS_IN_A_WEEK, NO_OF_ROWS_IN_CALENDAR_VIEW, TOTAL_DAYS_IN_DAYS_VI
 import {DayViewModel} from "./day-view.model";
 import {CalendarModel} from "./calendar.model";
 import {DayModel} from "./day.model";
-import {getDay, getNextMonth, getNumberOfDaysInTheMonth, getPreviousMonth} from "../utils/date-utils";
+import {getDay, getNumberOfDaysInTheMonth} from "../utils/date-utils";
 
 export class CalendarViewModel {
 
@@ -46,7 +46,7 @@ export class CalendarViewModel {
      */
     private generateDayViewsFromPrevMonth(year: number, month: number, noOfDays: number): void {
         const datesFromPrevMonthInCalendarView: number = this.noOfDaysFromPreviousMonthInCalendarView(year, month);
-        const prevMonthCalendar: CalendarModel = getPreviousMonth(year, month);
+        const prevMonthCalendar: CalendarModel = (new CalendarModel(year, month)).previousMonth();
         const datesInPreviousMonth: DayViewModel[] =
             Array(datesFromPrevMonthInCalendarView).fill(null).map((date, index) => {
                 const day: DayModel =
@@ -78,7 +78,7 @@ export class CalendarViewModel {
      * Generates the DayViewModels required in the current view from the next month.
      */
     private generateDayViewsFromNextMonth(year: number, month: number, noOfDays: number): void {
-        const nextMonthCalendar: CalendarModel = getNextMonth(year, month);
+        const nextMonthCalendar: CalendarModel = (new CalendarModel(year, month)).nextMonth();
         const datesInNextMonth: DayViewModel[] = Array(noOfDays).fill(null).map((date, index) => {
             const day: DayModel = new DayModel(nextMonthCalendar.year, nextMonthCalendar.month, index + 1);
             return new DayViewModel(day, false, true, false, false);

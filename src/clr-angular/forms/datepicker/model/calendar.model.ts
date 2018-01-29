@@ -12,4 +12,34 @@ export class CalendarModel {
     isDayInCalendar(day: DayModel): boolean {
         return (this.year === day.year && this.month === day.month);
     }
+
+    /**
+     * Returns CalendarModel of the previous month.
+     */
+    previousMonth(): CalendarModel {
+        if (this.month === 0) {
+            return new CalendarModel(this.year - 1, 11);
+        } else {
+            return new CalendarModel(this.year, this.month - 1);
+        }
+    }
+
+    /**
+     * Returns CalendarModel of the next month.
+     */
+    nextMonth(): CalendarModel {
+        if (this.month === 11) {
+            return new CalendarModel(this.year + 1, 0);
+        } else {
+            return new CalendarModel(this.year, this.month + 1);
+        }
+    }
+
+    /**
+     * Returns CalendarModel of the current month.
+     */
+    currentMonth(): CalendarModel {
+        const date: Date = new Date();
+        return new CalendarModel(date.getFullYear(), date.getMonth());
+    }
 }

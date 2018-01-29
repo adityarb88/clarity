@@ -25,30 +25,6 @@ export function getDay(year: number, month: number, date: number): WeekDay {
 }
 
 /**
- * Returns Calendar of the previous month based on the month and year passed to
- * this method.
- */
-export function getPreviousMonth(year: number, month: number): CalendarModel {
-    if (month === 0) {
-        return new CalendarModel(year - 1, 11);
-    } else {
-        return new CalendarModel(year, month - 1);
-    }
-}
-
-/**
- * Returns Calendar of the next month based on the month and year passed to
- * this method.
- */
-export function getNextMonth(year: number, month: number): CalendarModel {
-    if (month === 11) {
-        return new CalendarModel(year + 1, 0);
-    } else {
-        return new CalendarModel(year, month + 1);
-    }
-}
-
-/**
  * Takes in a 2 digit year and returns the corresponding 4 digit year.
  * Window of 80 years before and 20 years after the present year.
  * Credit: https://github.com/globalizejs/globalize/blob/e1b31cd6a4f1cff75b185b68b7a32220aac5196f/src/date/parse.js

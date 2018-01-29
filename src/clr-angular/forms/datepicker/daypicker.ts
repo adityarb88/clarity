@@ -39,4 +39,16 @@ export class ClrDaypicker {
     get calendarYear(): number {
         return this._dateNavigationService.calendar.year;
     }
+
+    nextMonth(): void {
+        this._dateNavigationService.moveToNextMonth();
+    }
+
+    previousMonth(): void {
+        this._dateNavigationService.moveToPreviousMonth();
+    }
+
+    currentMonth(): void {
+        this._dateNavigationService.moveToCurrentMonth();
+    }
 }
