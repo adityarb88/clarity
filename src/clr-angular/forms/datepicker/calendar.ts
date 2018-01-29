@@ -9,6 +9,8 @@ import {CalendarViewModel} from "./model/calendar-view.model";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DayModel} from "./model/day.model";
 import {Subscription} from "rxjs/Subscription";
+import {DayViewModel} from "./model/day-view.model";
+import {IfOpenService} from "../../utils/conditional/if-open.service";
 
 @Component({
     selector: "clr-calendar",
@@ -20,7 +22,8 @@ export class ClrCalendar {
 
     constructor(
         private _localeHelperService: LocaleHelperService,
-        private _dateNavigationService: DateNavigationService) {
+        private _dateNavigationService: DateNavigationService,
+        private _ifOpenService: IfOpenService) {
         this.generateCalendarView();
         this._dateNavigationService.calendarChanged.subscribe(() => {
              this.generateCalendarView();
@@ -95,5 +98,10 @@ export class ClrCalendar {
             }
             this._dateNavigationService.selectedDay = day;
         }
+    }
+
+    setDay(dayView: DayViewModel): void {
+        const day: DayModel = dayView.dayModel;
+        this.selectedDay = day;
     }
 }

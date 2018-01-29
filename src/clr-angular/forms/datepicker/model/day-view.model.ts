@@ -7,7 +7,7 @@
 import {DayModel} from "./day.model";
 
 export class DayViewModel {
-    constructor(public day: DayModel,
+    constructor(public dayModel: DayModel,
                 public isTodaysDate: boolean = false,
                 public isDisabled: boolean = false,
                 public isSelected: boolean = false,
