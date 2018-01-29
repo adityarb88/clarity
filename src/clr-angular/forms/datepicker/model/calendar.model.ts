@@ -4,12 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {Day} from "./day.model";
+import {DayModel} from "./day.model";
 
-export class Calendar {
+export class CalendarModel {
     constructor(public year: number, public month: number) {}
 
-    isDayInCalendar(day: Day): boolean {
+    isDayInCalendar(day: DayModel): boolean {
         return (this.year === day.year && this.month === day.month);
     }
 }
