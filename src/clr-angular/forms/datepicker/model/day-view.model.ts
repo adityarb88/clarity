@@ -4,10 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {DayModel} from "./day.model";
+import {Day} from "./day.model";
 
-export class DayViewModel {
-    constructor(public dayModel: DayModel,
+export class DayView {
+    constructor(public day: Day,
                 public isTodaysDate: boolean = false,
                 public isDisabled: boolean = false,
                 public isSelected: boolean = false,
