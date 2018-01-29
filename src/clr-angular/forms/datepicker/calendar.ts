@@ -5,6 +5,8 @@
  */
 import {Component} from "@angular/core";
 import {LocaleHelperService} from "./providers/locale-helper.service";
+import {CalendarView} from "./model/calendar-view.model";
+import {DateNavigationService} from "./providers/date-navigation.service";
 
 @Component({
     selector: "clr-calendar",
@@ -13,10 +15,19 @@ import {LocaleHelperService} from "./providers/locale-helper.service";
 export class ClrCalendar {
 
     constructor(
-        private _localeHelperService: LocaleHelperService) {
+        private _localeHelperService: LocaleHelperService,
+        private _dateNavigationService: DateNavigationService) {
+        this.initializeCalendarView();
+        console.log(this.calendarView);
     }
 
     get localeDaysNarrow(): ReadonlyArray<string> {
         return this._localeHelperService.localeDaysNarrow;
+    }
+
+    calendarView: CalendarView;
+
+    private initializeCalendarView(): void {
+        this.calendarView = new CalendarView(this._dateNavigationService.calendar, this._localeHelperService.firstDayOfWeek);
     }
 }
