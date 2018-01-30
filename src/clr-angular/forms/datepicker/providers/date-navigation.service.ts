@@ -9,6 +9,7 @@ import {CalendarModel} from "../model/calendar.model";
 import {DayModel} from "../model/day.model";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
+import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../../utils/key-codes/key-codes";
 
 @Injectable()
 export class DateNavigationService {
@@ -85,9 +86,50 @@ export class DateNavigationService {
         this._calendarChanged.next();
     }
 
+    private adjustFocusDate(value: number): void {
+        this.focusedDay = this.focusedDay.incrementBy(value);
+        if (this.calendar.isDayInCalendar(this.focusedDay)) {
+            this._focusedDayChanged.next();
+        } else {
+            this.calendar = this.focusedDay.getCalendar();
+            this._calendarChanged.next();
+        }
+    }
+
     private _calendarChanged: Subject<void> = new Subject<void>();
 
     get calendarChanged(): Observable<void> {
         return this._calendarChanged.asObservable();
+    }
+
+    private _focusedDayChanged: Subject<void> = new Subject<void>();
+
+    get focusedDayChanged(): Observable<void> {
+        return this._focusedDayChanged.asObservable();
+    }
+
+    adjustFocusOnKeyDownEvent(event: KeyboardEvent) {
+        if (event && this.focusedDay) {
+            switch (event.keyCode) {
+                case UP_ARROW:
+                    event.preventDefault();
+                    this.adjustFocusDate(-7);
+                    break;
+                case DOWN_ARROW:
+                    event.preventDefault();
+                    this.adjustFocusDate(7);
+                    break;
+                case LEFT_ARROW:
+                    event.preventDefault();
+                    this.adjustFocusDate(-1);
+                    break;
+                case RIGHT_ARROW:
+                    event.preventDefault();
+                    this.adjustFocusDate(1);
+                    break;
+                default:
+                    break;  // No default case. TSLint x-(
+            }
+        }
     }
 }

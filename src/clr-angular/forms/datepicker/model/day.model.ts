@@ -4,6 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import {CalendarModel} from "./calendar.model";
+
 export class DayModel {
     constructor(public year: number, public month: number, public date: number) {}
 
@@ -26,5 +28,17 @@ export class DayModel {
         date.setFullYear(this.year);
         date.setDate(this.date);
         return date;
+    }
+
+    incrementBy(value: number): DayModel {
+        // Creating new Javascript Date object to increment because
+        // it will automatically take care of switching to next or previous
+        // months & years without we having to worry about it.
+        const date: Date = new Date(this.year, this.month, this.date + value);
+        return new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    getCalendar(): CalendarModel {
+        return new CalendarModel(this.year, this.month);
     }
 }
