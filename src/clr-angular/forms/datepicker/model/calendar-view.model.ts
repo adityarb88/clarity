@@ -160,10 +160,13 @@ export class CalendarViewModel {
             this.setFocusableFlag(this.focusableDay, true);
         } else if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
             this.setFocusableFlag(this.selectedDay, true);
+            this.focusableDay = this.selectedDay.copy();
         } else if (this.isDayInCalendarView(this.today)) {
             this.setFocusableFlag(this.today, true);
+            this.focusableDay = this.today.copy();
         } else {
-            this.setFocusableFlag(new DayModel(this.calendar.year, this.calendar.month, 15), true);
+            this.focusableDay = new DayModel(this.calendar.year, this.calendar.month, 15);
+            this.setFocusableFlag(this.focusableDay, true);
         }
     }
 
@@ -182,12 +185,8 @@ export class CalendarViewModel {
     }
 
     updateFocusableDay(day: DayModel): void {
-        if (!this.isDayInCalendarView(day)) {
-
-        } else {
-            this.setFocusableFlag(this.focusableDay, false);
-            this.setFocusableFlag(day, true);
-            this.focusableDay = day;
-        }
+        this.setFocusableFlag(this.focusableDay, false);
+        this.setFocusableFlag(day, true);
+        this.focusableDay = day;
     }
 }

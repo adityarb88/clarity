@@ -41,4 +41,8 @@ export class DayModel {
     getCalendar(): CalendarModel {
         return new CalendarModel(this.year, this.month);
     }
+
+    copy(): DayModel {
+        return new DayModel(this.year, this.month, this.date);
+    }
 }
