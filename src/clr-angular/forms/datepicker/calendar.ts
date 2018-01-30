@@ -80,7 +80,7 @@ export class ClrCalendar implements OnDestroy {
 
     @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
-        this._dateNavigationService.adjustFocusOnKeyDownEvent(event);
+        this._dateNavigationService.adjustCalendarFocusOnKeyDownEvent(event);
     }
 
     ngAfterViewInit() {
