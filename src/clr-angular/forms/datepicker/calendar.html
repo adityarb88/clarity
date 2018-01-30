@@ -9,17 +9,7 @@
     class="calendar-table calendar-dates">
     <tr class="calendar-row" *ngFor="let row of calendarViewModel.calendarView">
         <td *ngFor="let dayView of row" class="calendar-cell">
-            <button
-                class="date"
-                type="button"
-                [class.is-today]="dayView.isTodaysDate"
-                [class.is-disabled]="dayView.isDisabled"
-                [class.is-active]="dayView.isSelected"
-                [attr.tabindex]="dayView.tabIndex"
-                (click)="setDay(dayView)"
-                (focus)="onDayViewFocus(dayView)">
-                {{dayView.dayModel.date}}
-            </button>
+            <clr-day [clrDayView]="dayView"></clr-day>
         </td>
     </tr>
 </table>

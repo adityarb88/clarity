@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Component, ElementRef, OnDestroy} from "@angular/core";
+import {Component, ElementRef, HostListener, OnDestroy} from "@angular/core";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {CalendarViewModel} from "./model/calendar-view.model";
 import {DateNavigationService} from "./providers/date-navigation.service";
@@ -21,7 +21,7 @@ import {CalendarModel} from "./model/calendar.model";
 })
 export class ClrCalendar implements OnDestroy {
 
-    private sub: Subscription;
+    private _subs: Subscription[] = [];
 
     constructor(private _localeHelperService: LocaleHelperService,
                 private _dateNavigationService: DateNavigationService,
@@ -30,10 +30,19 @@ export class ClrCalendar implements OnDestroy {
                 private _datepickerViewService: DatepickerViewService,
                 private _elRef: ElementRef) {
         this.generateCalendarView();
-        this.sub = this._dateNavigationService.calendarChanged.subscribe(() => {
-            this.calendarViewModel.updateCalendar(this.calendar);
+        this.initializeSubscriptions();
+    }
+
+    private initializeSubscriptions(): void {
+        this._subs.push(this._dateNavigationService.calendarChanged.subscribe(() => {
+            this.calendarViewModel.updateCalendar(this.calendar, this.focusedDay);
             this._datepickerViewService.focusCell(this._elRef);
-        });
+        }));
+
+        this._subs.push(this._dateNavigationService.focusedDayChanged.subscribe(() => {
+            this.calendarViewModel.updateFocusableDay(this.focusedDay);
+            this._datepickerViewService.focusCell(this._elRef);
+        }));
     }
 
     get localeDaysNarrow(): ReadonlyArray<string> {
@@ -69,8 +78,9 @@ export class ClrCalendar implements OnDestroy {
         );
     }
 
-    onDayViewFocus(): void {
-
+    @HostListener("keydown", ["$event"])
+    onKeyDown(event: KeyboardEvent) {
+        this._dateNavigationService.adjustFocusOnKeyDownEvent(event);
     }
 
     ngAfterViewInit() {
@@ -78,6 +88,6 @@ export class ClrCalendar implements OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.sub.unsubscribe();
+        this._subs.forEach((sub: Subscription) => sub.unsubscribe());
     }
 }

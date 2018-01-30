@@ -15,7 +15,7 @@ export class CalendarViewModel {
     constructor(
         public calendar: CalendarModel,
         private selectedDay: DayModel,
-        private focusedDay: DayModel,
+        private focusableDay: DayModel,
         private today: DayModel,
         public firstDayOfWeek: number) {
             this.generateCalendarView();
@@ -156,8 +156,8 @@ export class CalendarViewModel {
     }
 
     private initializeFocusableDay(): void {
-        if (this.focusedDay && this.isDayInCalendarView(this.focusedDay)) {
-            this.setFocusableFlag(this.focusedDay, true);
+        if (this.focusableDay && this.isDayInCalendarView(this.focusableDay)) {
+            this.setFocusableFlag(this.focusableDay, true);
         } else if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
             this.setFocusableFlag(this.selectedDay, true);
         } else if (this.isDayInCalendarView(this.today)) {
@@ -168,13 +168,26 @@ export class CalendarViewModel {
     }
 
     private setFocusableFlag(day: DayModel, flag: boolean): void {
-        this.currMonthDayViews[day.date - 1].isFocusable = flag;
+        if (day) {
+            this.currMonthDayViews[day.date - 1].isFocusable = flag;
+        }
     }
 
-    updateCalendar(calendar: CalendarModel) {
+    updateCalendar(calendar: CalendarModel, focusableDay: DayModel): void {
         if (!this.calendar.isEqual(calendar)) {
+            this.focusableDay = focusableDay;
             this.calendar = calendar;
             this.generateCalendarView();
+        }
+    }
+
+    updateFocusableDay(day: DayModel): void {
+        if (!this.isDayInCalendarView(day)) {
+
+        } else {
+            this.setFocusableFlag(this.focusableDay, false);
+            this.setFocusableFlag(day, true);
+            this.focusableDay = day;
         }
     }
 }
