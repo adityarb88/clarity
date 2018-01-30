@@ -12,8 +12,13 @@ import {getDay, getNumberOfDaysInTheMonth} from "../utils/date-utils";
 
 export class CalendarViewModel {
 
-    constructor(public calendar: CalendarModel, public firstDayOfWeek: number) {
-        this.generateCalendarView();
+    constructor(
+        public calendar: CalendarModel,
+        private selectedDay: DayModel,
+        private focusedDay: DayModel,
+        private today: DayModel,
+        public firstDayOfWeek: number) {
+            this.generateCalendarView();
     }
 
     private prevMonthDayViews: DayViewModel[] = [];
@@ -39,6 +44,8 @@ export class CalendarViewModel {
 
         this.generateDayViewsFromNextMonth(calYear, calMonth, noOfDaysInNextMonth);
         this.formatView();
+        this.initializeSelectedDay();
+        this.initializeFocusableDay();
     }
 
     /**
@@ -117,35 +124,11 @@ export class CalendarViewModel {
     /**
      * Checks if the Day passed is in the CalendarView.
      */
-    isDayInCalendarView(day: DayModel): boolean {
+    private isDayInCalendarView(day: DayModel): boolean {
         if (!this.calendar.isDayInCalendar(day)) {
             return false;
         }
         return true;
-    }
-
-    /**
-     * If the Day exists in the CalendarView, sets its selected flag
-     */
-    updateSelectedDay(day: DayModel, flag: boolean): void {
-        if (!day) {
-            return;
-        }
-        if (this.isDayInCalendarView(day)) {
-            this.currMonthDayViews[day.date - 1].isSelected = flag;
-        }
-    }
-
-    /**
-     * If the DayModel exists in the matrix, sets its focusable flag
-     */
-    updateFocusableDay(day: DayModel, flag: boolean): void {
-        if (!day) {
-            return;
-        }
-        if (this.isDayInCalendarView(day)) {
-            this.currMonthDayViews[day.date - 1].isFocusable = flag;
-        }
     }
 
     /**
@@ -164,5 +147,34 @@ export class CalendarViewModel {
             calendarView.push(tempArr);
         }
         this._calendarView = calendarView;
+    }
+
+    private initializeSelectedDay(): void {
+        if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
+            this.currMonthDayViews[this.selectedDay.date - 1].isSelected = true;
+        }
+    }
+
+    private initializeFocusableDay(): void {
+        if (this.focusedDay && this.isDayInCalendarView(this.focusedDay)) {
+            this.setFocusableFlag(this.focusedDay, true);
+        } else if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
+            this.setFocusableFlag(this.selectedDay, true);
+        } else if (this.isDayInCalendarView(this.today)) {
+            this.setFocusableFlag(this.today, true);
+        } else {
+            this.setFocusableFlag(new DayModel(this.calendar.year, this.calendar.month, 15), true);
+        }
+    }
+
+    private setFocusableFlag(day: DayModel, flag: boolean): void {
+        this.currMonthDayViews[day.date - 1].isFocusable = flag;
+    }
+
+    updateCalendar(calendar: CalendarModel) {
+        if (!this.calendar.isEqual(calendar)) {
+            this.calendar = calendar;
+            this.generateCalendarView();
+        }
     }
 }

@@ -9,6 +9,10 @@ import {DayModel} from "./day.model";
 export class CalendarModel {
     constructor(public year: number, public month: number) {}
 
+    isEqual(calendar: CalendarModel) {
+        return this.year === calendar.year && this.month === calendar.month;
+    }
+
     isDayInCalendar(day: DayModel): boolean {
         return (this.year === day.year && this.month === day.month);
     }
