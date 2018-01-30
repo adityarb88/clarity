@@ -13,6 +13,7 @@ import {DayViewModel} from "./model/day-view.model";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {DateIOService} from "./providers/date-io.service";
 import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {CalendarModel} from "./model/calendar.model";
 
 @Component({
     selector: "clr-calendar",
@@ -22,17 +23,16 @@ export class ClrCalendar implements OnDestroy {
 
     private sub: Subscription;
 
-    constructor(
-        private _localeHelperService: LocaleHelperService,
-        private _dateNavigationService: DateNavigationService,
-        private _ifOpenService: IfOpenService,
-        private _dateIOService: DateIOService,
-        private _datepickerViewService: DatepickerViewService,
-        private _elRef: ElementRef) {
+    constructor(private _localeHelperService: LocaleHelperService,
+                private _dateNavigationService: DateNavigationService,
+                private _ifOpenService: IfOpenService,
+                private _dateIOService: DateIOService,
+                private _datepickerViewService: DatepickerViewService,
+                private _elRef: ElementRef) {
         this.generateCalendarView();
         this.sub = this._dateNavigationService.calendarChanged.subscribe(() => {
-             this.generateCalendarView();
-             this._datepickerViewService.focusCell(this._elRef);
+            this.calendarViewModel.updateCalendar(this.calendar);
+            this._datepickerViewService.focusCell(this._elRef);
         });
     }
 
@@ -40,81 +40,37 @@ export class ClrCalendar implements OnDestroy {
         return this._localeHelperService.localeDaysNarrow;
     }
 
-    calendarViewModel: CalendarViewModel;
-
-    private generateCalendarView(): void {
-        this.calendarViewModel = new CalendarViewModel(this._dateNavigationService.calendar, this._localeHelperService.firstDayOfWeek);
-        this.updateCalendarFlags();
-    }
-
-    /**
-     * Set the selected and focusable DayModels in the calendar
-     */
-    private updateCalendarFlags(): void {
-        if (this.selectedDay) {
-            this.calendarViewModel.updateSelectedDay(this.selectedDay, true);
-        }
-        const focusableDay: DayModel = this.getFocusableDay();
-        this.calendarViewModel.updateFocusableDay(focusableDay, true);
-    }
-
-    /**
-     * Get the DayModel that should be focusable initially in the calendar.
-     */
-    private getFocusableDay(): DayModel {
-        if (this.focusedDay) {
-            if (this.calendarViewModel.isDayInCalendarView(this.focusedDay)) {
-                return this.focusedDay;
-            } else {
-                this.focusedDay = null;
-            }
-        }
-        if (this.selectedDay && this.calendarViewModel.isDayInCalendarView(this.selectedDay)) {
-            return this.selectedDay;
-        } else if (this.calendarViewModel.isDayInCalendarView(this._dateNavigationService.today)) {
-            return this._dateNavigationService.today;
-        } else {
-            return new DayModel(this._dateNavigationService.calendar.year, this._dateNavigationService.calendar.month, 15);
-        }
-    }
-
-    get focusedDay(): DayModel {
-        return this._dateNavigationService.focusedDay;
-    }
-
-    set focusedDay(day: DayModel) {
-        if (day && !day.isEqual(this.focusedDay)) {
-            if (this.calendarViewModel) {
-                this.calendarViewModel.updateFocusableDay(this.focusedDay, false);
-                this.calendarViewModel.updateFocusableDay(day, true);
-            }
-            this._dateNavigationService.focusedDay = day;
-        }
+    get calendar(): CalendarModel {
+        return this._dateNavigationService.calendar;
     }
 
     get selectedDay(): DayModel {
         return this._dateNavigationService.selectedDay;
     }
 
-    set selectedDay(day: DayModel) {
-        if (day && !day.isEqual(this.selectedDay)) {
-            if (this.calendarViewModel) {
-                this.calendarViewModel.updateSelectedDay(this.selectedDay, false);
-                this.calendarViewModel.updateSelectedDay(day, true);
-            }
-            this._dateNavigationService.selectedDay = day;
-        }
+    get focusedDay(): DayModel {
+        return this._dateNavigationService.focusedDay;
     }
 
-    onDayViewFocus(dayView: DayViewModel): void {
-        this.focusedDay = dayView.dayModel;
+    get today(): DayModel {
+        return this._dateNavigationService.today;
     }
 
-    setDay(dayView: DayViewModel): void {
-        const day: DayModel = dayView.dayModel;
-        this.selectedDay = day;
-        this._dateIOService.updateDate(day.toDate());
-        this._ifOpenService.open = false;
+    calendarViewModel: CalendarViewModel;
+
+    private generateCalendarView(): void {
+        this.calendarViewModel
+            = new CalendarViewModel(
+            this.calendar,
+            this.selectedDay,
+            this.focusedDay,
+            this.today,
+            this._localeHelperService.firstDayOfWeek
+        );
+    }
+
+    onDayViewFocus(): void {
+
     }
 
     ngAfterViewInit() {
