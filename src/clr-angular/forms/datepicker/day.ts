@@ -8,6 +8,9 @@
 import {Component, Input} from "@angular/core";
 import {DayViewModel} from "./model/day-view.model";
 import {DateNavigationService} from "./providers/date-navigation.service";
+import {IfOpenService} from "../../utils/conditional/if-open.service";
+import {DateIOService} from "./providers/date-io.service";
+import {DayModel} from "./model/day.model";
 
 @Component({
     selector: "clr-day",
@@ -26,7 +29,10 @@ import {DateNavigationService} from "./providers/date-navigation.service";
     `
 })
 export class ClrDay {
-    constructor(private _dateNavigationService: DateNavigationService) {
+    constructor(
+        private _dateNavigationService: DateNavigationService,
+        private _dateIOService: DateIOService,
+        private _ifOpenService: IfOpenService) {
     }
 
     @Input("clrDayView") dayView: DayViewModel;
@@ -36,6 +42,9 @@ export class ClrDay {
     }
 
     setDay(dayView: DayViewModel): void {
-
+        const day: DayModel = dayView.dayModel;
+        this._dateNavigationService.selectedDay = day;
+        this._dateIOService.updateDate(day.toDate());
+        this._ifOpenService.open = false;
     }
 }

@@ -13,15 +13,25 @@ import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../../utils/key-
 
 @Injectable()
 export class DateNavigationService {
-    constructor() {}
 
-    calendar: CalendarModel;
+    private _calendar: CalendarModel;
+
+    get calendar(): CalendarModel {
+        return this._calendar;
+    }
+
+    set calendar(value: CalendarModel) {
+        if (!this._calendar.isEqual(value)) {
+            this._calendar = value;
+            this._calendarChanged.next();
+        }
+    }
 
     initializeCalendar(): void {
         if (this.selectedDay) {
-            this.calendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
+            this._calendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
         } else {
-            this.calendar = new CalendarModel(this.currentYear, this.currentMonth);
+            this._calendar = new CalendarModel(this.currentYear, this.currentMonth);
         }
     }
 
@@ -64,35 +74,31 @@ export class DateNavigationService {
     public focusedDay: DayModel;
 
     changeMonth(month: number): void {
-        this.calendar.month = month;
+        this._calendar.month = month;
     }
 
     changeYear(year: number): void {
-        this.calendar.year = year;
+        this._calendar.year = year;
     }
 
     moveToNextMonth(): void {
-        this.calendar = this.calendar.nextMonth();
-        this._calendarChanged.next();
+        this.calendar = this._calendar.nextMonth();
     }
 
     moveToPreviousMonth(): void {
-        this.calendar = this.calendar.previousMonth();
-        this._calendarChanged.next();
+        this.calendar = this._calendar.previousMonth();
     }
 
     moveToCurrentMonth(): void {
-        this.calendar = this.calendar.currentMonth();
-        this._calendarChanged.next();
+        this.calendar = this._calendar.currentMonth();
     }
 
     private adjustFocusDate(value: number): void {
         this.focusedDay = this.focusedDay.incrementBy(value);
-        if (this.calendar.isDayInCalendar(this.focusedDay)) {
+        if (this._calendar.isDayInCalendar(this.focusedDay)) {
             this._focusedDayChanged.next();
         } else {
             this.calendar = this.focusedDay.getCalendar();
-            this._calendarChanged.next();
         }
     }
 
@@ -108,7 +114,7 @@ export class DateNavigationService {
         return this._focusedDayChanged.asObservable();
     }
 
-    adjustFocusOnKeyDownEvent(event: KeyboardEvent) {
+    adjustCalendarFocusOnKeyDownEvent(event: KeyboardEvent) {
         if (event && this.focusedDay) {
             switch (event.keyCode) {
                 case UP_ARROW:

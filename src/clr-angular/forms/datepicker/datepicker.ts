@@ -91,6 +91,11 @@ export class ClrDatepicker implements OnDestroy {
         }
     }
 
+    @HostBinding("attr.placeholder")
+    get placeholderText(): string {
+        return this._dateIOService.placeholderText;
+    }
+
     @HostBinding("attr.type")
     get isActive(): string {
         return "text";
