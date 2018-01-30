@@ -93,7 +93,7 @@ export class DateNavigationService {
         this.calendar = this._calendar.currentMonth();
     }
 
-    private adjustFocusDate(value: number): void {
+    private incrementFocusDay(value: number): void {
         this.focusedDay = this.focusedDay.incrementBy(value);
         if (this._calendar.isDayInCalendar(this.focusedDay)) {
             this._focusedDayChanged.next();
@@ -119,19 +119,19 @@ export class DateNavigationService {
             switch (event.keyCode) {
                 case UP_ARROW:
                     event.preventDefault();
-                    this.adjustFocusDate(-7);
+                    this.incrementFocusDay(-7);
                     break;
                 case DOWN_ARROW:
                     event.preventDefault();
-                    this.adjustFocusDate(7);
+                    this.incrementFocusDay(7);
                     break;
                 case LEFT_ARROW:
                     event.preventDefault();
-                    this.adjustFocusDate(-1);
+                    this.incrementFocusDay(-1);
                     break;
                 case RIGHT_ARROW:
                     event.preventDefault();
-                    this.adjustFocusDate(1);
+                    this.incrementFocusDay(1);
                     break;
                 default:
                     break;  // No default case. TSLint x-(

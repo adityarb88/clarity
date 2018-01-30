@@ -3,11 +3,12 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {AfterViewInit, Component, ElementRef} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, HostListener} from "@angular/core";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {YearRangeModel} from "./model/year-range.model";
 import {ViewManagerService} from "./providers/view-manager.service";
 import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 
 @Component({
     selector: "clr-yearpicker",
@@ -40,11 +41,10 @@ import {DatepickerViewService} from "./providers/datepicker-view.service";
     }
 })
 export class ClrYearpicker implements AfterViewInit {
-    constructor(
-        private _dateNavigationService: DateNavigationService,
-        private _viewManagerService: ViewManagerService,
-        private _datepickerViewService: DatepickerViewService,
-        private _elfRef: ElementRef) {
+    constructor(private _dateNavigationService: DateNavigationService,
+                private _viewManagerService: ViewManagerService,
+                private _datepickerViewService: DatepickerViewService,
+                private _elRef: ElementRef) {
         this.yearRangeModel = new YearRangeModel(this._dateNavigationService.calendar.year);
         this._focusedYear = this._dateNavigationService.calendar.year;
     }
@@ -81,7 +81,39 @@ export class ClrYearpicker implements AfterViewInit {
         return year === this._focusedYear ? 0 : -1;
     }
 
+    @HostListener("keydown", ["$event"])
+    onKeyDown(event: KeyboardEvent) {
+        if (event) {
+            const keyCode: number = event.keyCode;
+            if (keyCode === UP_ARROW) {
+                event.preventDefault();
+                this.incrementFocusYearBy(-1);
+            } else if (keyCode === DOWN_ARROW) {
+                event.preventDefault();
+                this.incrementFocusYearBy(1);
+            } else if (keyCode === RIGHT_ARROW) {
+                event.preventDefault();
+                this.incrementFocusYearBy(5);
+            } else if (keyCode === LEFT_ARROW) {
+                event.preventDefault();
+                this.incrementFocusYearBy(-5);
+            }
+        }
+    }
+
+    incrementFocusYearBy(value: number): void {
+        this._focusedYear = this._focusedYear + value;
+        if (!this.yearRangeModel.inRange(this._focusedYear)) {
+            if (value > 0) {
+                this.yearRangeModel = this.yearRangeModel.nextDecade();
+            } else {
+                this.yearRangeModel = this.yearRangeModel.previousDecade();
+            }
+        }
+        this._datepickerViewService.focusCell(this._elRef);
+    }
+
     ngAfterViewInit() {
-        this._datepickerViewService.focusCell(this._elfRef);
+        this._datepickerViewService.focusCell(this._elRef);
     }
 }

@@ -42,4 +42,8 @@ export class YearRangeModel {
     currentDecade(): YearRangeModel {
         return new YearRangeModel((new Date()).getFullYear());
     }
+
+    inRange(value: number): boolean {
+        return this.yearRange.indexOf(value) > -1;
+    }
 }
