@@ -32,6 +32,7 @@ export class ClrCalendar implements OnDestroy {
         this.generateCalendarView();
         this.sub = this._dateNavigationService.calendarChanged.subscribe(() => {
              this.generateCalendarView();
+             this._datepickerViewService.focusCell(this._elRef);
         });
     }
 
