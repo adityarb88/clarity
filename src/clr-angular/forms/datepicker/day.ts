@@ -5,15 +5,37 @@
  */
 
 
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
+import {DayViewModel} from "./model/day-view.model";
+import {DateNavigationService} from "./providers/date-navigation.service";
 
 @Component({
     selector: "clr-day",
     template: `
-        <button></button>
-    `,
-    host: {"[class.day]": "true"},
+        <button
+            class="date"
+            type="button"
+            [class.is-today]="dayView.isTodaysDate"
+            [class.is-disabled]="dayView.isDisabled"
+            [class.is-active]="dayView.isSelected"
+            [attr.tabindex]="dayView.tabIndex"
+            (click)="setDay(dayView)"
+            (focus)="onDayViewFocus(dayView)">
+            {{dayView.dayModel.date}}
+        </button>
+    `
 })
 export class ClrDay {
+    constructor(private _dateNavigationService: DateNavigationService) {
+    }
 
+    @Input("clrDayView") dayView: DayViewModel;
+
+    onDayViewFocus(dayView: DayViewModel) {
+        this._dateNavigationService.focusedDay = dayView.dayModel;
+    }
+
+    setDay(dayView: DayViewModel): void {
+
+    }
 }
