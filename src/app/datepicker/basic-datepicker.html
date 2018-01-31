@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
@@ -9,7 +9,7 @@
 <div>
     <h6>a. ngModel</h6>
     <p></p>
-    <input type="date" clrDatepicker [(ngModel)]="model">
+    <input type="date" clrDate [(ngModel)]="model">
 </div>
 <div class="row">
     <div class="col-xs-12 col-md-10 col-lg-5">
@@ -29,21 +29,21 @@
 </div>
 <pre>
     <code clr-code-highlight="language-html">
-        &lt;input type=&quot;date&quot; clrDatepicker [(ngModel)]=&quot;model&quot;&gt;
+        &lt;input type=&quot;date&quot; clrDate [(ngModel)]=&quot;model&quot;&gt;
     </code>
 </pre>
 
 <div>
-    <h6>b. clrDatepicker</h6>
+    <h6>b. clrDate</h6>
     <p></p>
-    <input type="date" clrDatepicker (clrDatepickerChange)="datepickerChange($event)">
+    <input type="date" clrDate (clrDateChange)="datepickerChange($event)">
 </div>
 <div class="row">
     <div class="col-xs-12 col-md-10 col-lg-5">
         <table class="table">
             <thead>
             <tr>
-                <th>(clrDatepickerChange)</th>
+                <th>(clrDateChange)</th>
             </tr>
             </thead>
             <tbody>
@@ -57,17 +57,17 @@
 
 <pre>
     <code clr-code-highlight="language-html">
-         &lt;input type=&quot;date&quot; clrDatepicker (clrDatepickerChange)=&quot;datepickerChange($event)&quot;&gt;
+         &lt;input type=&quot;date&quot; clrDate (clrDateChange)=&quot;datepickerChange($event)&quot;&gt;
     </code>
 </pre>
 
 <h4>2. Datepicker - Wrapper Provided</h4>
 
 <div>
-    <h6>a. clr-datepicker-container</h6>
+    <h6>a. clr-date-container</h6>
     <p></p>
     <clr-date-container>
-        <input [clrDatepicker]="dateContainer" (clrDatepickerChange)="dateContainerChange($event)">
+        <input [clrDate]="dateContainer" (clrDateChange)="dateContainerChange($event)">
     </clr-date-container>
 </div>
 
@@ -76,7 +76,7 @@
         <table class="table">
             <thead>
             <tr>
-                <th>[(clrDatepicker)]</th>
+                <th>[(clrDate)]</th>
             </tr>
             </thead>
             <tbody>
@@ -91,7 +91,7 @@
 <pre style="margin-bottom: 120px">
     <code clr-code-highlight="language-html">
         &lt;clr-date-container&gt;
-            &lt;input type=&quot;date&quot; [clrDatepicker]="datepickerContainer" (clrDatepickerChange)=&quot;datepickerContainerChange($event)&quot;&gt;
+            &lt;input type=&quot;date&quot; [clrDate]="datepickerContainer" (clrDateChange)=&quot;datepickerContainerChange($event)&quot;&gt;
         &lt;/clr-date-container&gt;
     </code>
 </pre>

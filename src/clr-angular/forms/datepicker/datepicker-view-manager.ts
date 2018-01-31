@@ -8,9 +8,6 @@ import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
 import {ViewManagerService} from "./providers/view-manager.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {DayModel} from "./model/day.model";
-import {DateIOService} from "./providers/date-io.service";
 import {DatepickerViewService} from "./providers/datepicker-view.service";
 
 @Component({
@@ -29,9 +26,7 @@ export class ClrDatepickerViewManager extends AbstractPopover {
         @SkipSelf() parent: ElementRef,
         private _injector: Injector,
         private _elRef: ElementRef,
-        private _viewManagerService: ViewManagerService,
-        private _dateNavigationService: DateNavigationService,
-        private _dateIOService: DateIOService) {
+        private _viewManagerService: ViewManagerService) {
         super(_injector, parent);
         this.configurePopover();
     }

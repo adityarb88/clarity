@@ -5,7 +5,7 @@
  */
 
 import {Injectable} from "@angular/core";
-import {DATEPICKER_ENABLE_BREAKPOINT} from "../utils/constants";
+import {DATEPICKER_ENABLE_BREAKPOINT} from "../../../utils/breakpoints/breakpoints";
 
 @Injectable()
 export class DatepickerEnabledService {
@@ -26,17 +26,10 @@ export class DatepickerEnabledService {
         //"In summary, we recommend looking for the string 'Mobi'
         // anywhere in the User Agent to detect a mobile device."
         if (window) {
-            if (window.innerWidth < DATEPICKER_ENABLE_BREAKPOINT && this.isUserAgentMobile()) {
+            if (window.innerWidth < DATEPICKER_ENABLE_BREAKPOINT && this._isUserAgentMobile) {
                 return false;
             }
         }
         return true;
-    }
-
-    /**
-     * Checks if the user agent string has the word "mobile" in it.
-     */
-    private isUserAgentMobile(): boolean {
-        return this._isUserAgentMobile;
     }
 }
