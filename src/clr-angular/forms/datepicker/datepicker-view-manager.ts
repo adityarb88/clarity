@@ -18,8 +18,7 @@ import {DatepickerViewService} from "./providers/datepicker-view.service";
     templateUrl: "./datepicker-view-manager.html",
     providers: [
         ViewManagerService,
-        DatepickerViewService,
-        DateNavigationService
+        DatepickerViewService
     ],
     host: {
         "[class.calendar]": "true"
@@ -35,16 +34,6 @@ export class ClrDatepickerViewManager extends AbstractPopover {
         private _dateIOService: DateIOService) {
         super(_injector, parent);
         this.configurePopover();
-        this.processUserInput();
-        this._dateNavigationService.initializeCalendar();
-    }
-
-    private processUserInput(): void {
-        const date: Date = this._dateIOService.processInput();
-        if (date) {
-            const dayModel: DayModel = new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
-            this._dateNavigationService.selectedDay = dayModel;
-        }
     }
 
     /**

@@ -25,6 +25,8 @@ import {EmptyAnchor} from "../../utils/host-wrapping/empty-anchor";
 import {ClrDateContainer} from "./date-container";
 import {DateIOService} from "./providers/date-io.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DayModel} from "./model/day.model";
 
 @Directive({
     selector: "[clrDatepicker]",
@@ -43,7 +45,8 @@ export class ClrDatepicker implements OnDestroy {
                 private cfr: ComponentFactoryResolver,
                 @Optional() private _ngModel: NgModel,
                 @Optional() private _localeHelperService: LocaleHelperService,
-                @Optional() private _dateIOService: DateIOService) {
+                @Optional() private _dateIOService: DateIOService,
+                @Optional() private _dateNavigationService: DateNavigationService) {
         if (!container) {
             this.compRef = this.wrapContainer();
             this.populateContainerServices();
@@ -55,6 +58,7 @@ export class ClrDatepicker implements OnDestroy {
     private populateContainerServices(): void {
         this._localeHelperService = this.compRef.injector.get(LocaleHelperService);
         this._dateIOService = this.compRef.injector.get(DateIOService);
+        this._dateNavigationService = this.compRef.injector.get(DateNavigationService);
     }
 
     /**
@@ -85,8 +89,8 @@ export class ClrDatepicker implements OnDestroy {
                     this._ngModel.control.setValue(dateStr);
                 }
             }));
-            this._subscriptions.push(this._dateIOService.dateUpdated.subscribe((date) => {
-                this._dateUpdated.emit(date);
+            this._subscriptions.push(this._dateIOService.dateUpdated.subscribe(() => {
+                this._dateUpdated.emit(this._dateIOService.date);
             }));
         }
     }
@@ -117,9 +121,9 @@ export class ClrDatepicker implements OnDestroy {
 
     @Input("clrDatepicker")
     set date(value: Date) {
-        if (value) {
-            const dateStr: string = this._dateIOService.processDate(value);
-            this.elRef.nativeElement.value = dateStr;
+        this._dateIOService.inputDate = this._dateIOService.toLocaleDisplayFormatString(value);
+        if (this._dateIOService.date) {
+            this.elRef.nativeElement.value = this._dateIOService.inputDate;
         }
     }
 

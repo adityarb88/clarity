@@ -33,6 +33,7 @@ export class DateNavigationService {
         } else {
             this._calendar = new CalendarModel(this.currentYear, this.currentMonth);
         }
+        this.todaysFullDate = new Date();
     }
 
     /**
