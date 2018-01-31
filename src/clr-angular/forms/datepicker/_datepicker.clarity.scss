@@ -17,7 +17,7 @@ $clr-calendar-height: (8 * $clr-calendar-click-target) + (2 * $clr-calendar-padd
 
 $clr-calendar-btn-color: $action-blues-light-midtone;
 $clr-calendar-btn-hover-focus-color: $gray-light;
-$clr-calendar-btn-padding: 0.25rem;
+$clr-calendar-btn-padding: 0;
 
 $clr-calendar-month-cell-height: 2rem;
 $clr-calendar-month-cell-padding: 0.5rem;
@@ -31,6 +31,9 @@ $clr-calendar-today-date-cell-font-weight: 600;
 $clr-calendar-active-cell-background-color: $action-blues-light-midtone;
 $clr-calendar-active-focus-cell-background-color: $action-blues-dark-midtone;
 $clr-calendar-active-cell-color: $clr-white;
+
+$clr-day-font-size: 0.5rem;
+$clr-switcher-width: $clr-calendar-click-target * 3;
 
 @mixin generate-calendar-button(
     $height: $clr-calendar-click-target,
@@ -97,13 +100,9 @@ $clr-calendar-active-cell-color: $clr-white;
         //Other Props
         background: $clr-calendar-background-color;
         border: 1px solid $clr-calendar-border-color;
-        border-radius: 3px;
+        border-radius: $clr-default-borderradius;
         overflow: hidden;
         z-index: map-get($clr-layers,dropdown-menu);
-
-        //TODO: doesnt really need a focus style
-        //Have to add it because of a focus trap bug which focuses back on the container
-        outline: none;
     }
 
     .calendar-header {
@@ -118,8 +117,9 @@ $clr-calendar-active-cell-color: $clr-white;
     }
 
     .year-switchers {
-        justify-content: space-between;
         flex: 0 0 auto;
+        width: $clr-switcher-width;
+        align-self: center;
     }
 
     .calendar-table {
@@ -146,7 +146,7 @@ $clr-calendar-active-cell-color: $clr-white;
     }
 
     .day {
-        font-size: 12px;
+        font-size: $clr-day-font-size;
         font-weight: 600;
     }
 
@@ -193,19 +193,18 @@ $clr-calendar-active-cell-color: $clr-white;
         }
     }
 
+    .calendar-pickers {
+        display: flex;
+    }
+
     .monthpicker-trigger,
     .yearpicker-trigger {
         //Dimensions
-        min-width: 1.5rem;
+        min-width: 2rem;
 
         //Other Props
         text-align: center;
         @include overflow-ellipsis();
-    }
-
-    .monthpicker-trigger {
-        //Dimensions
-        padding: 0;
     }
 
     .monthpicker,
@@ -248,7 +247,7 @@ $clr-calendar-active-cell-color: $clr-white;
     }
 
     .month {
-        text-align: left;
+        text-align: center;
         @include overflow-ellipsis();
     }
 

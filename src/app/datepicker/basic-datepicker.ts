@@ -11,11 +11,13 @@ import {Component, LOCALE_ID} from "@angular/core";
     styleUrls: ["./datepicker.demo.scss"],
     templateUrl: "./basic-datepicker.html",
     providers: [{provide: LOCALE_ID, useValue: "en"}],
-    // providers: [{provide: LOCALE_ID, useValue: "ar-AE"}]
-    // providers: [{provide: LOCALE_ID, useValue: "hi"}]
-    // providers: [{provide: LOCALE_ID, useValue: "ak"}]
-    // providers: [{provide: LOCALE_ID, useValue: "fr"}]
-    // providers: [{provide: LOCALE_ID, useValue: "ru-UA"}]
+     //providers: [{provide: LOCALE_ID, useValue: "ar-AE"}]
+    //providers: [{provide: LOCALE_ID, useValue: "hi"}]
+     //providers: [{provide: LOCALE_ID, useValue: "ak"}]
+    //providers: [{provide: LOCALE_ID, useValue: "fr"}]
+     //providers: [{provide: LOCALE_ID, useValue: "ru-UA"}]
+    //providers: [{provide: LOCALE_ID, useValue: "de"}]
 })
 export class BasicDatepickerDemo {
+    //keyboard enter on left and right arrow should not reassign focus
 }
