@@ -23,11 +23,7 @@ export class DayModel {
      * Converts the CalendarDate into the Javascript Date object.
      */
     toDate(): Date {
-        const date: Date = new Date();
-        date.setMonth(this.month);
-        date.setFullYear(this.year);
-        date.setDate(this.date);
-        return date;
+        return new Date(this.year, this.month, this.date);
     }
 
     incrementBy(value: number): DayModel {
