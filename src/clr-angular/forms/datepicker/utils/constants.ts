@@ -48,4 +48,4 @@ export const TOTAL_DAYS_IN_DAYS_VIEW: number = NO_OF_DAYS_IN_A_WEEK * NO_OF_ROWS
 
 // iPad mini screen width
 // http://stephen.io/mediaqueries/#iPadMini
-export const DATEPICKER_ACTIVE_BREAKPOINT: number = 768;
+export const DATEPICKER_ENABLE_BREAKPOINT: number = 768;

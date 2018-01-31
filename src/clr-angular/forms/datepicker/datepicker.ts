@@ -27,6 +27,7 @@ import {DateIOService} from "./providers/date-io.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DayModel} from "./model/day.model";
+import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 
 @Directive({
     selector: "[clrDatepicker]",
@@ -46,7 +47,8 @@ export class ClrDatepicker implements OnDestroy {
                 @Optional() private _ngModel: NgModel,
                 @Optional() private _localeHelperService: LocaleHelperService,
                 @Optional() private _dateIOService: DateIOService,
-                @Optional() private _dateNavigationService: DateNavigationService) {
+                @Optional() private _dateNavigationService: DateNavigationService,
+                @Optional() private _datepickerEnabledService: DatepickerEnabledService) {
         if (!container) {
             this.compRef = this.wrapContainer();
             this.populateContainerServices();
@@ -59,6 +61,7 @@ export class ClrDatepicker implements OnDestroy {
         this._localeHelperService = this.compRef.injector.get(LocaleHelperService);
         this._dateIOService = this.compRef.injector.get(DateIOService);
         this._dateNavigationService = this.compRef.injector.get(DateNavigationService);
+        this._datepickerEnabledService = this.compRef.injector.get(DatepickerEnabledService);
     }
 
     /**
@@ -101,8 +104,8 @@ export class ClrDatepicker implements OnDestroy {
     }
 
     @HostBinding("attr.type")
-    get isActive(): string {
-        return "text";
+    get isEnabled(): string {
+        return this._datepickerEnabledService.isEnabled ? "text" : "date";
     }
 
     @HostListener("change", ["$event.target"])
