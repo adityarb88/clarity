@@ -46,4 +46,8 @@ export class YearRangeModel {
     inRange(value: number): boolean {
         return this.yearRange.indexOf(value) > -1;
     }
+
+    get midNumber(): number {
+        return this.yearRange[Math.floor(this.yearRange.length/2)];
+    }
 }
