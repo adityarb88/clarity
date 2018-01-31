@@ -28,6 +28,7 @@ export class DateNavigationService {
     }
 
     initializeCalendar(): void {
+        this.focusedDay = null; //Can be removed later on the store focus
         if (this.selectedDay) {
             this._calendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
         } else {
