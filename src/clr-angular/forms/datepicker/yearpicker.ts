@@ -14,13 +14,13 @@ import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-cod
     selector: "clr-yearpicker",
     template: `
         <div class="year-switchers">
-            <button class="calendar-btn" type="button" (click)="previousDecade()">
+            <button class="calendar-btn switcher" type="button" (click)="previousDecade()">
                 <clr-icon shape="angle" dir="left"></clr-icon>
             </button>
-            <button class="calendar-btn" type="button" (click)="currentDecade()">
+            <button class="calendar-btn switcher" type="button" (click)="currentDecade()">
                 <clr-icon shape="event"></clr-icon>
             </button>
-            <button class="calendar-btn" type="button" (click)="nextDecade()">
+            <button class="calendar-btn switcher" type="button" (click)="nextDecade()">
                 <clr-icon shape="angle" dir="right"></clr-icon>
             </button>
         </div>
