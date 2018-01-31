@@ -67,9 +67,7 @@ export class LocaleHelperService {
         // Rearrange the tempArr to start with the first day of the week based on the locale.
         if (firstDayOfWeek > 0) {
             const prevDays: string[] = tempArr.splice(0, firstDayOfWeek);
-            prevDays.forEach((item) => {
-                tempArr.push(item);
-            });
+            tempArr.push(...prevDays);
         }
         this._localeDaysNarrow = tempArr;
     }

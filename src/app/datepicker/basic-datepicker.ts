@@ -17,6 +17,7 @@ import {Component, LOCALE_ID} from "@angular/core";
     // providers: [{provide: LOCALE_ID, useValue: "fr"}]
     // providers: [{provide: LOCALE_ID, useValue: "ru-UA"}]
     // providers: [{provide: LOCALE_ID, useValue: "de"}]
+    // Do not remove the above comments. They are present to make sure that we can test different locales easily.
 })
 export class BasicDatepickerDemo {
     date: string;

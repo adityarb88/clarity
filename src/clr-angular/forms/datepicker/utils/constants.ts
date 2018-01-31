@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -45,7 +45,3 @@ export const BIG_ENDIAN: InputDateDisplayFormat = {
 export const NO_OF_DAYS_IN_A_WEEK: number = 7;
 export const NO_OF_ROWS_IN_CALENDAR_VIEW: number = 6;
 export const TOTAL_DAYS_IN_DAYS_VIEW: number = NO_OF_DAYS_IN_A_WEEK * NO_OF_ROWS_IN_CALENDAR_VIEW;
-
-// iPad mini screen width
-// http://stephen.io/mediaqueries/#iPadMini
-export const DATEPICKER_ENABLE_BREAKPOINT: number = 768;

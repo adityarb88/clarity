@@ -12,10 +12,11 @@ import {ClarityModule} from "../../clr-angular";
 import {BasicDatepickerDemo} from "./basic-datepicker";
 import {DatepickerDemo} from "./datepicker.demo";
 import {ROUTING} from "./datepicker.demo.routing";
+import {DatepickerInFormDemo} from "./datepicker-in-form";
 
 @NgModule({
     imports: [CommonModule, ClarityModule, ROUTING, FormsModule],
-    declarations: [DatepickerDemo, BasicDatepickerDemo],
-    exports: [DatepickerDemo, BasicDatepickerDemo]
+    declarations: [DatepickerDemo, BasicDatepickerDemo, DatepickerInFormDemo],
+    exports: [DatepickerDemo, BasicDatepickerDemo, DatepickerInFormDemo]
 })
 export default class DatepickerDemoModule {}

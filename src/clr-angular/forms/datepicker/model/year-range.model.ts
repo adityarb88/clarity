@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-const NO_YEAR_IN_VIEW: number = 10;
+const YEARS_TO_DISPLAY: number = 10;
 
 export class YearRangeModel {
     constructor(private year: number) {
@@ -18,9 +18,9 @@ export class YearRangeModel {
      * eg: If 2018 is passed the output will be [2010, 2011, ..., 2019]
      */
     private generateYearRange() {
-        const remainder: number = this.year % NO_YEAR_IN_VIEW;
+        const remainder: number = this.year % YEARS_TO_DISPLAY;
         const floor: number = this.year - remainder;
-        const ceil: number = floor + NO_YEAR_IN_VIEW;
+        const ceil: number = floor + YEARS_TO_DISPLAY;
         this.yearRange = this.generateRange(floor, ceil);
     }
 
