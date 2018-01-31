@@ -93,6 +93,7 @@ export class DateNavigationService {
 
     moveToCurrentMonth(): void {
         this.calendar = this._calendar.currentMonth();
+        this._focusOnCalendar.next();
     }
 
     private incrementFocusDay(value: number): void {
@@ -102,12 +103,19 @@ export class DateNavigationService {
         } else {
             this.calendar = this.focusedDay.getCalendar();
         }
+        this._focusOnCalendar.next();
     }
 
     private _calendarChanged: Subject<void> = new Subject<void>();
 
     get calendarChanged(): Observable<void> {
         return this._calendarChanged.asObservable();
+    }
+
+    private _focusOnCalendar: Subject<boolean> = new Subject<boolean>();
+
+    get focusOnCalendar(): Observable<boolean> {
+        return this._focusOnCalendar.asObservable();
     }
 
     private _focusedDayChanged: Subject<void> = new Subject<void>();
