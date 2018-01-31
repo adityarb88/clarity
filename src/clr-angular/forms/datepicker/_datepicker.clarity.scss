@@ -45,11 +45,12 @@ $clr-switcher-width: $clr-calendar-click-target * 3;
     margin: 0 !important; //Because stupid forms target buttons directly. We really need to refactor forms.
 
     //Other Props
-    line-height: $clr-calendar-click-target;
+    color: inherit;
     border: none;
     border-radius: $clr-default-borderradius;
     background: none;
     cursor: pointer;
+    line-height: $clr-calendar-click-target;
 }
 
 @mixin generate-calendar-focus-style() {
@@ -155,7 +156,6 @@ $clr-switcher-width: $clr-calendar-click-target * 3;
         @include generate-calendar-focus-style();
 
         //Other Props
-        color: $clr-calendar-btn-color;
         font-size: $clr-calendar-picker-btn-font-size;
         font-weight: $clr-calendar-picker-btn-font-weight;
     }
@@ -197,12 +197,17 @@ $clr-switcher-width: $clr-calendar-click-target * 3;
         display: flex;
     }
 
+    .switcher {
+        color: $clr-calendar-btn-color;
+    }
+
     .monthpicker-trigger,
     .yearpicker-trigger {
         //Dimensions
         min-width: 2rem;
 
         //Other Props
+        color: $clr-calendar-btn-color;
         text-align: center;
         @include overflow-ellipsis();
     }
@@ -231,7 +236,6 @@ $clr-switcher-width: $clr-calendar-click-target * 3;
         width: 126px;
 
         //Other Props
-        color: $clr-calendar-btn-color;
         font-size: $clr-calendar-picker-btn-font-size;
         font-weight: $clr-calendar-picker-btn-font-weight;
         outline-offset: -5px;
