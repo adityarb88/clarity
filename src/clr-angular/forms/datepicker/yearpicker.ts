@@ -71,6 +71,7 @@ export class ClrYearpicker implements AfterViewInit {
 
     currentDecade(): void {
         this.yearRangeModel = this.yearRangeModel.currentDecade();
+        this._datepickerViewService.focusCell(this._elRef);
     }
 
     nextDecade(): void {
@@ -78,7 +79,16 @@ export class ClrYearpicker implements AfterViewInit {
     }
 
     getTabIndex(year: number): number {
-        return year === this._focusedYear ? 0 : -1;
+        let focusYear: number = -1;
+        if (this.yearRangeModel.inRange(this._focusedYear)) {
+            focusYear = this._focusedYear;
+        } else if(this.yearRangeModel.inRange(this.calendarYear)) {
+            focusYear = this.calendarYear;
+        } else {
+            focusYear = this.yearRangeModel.midNumber;
+        }
+        this._focusedYear = focusYear;
+        return year === focusYear ? 0 : -1;
     }
 
     @HostListener("keydown", ["$event"])
