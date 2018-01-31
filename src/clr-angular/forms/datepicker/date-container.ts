@@ -10,20 +10,22 @@ import {DateIOService} from "./providers/date-io.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DayModel} from "./model/day.model";
 import {Subscription} from "rxjs/Subscription";
+import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 
 @Component({
     selector: "clr-date-container",
     template: `
         <ng-content></ng-content>
-        <button 
-            type="button" 
-            class="datepicker-trigger" 
-            (click)="toggleCalendar($event)">
-            <clr-icon shape="calendar"></clr-icon>
-        </button>
-        <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>
+            <button 
+                type="button" 
+                class="datepicker-trigger" 
+                (click)="toggleCalendar($event)"
+                *ngIf="isEnabled">
+                <clr-icon shape="calendar"></clr-icon>
+            </button>
+            <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>
     `,
-    providers: [IfOpenService, LocaleHelperService, DateIOService, DateNavigationService],
+    providers: [IfOpenService, LocaleHelperService, DateIOService, DateNavigationService, DatepickerEnabledService],
     host: {"[class.date-container]": "true"}
 })
 export class ClrDateContainer {
@@ -32,12 +34,17 @@ export class ClrDateContainer {
     constructor(
         private _ifOpenService: IfOpenService,
         private _dateNavigationService: DateNavigationService,
-        private _dateIOService: DateIOService) {
+        private _dateIOService: DateIOService,
+        private _datepickerEnabledService: DatepickerEnabledService) {
         this._sub = this._ifOpenService.openChange.subscribe((open) => {
             if (open) {
                 this.initializeCalendar();
             }
         });
+    }
+
+    get isEnabled(): boolean {
+        return this._datepickerEnabledService.isEnabled;
     }
 
     /**
