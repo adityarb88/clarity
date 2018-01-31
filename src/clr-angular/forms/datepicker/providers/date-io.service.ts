@@ -26,18 +26,56 @@ export class DateIOService {
         return this._inputDate;
     }
 
+    /**
+     * This setter is used for setting the inputDate when the user types in the input.
+     */
     set inputDate(value: string) {
-        this._inputDate = value;
-        const date: Date = this.processInput();
+        const date: Date = this.processInput(value);
         if (date) {
-            this._dateUpdated.next(date);
+            this.setDate(date);
+            this._inputDate = value;
         } else {
             this._inputDate = "";
+            this.setDate(null);
         }
     }
 
-    processInput(): Date {
-        return this.isValidInput(this._inputDate);
+    /**
+     * Function to update the date and emit it to the dateChanged subscribers.
+     * This method is used when the user selects the date from the calendar.
+     */
+    updateDate(date: Date) {
+        this.inputDate = this.toLocaleDisplayFormatString(date);
+        this._dateStrUpdated.next(this.inputDate);
+    }
+
+    private _date: Date;
+
+    get date(): Date {
+        return this._date;
+    }
+
+    //Not a setter because I want to keep this private
+    private setDate(value: Date) {
+        if (!this.areEqualDates(this.date, value)) {
+            this._date = value;
+            this._dateUpdated.next();
+        }
+    }
+
+    private areEqualDates(date1: Date, date2: Date) {
+        if (!date1 || !date2) {
+            return false;
+        }
+        return (
+            date1.getDate() === date2.getDate()
+            && date1.getMonth() === date2.getMonth()
+            && date1.getFullYear() === date2.getFullYear()
+        );
+    }
+
+    private processInput(value: string): Date {
+        return this.isValidInput(value);
     }
 
     set localeHelperService(service: LocaleHelperService) {
@@ -55,31 +93,6 @@ export class DateIOService {
         } else {
             // everything else is set to BIG-ENDIAN FORMAT
             this.localeDisplayFormat = BIG_ENDIAN;
-        }
-    }
-
-    /**
-     * Processes the Javascript Date object input provided by the user.
-     */
-    processDate(date: Date): string {
-        if (date) {
-            //Note: The reason we convert the date object back to string
-            //and not store it directly is because in Javascript
-            //you can create a Date object like this:
-            //let date = new Date("Test"). This is an invalid date object
-            //but still a date object (instance of comparison returns true)
-            //On our end we convert this object to string, and check if its valid or not.
-            //The inputDate property in this service is the single source of truth and if the user
-            //passes a Date object, it is converted to a string and stored in inputDate.
-            //Feel free to let me know if there is a better way to do this.
-            const dateStr: string = this.toLocaleDisplayFormatString(date);
-            if (this.isValidInput(dateStr)) {
-                this._inputDate = dateStr;
-                return dateStr;
-            } else {
-                this._inputDate = "";
-                return "";
-            }
         }
     }
 
@@ -239,17 +252,9 @@ export class DateIOService {
         return this._dateStrUpdated.asObservable();
     }
 
-    private _dateUpdated: Subject<Date> = new Subject<Date>();
+    private _dateUpdated: Subject<void> = new Subject<void>();
 
-    get dateUpdated(): Observable<Date> {
+    get dateUpdated(): Observable<void> {
         return this._dateUpdated.asObservable();
-    }
-
-    /**
-     * Function to update the date and emit it to the dateChanged subscribers.
-     */
-    updateDate(date: Date) {
-        this.inputDate = this.toLocaleDisplayFormatString(date);
-        this._dateStrUpdated.next(this.inputDate);
     }
 }
