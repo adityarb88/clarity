@@ -30,7 +30,7 @@ import {DayModel} from "./model/day.model";
 import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 
 @Directive({
-    selector: "[clrDatepicker]",
+    selector: "[clrDate]",
     host: {"[class.datepicker]": "true"}
 })
 export class ClrDatepicker implements OnDestroy {
@@ -122,7 +122,7 @@ export class ClrDatepicker implements OnDestroy {
         this._dateIOService.inputDate = value;
     }
 
-    @Input("clrDatepicker")
+    @Input("clrDate")
     set date(value: Date) {
         if (value) {
             this._dateIOService.inputDate = this._dateIOService.toLocaleDisplayFormatString(value);
@@ -132,7 +132,7 @@ export class ClrDatepicker implements OnDestroy {
         }
     }
 
-    @Output("clrDatepickerChange") _dateUpdated: EventEmitter<Date> = new EventEmitter<Date>(false);
+    @Output("clrDateChange") _dateUpdated: EventEmitter<Date> = new EventEmitter<Date>(false);
 
     ngOnDestroy() {
         this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -11,9 +11,7 @@ import {CalendarModel} from "../model/calendar.model";
  * Returns the number of days in a month.
  */
 export function getNumberOfDaysInTheMonth(year: number, month: number): number {
-    // month + 1 because we want to go to the next month
-    // date 0 because date is 1 based and 0 means we are getting the last date of the previous month.
-    // confusing but works
+    //If we go to the next month, but use a day of 0, it returns the last day from the previous month
     return (new Date(year, month + 1, 0)).getDate();
 }
 
