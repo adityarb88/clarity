@@ -11,13 +11,26 @@ import {Component, LOCALE_ID} from "@angular/core";
     styleUrls: ["./datepicker.demo.scss"],
     templateUrl: "./basic-datepicker.html",
     providers: [{provide: LOCALE_ID, useValue: "en"}],
-     //providers: [{provide: LOCALE_ID, useValue: "ar-AE"}]
-    //providers: [{provide: LOCALE_ID, useValue: "hi"}]
-     //providers: [{provide: LOCALE_ID, useValue: "ak"}]
-    //providers: [{provide: LOCALE_ID, useValue: "fr"}]
-     //providers: [{provide: LOCALE_ID, useValue: "ru-UA"}]
-    //providers: [{provide: LOCALE_ID, useValue: "de"}]
+    // providers: [{provide: LOCALE_ID, useValue: "ar-AE"}]
+    // providers: [{provide: LOCALE_ID, useValue: "hi"}]
+    // providers: [{provide: LOCALE_ID, useValue: "ak"}]
+    // providers: [{provide: LOCALE_ID, useValue: "fr"}]
+    // providers: [{provide: LOCALE_ID, useValue: "ru-UA"}]
+    // providers: [{provide: LOCALE_ID, useValue: "de"}]
 })
 export class BasicDatepickerDemo {
-    //keyboard enter on left and right arrow should not reassign focus
+    date: string;
+    dateContainer: Date = new Date();
+
+    model: string = "";
+
+    datepickerChange(date: Date) {
+        console.log("Datepicker Output Changed", date);
+        this.date = date.toLocaleDateString();
+    }
+
+    dateContainerChange(date: Date) {
+        console.log("Datepicker Container Output Changed", date);
+        this.dateContainer = date;
+    }
 }
