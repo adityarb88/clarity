@@ -160,10 +160,10 @@ export class CalendarViewModel {
             this.setFocusableFlag(this.focusableDay, true);
         } else if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
             this.setFocusableFlag(this.selectedDay, true);
-            this.focusableDay = this.selectedDay.copy();
+            this.focusableDay = this.selectedDay.clone();
         } else if (this.isDayInCalendarView(this.today)) {
             this.setFocusableFlag(this.today, true);
-            this.focusableDay = this.today.copy();
+            this.focusableDay = this.today.clone();
         } else {
             this.focusableDay = new DayModel(this.calendar.year, this.calendar.month, 15);
             this.setFocusableFlag(this.focusableDay, true);
