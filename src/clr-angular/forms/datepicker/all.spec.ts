@@ -5,10 +5,12 @@
  */
 
 import DayModelSpecs from "./model/day.model.spec";
+import CalendarModelSpecs from "./model/calendar.model.spec";
 
 fdescribe("Datepicker", function() {
     describe("Model", function() {
         DayModelSpecs();
+        CalendarModelSpecs();
     });
 
     describe("Providers", function() {
