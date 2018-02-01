@@ -38,7 +38,7 @@ export class DayModel {
         return new CalendarModel(this.year, this.month);
     }
 
-    copy(): DayModel {
+    clone(): DayModel {
         return new DayModel(this.year, this.month, this.date);
     }
 }
