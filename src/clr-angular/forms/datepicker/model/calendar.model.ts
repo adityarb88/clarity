@@ -10,11 +10,17 @@ export class CalendarModel {
     constructor(public year: number, public month: number) {}
 
     isEqual(calendar: CalendarModel) {
-        return this.year === calendar.year && this.month === calendar.month;
+        if (calendar) {
+            return this.year === calendar.year && this.month === calendar.month;
+        }
+        return false;
     }
 
     isDayInCalendar(day: DayModel): boolean {
-        return (this.year === day.year && this.month === day.month);
+        if (day) {
+            return (this.year === day.year && this.month === day.month);
+        }
+        return false;
     }
 
     /**
