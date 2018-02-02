@@ -7,8 +7,9 @@ import {RouterModule, Routes} from "@angular/router";
 
 import {BasicDatepickerDemo} from "./basic-datepicker";
 import {DatepickerDemo} from "./datepicker.demo";
-import {DatepickerInFormDemo} from "./datepicker-in-form";
+import {DatepickerInTemplateDrivenFormsDemo} from "./datepicker-in-template-driven-form";
 import {ModuleWithProviders} from "@angular/core";
+import {DatepickerInReactiveForms} from "./datepicker-in-reactive-forms";
 
 const ROUTES: Routes = [{
     path: "",
@@ -16,7 +17,8 @@ const ROUTES: Routes = [{
     children: [
         {path: "", redirectTo: "basic", pathMatch: "full"},
         {path: "basic", component: BasicDatepickerDemo},
-        {path: "forms", component: DatepickerInFormDemo}
+        {path: "template-driven-forms", component: DatepickerInTemplateDrivenFormsDemo},
+        {path: "reactive-forms", component: DatepickerInReactiveForms}
     ]
 }];
 
