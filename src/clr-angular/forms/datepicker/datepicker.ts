@@ -12,10 +12,12 @@ import {
     ElementRef,
     EventEmitter,
     HostBinding,
-    HostListener, Input,
+    HostListener,
+    Input,
     OnDestroy,
     Optional,
     Output,
+    Renderer2,
     ViewContainerRef
 } from "@angular/core";
 import {NgModel} from "@angular/forms";
@@ -26,7 +28,6 @@ import {ClrDateContainer} from "./date-container";
 import {DateIOService} from "./providers/date-io.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
-import {DayModel} from "./model/day.model";
 import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 
 @Directive({
@@ -43,6 +44,7 @@ export class ClrDatepicker implements OnDestroy {
     constructor(@Optional() private container: ClrDateContainer,
                 private vcr: ViewContainerRef,
                 private elRef: ElementRef,
+                private renderer: Renderer2,
                 private cfr: ComponentFactoryResolver,
                 @Optional() private _ngModel: NgModel,
                 @Optional() private _localeHelperService: LocaleHelperService,
@@ -85,7 +87,7 @@ export class ClrDatepicker implements OnDestroy {
     private initializeSubscriptions(): void {
         if (this._dateIOService) {
             this._subscriptions.push(this._dateIOService.dateStrUpdated.subscribe((dateStr) => {
-                this.elRef.nativeElement.value = dateStr;
+                this.writeDateStr(dateStr);
                 // This makes sure that ngModelChange is fired
                 // TODO: Check if there is a better way to do this.
                 if (this._ngModel) {
@@ -96,6 +98,10 @@ export class ClrDatepicker implements OnDestroy {
                 this._dateUpdated.emit(this._dateIOService.date);
             }));
         }
+    }
+
+    private writeDateStr(value: string): void {
+        this.renderer.setProperty(this.elRef.nativeElement, "value", value);
     }
 
     @HostBinding("attr.placeholder")
@@ -127,7 +133,7 @@ export class ClrDatepicker implements OnDestroy {
         if (value) {
             this._dateIOService.inputDate = this._dateIOService.toLocaleDisplayFormatString(value);
             if (this._dateIOService.date) {
-                this.elRef.nativeElement.value = this._dateIOService.inputDate;
+                this.writeDateStr(this._dateIOService.inputDate);
             }
         }
     }
