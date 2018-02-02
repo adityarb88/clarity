@@ -88,11 +88,6 @@ export class ClrDatepicker implements OnDestroy {
         if (this._dateIOService) {
             this._subscriptions.push(this._dateIOService.dateStrUpdated.subscribe((dateStr) => {
                 this.writeDateStr(dateStr);
-                // This makes sure that ngModelChange is fired
-                // TODO: Check if there is a better way to do this.
-                if (this._ngModel) {
-                    this._ngModel.control.setValue(dateStr);
-                }
             }));
             this._subscriptions.push(this._dateIOService.dateUpdated.subscribe(() => {
                 this._dateUpdated.emit(this._dateIOService.date);
@@ -102,6 +97,11 @@ export class ClrDatepicker implements OnDestroy {
 
     private writeDateStr(value: string): void {
         this.renderer.setProperty(this.elRef.nativeElement, "value", value);
+        // This makes sure that ngModelChange is fired
+        // TODO: Check if there is a better way to do this.
+        if (this._ngModel) {
+            this._ngModel.control.setValue(value);
+        }
     }
 
     @HostBinding("attr.placeholder")

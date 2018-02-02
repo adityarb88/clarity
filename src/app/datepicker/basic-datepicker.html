@@ -48,7 +48,7 @@
             </thead>
             <tbody>
             <tr>
-                <td>{{date}}</td>
+                <td>{{dateStr}}</td>
             </tr>
             </tbody>
         </table>
@@ -61,13 +61,41 @@
     </code>
 </pre>
 
+<div>
+    <h6>c. [(clrDate)]</h6>
+    <p></p>
+    <input type="date" [(clrDate)]="jsDate2">
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-10 col-lg-5">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>[(clrDate)]</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{jsDate2}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<pre>
+    <code clr-code-highlight="language-html">
+         &lt;input type=&quot;date&quot;  [(clrDate)]=&quot;date&quot;&gt;
+    </code>
+</pre>
+
 <h4>2. Datepicker - Wrapper Provided</h4>
 
 <div>
     <h6>a. clr-date-container</h6>
     <p></p>
     <clr-date-container>
-        <input [clrDate]="dateContainer" (clrDateChange)="dateContainerChange($event)">
+        <input [clrDate]="jsDate1" (clrDateChange)="dateContainerChange($event)">
     </clr-date-container>
 </div>
 
@@ -81,7 +109,7 @@
             </thead>
             <tbody>
             <tr>
-                <td>{{dateContainer}}</td>
+                <td>{{jsDate1}}</td>
             </tr>
             </tbody>
         </table>

@@ -9,27 +9,7 @@ import {Component} from "@angular/core";
     selector: "clr-datepicker-in-forn-demo",
     // Note the .css extension here, not .scss. That's the best we can have at the moment.
     styleUrls: ["./datepicker.demo.scss"],
-    template: `
-        <form class="form" #simpleForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="!isSubmitted">
-            <div class="form-group">
-                <label for="date">Enter Date</label>
-                <input type="date" id="date" name="date" [(ngModel)]="date" clrDate (clrDateChange)="dateChanged($event)">
-            </div>
-            <div class="form-group">
-                <label for="name">Enter Name</label>
-                <input id="name" type="text" name="name" [(ngModel)]="name">
-            </div>
-            <button class="btn" (click)="buttonClick()" type="submit">Submit</button>
-            <p>
-                {{simpleForm.value | json}}
-            </p>
-        </form>
-        <div *ngIf="isSubmitted">
-            <p>Date: {{date}}</p>
-            <p>Name: {{name}}</p>
-            <button type="button" class="btn" (click)="reset()">Reset</button>
-        </div>
-    `
+    templateUrl: "./datepicker-in-forms.html"
 })
 export class DatepickerInFormDemo {
     buttonClick(): void {

@@ -20,18 +20,23 @@ import {Component, LOCALE_ID} from "@angular/core";
     // Do not remove the above comments. They are present to make sure that we can test different locales easily.
 })
 export class BasicDatepickerDemo {
-    date: string;
-    dateContainer: Date = new Date();
+    dateStr: string;
+    jsDate1: Date = new Date();
+    jsDate2: Date = new Date();
 
     model: string = "";
 
     datepickerChange(date: Date) {
         console.log("Datepicker Output Changed", date);
-        this.date = date.toLocaleDateString();
+        if (date) {
+            this.dateStr = date.toLocaleDateString();
+        } else {
+            this.dateStr = "";
+        }
     }
 
     dateContainerChange(date: Date) {
         console.log("Datepicker Container Output Changed", date);
-        this.dateContainer = date;
+        this.jsDate1 = date;
     }
 }
