@@ -17,10 +17,10 @@ import {
     OnDestroy,
     Optional,
     Output,
-    Renderer2,
+    Renderer2, Self,
     ViewContainerRef
 } from "@angular/core";
-import {NgModel} from "@angular/forms";
+import {NgControl} from "@angular/forms";
 import {Subscription} from "rxjs/Subscription";
 
 import {EmptyAnchor} from "../../utils/host-wrapping/empty-anchor";
@@ -46,7 +46,7 @@ export class ClrDatepicker implements OnDestroy {
                 private elRef: ElementRef,
                 private renderer: Renderer2,
                 private cfr: ComponentFactoryResolver,
-                @Optional() private _ngModel: NgModel,
+                @Self() @Optional() private _ngControl: NgControl,
                 @Optional() private _localeHelperService: LocaleHelperService,
                 @Optional() private _dateIOService: DateIOService,
                 @Optional() private _dateNavigationService: DateNavigationService,
@@ -88,6 +88,13 @@ export class ClrDatepicker implements OnDestroy {
         if (this._dateIOService) {
             this._subscriptions.push(this._dateIOService.dateStrUpdated.subscribe((dateStr) => {
                 this.writeDateStr(dateStr);
+                // This makes sure that ngModelChange is fired
+                // TODO: Check if there is a better way to do this.
+                // NOTE: Its important to use NgControl and not NgModel because
+                // NgModel only works with template driven forms
+                if (this._ngControl) {
+                    this._ngControl.control.setValue(dateStr);
+                }
             }));
             this._subscriptions.push(this._dateIOService.dateUpdated.subscribe(() => {
                 this._dateUpdated.emit(this._dateIOService.date);
@@ -97,11 +104,6 @@ export class ClrDatepicker implements OnDestroy {
 
     private writeDateStr(value: string): void {
         this.renderer.setProperty(this.elRef.nativeElement, "value", value);
-        // This makes sure that ngModelChange is fired
-        // TODO: Check if there is a better way to do this.
-        if (this._ngModel) {
-            this._ngModel.control.setValue(value);
-        }
     }
 
     @HostBinding("attr.placeholder")

@@ -4,11 +4,15 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<h2>1. Template Driven Forms</h2>
+<h2>Template Driven Forms</h2>
 <form class="form" #simpleForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="!isSubmitted">
     <div class="form-group">
-        <label for="date">Enter Date</label>
-        <input type="date" id="date" name="date" [(ngModel)]="date" clrDate (clrDateChange)="dateChanged($event)">
+        <label for="date1">Enter Date1</label>
+        <input type="date" id="date1" name="date1" [(ngModel)]="date1" clrDate (clrDateChange)="date1Changed($event)">
+    </div>
+    <div class="form-group">
+        <label for="date2">Enter Date2</label>
+        <input type="date" id="date2" name="date2" [(ngModel)]="date2" clrDate (clrDateChange)="date2Changed($event)">
     </div>
     <div class="form-group">
         <label for="name">Enter Name</label>
@@ -20,7 +24,8 @@
     </p>
 </form>
 <div *ngIf="isSubmitted">
-    <p>Date: {{date}}</p>
+    <p>Date1: {{date1}}</p>
+    <p>Date2: {{date2}}</p>
     <p>Name: {{name}}</p>
     <button type="button" class="btn" (click)="reset()">Reset</button>
 </div>

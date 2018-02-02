@@ -6,34 +6,40 @@
 import {Component} from "@angular/core";
 
 @Component({
-    selector: "clr-datepicker-in-forn-demo",
+    selector: "clr-datepicker-in-template-driven-forms-demo",
     // Note the .css extension here, not .scss. That's the best we can have at the moment.
     styleUrls: ["./datepicker.demo.scss"],
-    templateUrl: "./datepicker-in-forms.html"
+    templateUrl: "./datepicker-in-template-driven-forms.html"
 })
-export class DatepickerInFormDemo {
+export class DatepickerInTemplateDrivenFormsDemo {
     buttonClick(): void {
-        console.log("Button Clicked");
+        console.log("Initiate Form Submission");
     }
 
     isSubmitted: boolean = false;
 
     onSubmit(): void {
-        console.log("Submitting");
         this.isSubmitted = true;
+        console.log("Form Submitted");
     }
 
-    date: string = "";
+    date1: string = "";
+    date2: string = "";
 
     name: string = "";
 
     reset(): void {
         this.isSubmitted = false;
-        this.date = "";
+        this.date1 = "";
+        this.date2 = "";
         this.name = "";
     }
 
-    dateChanged(date: Date): void {
-        console.log("Valid Date Entered", date);
+    date1Changed(date: Date): void {
+        console.log("Valid Date1 Entered", date);
+    }
+
+    date2Changed(date: Date): void {
+        console.log("Valid Date2 Entered", date);
     }
 }
