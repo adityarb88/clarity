@@ -18,7 +18,7 @@ import {Observable} from "rxjs/Observable";
 export class DateIOService {
     private _localeHelperService: LocaleHelperService;
     public cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
-    private localeDisplayFormat: InputDateDisplayFormat = BIG_ENDIAN;
+    private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
 
     private _inputDate: string;
 
@@ -57,6 +57,10 @@ export class DateIOService {
 
     //Not a setter because I want to keep this private
     private setDate(value: Date) {
+        //If both are null do not do anything.
+        if (!this._date && !value) {
+            return;
+        }
         if (!this.areEqualDates(this.date, value)) {
             this._date = value;
             this._dateUpdated.next();
@@ -180,7 +184,6 @@ export class DateIOService {
      * NOTE: (Month here is 1 based since the user has provided that as an input)
      */
     private validateAndGetDate(year: string, month: string, date: string): Date {
-        // HELP ME!!!!
         // I don't know whats wrong with the TS compiler. It throws an error if I write
         // the below if statement. The error is:
         // Operator '!==' cannot be applied to types '2' and '4'
