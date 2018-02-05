@@ -13,6 +13,7 @@ import LocaleHelperServiceSpecs from "./providers/locale-helper.service.spec";
 import DatepickerEnabledServiceSpecs from "./providers/datepicker-enabled.service.spec";
 import DatepickerViewServiceSpecs from "./providers/datepicker-view.service.spec";
 import DateIOServiceSpecs from "./providers/date-io.service.spec";
+import DateNavigationServiceSpecs from "./providers/date-navigation.service.spec";
 
 fdescribe("Datepicker", function() {
     describe("Model", function() {
@@ -28,5 +29,6 @@ fdescribe("Datepicker", function() {
         LocaleHelperServiceSpecs();
         DatepickerViewServiceSpecs();
         DateIOServiceSpecs();
+        DateNavigationServiceSpecs();
     });
 });
