@@ -20,7 +20,8 @@ export class DateNavigationService {
         return this._calendar;
     }
 
-    set calendar(value: CalendarModel) {
+    //not a setter because i want this to remain private
+    private setCalendar(value: CalendarModel) {
         if (!this._calendar.isEqual(value)) {
             this._calendar = value;
             this._calendarChanged.next();
@@ -34,17 +35,23 @@ export class DateNavigationService {
         } else {
             this._calendar = new CalendarModel(this.currentYear, this.currentMonth);
         }
-        this.todaysFullDate = new Date();
+        this.initializeTodaysDate();
     }
 
     /**
      * Variable to store today's date.
      */
-    private todaysFullDate: Date = new Date();
+    private _todaysFullDate: Date = new Date();
+    private _today: DayModel;
+
+    private initializeTodaysDate(): void {
+        this._todaysFullDate = new Date();
+        this._today = new DayModel(this._todaysFullDate.getFullYear(), this._todaysFullDate.getMonth(),
+            this._todaysFullDate.getDate());
+    }
 
     get today(): DayModel {
-        return new DayModel(this.todaysFullDate.getFullYear(), this.todaysFullDate.getMonth(),
-            this.todaysFullDate.getDate());
+        return this._today;
     }
 
     /**
@@ -52,7 +59,7 @@ export class DateNavigationService {
      * eg: 1, 2, 3, ... 31.
      */
     get currentDate(): number {
-        return this.todaysFullDate.getDate();
+        return this._todaysFullDate.getDate();
     }
 
     /**
@@ -60,7 +67,7 @@ export class DateNavigationService {
      * eg: 0, 1, 2, ... 12.
      */
     get currentMonth(): number {
-        return this.todaysFullDate.getMonth();
+        return this._todaysFullDate.getMonth();
     }
 
     /**
@@ -68,7 +75,7 @@ export class DateNavigationService {
      * eg: 2018
      */
     get currentYear(): number {
-        return this.todaysFullDate.getFullYear();
+        return this._todaysFullDate.getFullYear();
     }
 
     public selectedDay: DayModel;
@@ -76,24 +83,24 @@ export class DateNavigationService {
     public focusedDay: DayModel;
 
     changeMonth(month: number): void {
-        this._calendar.month = month;
+        this._calendar.updateMonth(month);
     }
 
     changeYear(year: number): void {
-        this._calendar.year = year;
+        this._calendar.updateYear(year);
     }
 
     moveToNextMonth(): void {
-        this.calendar = this._calendar.nextMonth();
+        this.setCalendar(this._calendar.nextMonth());
     }
 
     moveToPreviousMonth(): void {
-        this.calendar = this._calendar.previousMonth();
+        this.setCalendar(this._calendar.previousMonth());
     }
 
     moveToCurrentMonth(): void {
-        this.calendar = this._calendar.currentMonth();
-        this._focusOnCalendar.next();
+        this.setCalendar(this._calendar.currentMonth());
+        this._calendarFocusChanged.next();
     }
 
     private incrementFocusDay(value: number): void {
@@ -101,9 +108,9 @@ export class DateNavigationService {
         if (this._calendar.isDayInCalendar(this.focusedDay)) {
             this._focusedDayChanged.next();
         } else {
-            this.calendar = this.focusedDay.getCalendar();
+            this.setCalendar(this.focusedDay.getCalendar());
         }
-        this._focusOnCalendar.next();
+        this._calendarFocusChanged.next();
     }
 
     private _calendarChanged: Subject<void> = new Subject<void>();
@@ -112,10 +119,10 @@ export class DateNavigationService {
         return this._calendarChanged.asObservable();
     }
 
-    private _focusOnCalendar: Subject<boolean> = new Subject<boolean>();
+    private _calendarFocusChanged: Subject<boolean> = new Subject<boolean>();
 
-    get focusOnCalendar(): Observable<boolean> {
-        return this._focusOnCalendar.asObservable();
+    get calendarFocusChanged(): Observable<boolean> {
+        return this._calendarFocusChanged.asObservable();
     }
 
     private _focusedDayChanged: Subject<void> = new Subject<void>();
