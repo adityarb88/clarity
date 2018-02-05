@@ -10,6 +10,8 @@ import CalendarModelSpecs from "./model/calendar.model.spec";
 import CalendarViewModelSpecs from "./model/calendar-view.model.spec";
 import ViewManagerServiceSpecs from "./providers/view-manager.service.spec";
 import LocaleHelperService from "./providers/locale-helper.service.spec";
+import DatepickerEnabledService from "./providers/datepicker-enabled.service.spec";
+import DatepickerViewService from "./providers/datepicker-view.service.spec";
 
 fdescribe("Datepicker", function() {
     describe("Model", function() {
@@ -20,7 +22,9 @@ fdescribe("Datepicker", function() {
     });
 
     describe("Providers", function() {
+        DatepickerEnabledService();
         ViewManagerServiceSpecs();
         LocaleHelperService();
+        DatepickerViewService();
     });
 });
