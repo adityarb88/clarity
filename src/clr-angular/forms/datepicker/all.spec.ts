@@ -24,11 +24,11 @@ fdescribe("Datepicker", function() {
     });
 
     describe("Providers", function() {
-        DatepickerEnabledServiceSpecs();
         ViewManagerServiceSpecs();
         LocaleHelperServiceSpecs();
         DatepickerViewServiceSpecs();
         DateIOServiceSpecs();
         DateNavigationServiceSpecs();
+        DatepickerEnabledServiceSpecs();
     });
 });
