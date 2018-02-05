@@ -52,4 +52,14 @@ export class CalendarModel {
         const date: Date = new Date();
         return new CalendarModel(date.getFullYear(), date.getMonth());
     }
+
+    updateMonth(month: number): void {
+        if (month > -1 && month < 12) {
+            this.month = month;
+        }
+    }
+
+    updateYear(year: number): void {
+        this.year = year;
+    }
 }

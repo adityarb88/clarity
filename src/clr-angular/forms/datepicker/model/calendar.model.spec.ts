@@ -65,5 +65,23 @@ export default function (): void {
             expect(calModel.year).toBe(date.getFullYear());
             expect(calModel.month).toBe(date.getMonth());
         });
+
+        it("supports a function to update the Calendar Month", () => {
+            const calendarModel: CalendarModel = new CalendarModel(2015, 2);
+            calendarModel.updateMonth(4);
+            expect(calendarModel.month).toBe(4);
+
+            calendarModel.updateMonth(-1);
+            expect(calendarModel.month).toBe(4);
+
+            calendarModel.updateMonth(12);
+            expect(calendarModel.month).toBe(4);
+        });
+
+        it("supports a function to update the Calendar Year", () => {
+            const calendarModel: CalendarModel = new CalendarModel(2015, 2);
+            calendarModel.updateYear(2018);
+            expect(calendarModel.year).toBe(2018);
+        });
     });
 }
