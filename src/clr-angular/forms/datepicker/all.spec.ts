@@ -9,9 +9,10 @@ import YearRangeModelSpecs from "./model/year-range.model.spec";
 import CalendarModelSpecs from "./model/calendar.model.spec";
 import CalendarViewModelSpecs from "./model/calendar-view.model.spec";
 import ViewManagerServiceSpecs from "./providers/view-manager.service.spec";
-import LocaleHelperService from "./providers/locale-helper.service.spec";
-import DatepickerEnabledService from "./providers/datepicker-enabled.service.spec";
-import DatepickerViewService from "./providers/datepicker-view.service.spec";
+import LocaleHelperServiceSpecs from "./providers/locale-helper.service.spec";
+import DatepickerEnabledServiceSpecs from "./providers/datepicker-enabled.service.spec";
+import DatepickerViewServiceSpecs from "./providers/datepicker-view.service.spec";
+import DateIOServiceSpecs from "./providers/date-io.service.spec";
 
 fdescribe("Datepicker", function() {
     describe("Model", function() {
@@ -22,9 +23,10 @@ fdescribe("Datepicker", function() {
     });
 
     describe("Providers", function() {
-        DatepickerEnabledService();
+        DatepickerEnabledServiceSpecs();
         ViewManagerServiceSpecs();
-        LocaleHelperService();
-        DatepickerViewService();
+        LocaleHelperServiceSpecs();
+        DatepickerViewServiceSpecs();
+        DateIOServiceSpecs();
     });
 });
