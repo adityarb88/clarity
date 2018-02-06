@@ -17,7 +17,7 @@ import {DatepickerViewService} from "./providers/datepicker-view.service";
 import {DayModel} from "./model/day.model";
 
 export default function () {
-    fdescribe("", () => {
+    describe("Daypicker Component", () => {
         let context: TestContext<ClrDaypicker, TestComponent>;
         let viewManagerService: ViewManagerService;
         let localeHelperService: LocaleHelperService;
