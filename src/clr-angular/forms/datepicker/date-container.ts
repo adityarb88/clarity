@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {Component} from "@angular/core";
+import {Component, OnDestroy} from "@angular/core";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {DateIOService} from "./providers/date-io.service";
@@ -16,26 +16,25 @@ import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
     selector: "clr-date-container",
     template: `
         <ng-content></ng-content>
-            <button 
-                type="button" 
-                class="datepicker-trigger" 
-                (click)="toggleCalendar($event)"
-                *ngIf="isEnabled">
-                <clr-icon shape="calendar"></clr-icon>
-            </button>
-            <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>
+        <button
+            type="button"
+            class="datepicker-trigger"
+            (click)="toggleCalendar($event)"
+            *ngIf="isEnabled">
+            <clr-icon shape="calendar"></clr-icon>
+        </button>
+        <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>
     `,
     providers: [IfOpenService, LocaleHelperService, DateIOService, DateNavigationService, DatepickerEnabledService],
     host: {"[class.date-container]": "true"}
 })
-export class ClrDateContainer {
+export class ClrDateContainer implements OnDestroy {
     private _sub: Subscription;
 
-    constructor(
-        private _ifOpenService: IfOpenService,
-        private _dateNavigationService: DateNavigationService,
-        private _dateIOService: DateIOService,
-        private _datepickerEnabledService: DatepickerEnabledService) {
+    constructor(private _ifOpenService: IfOpenService,
+                private _dateNavigationService: DateNavigationService,
+                private _dateIOService: DateIOService,
+                private _datepickerEnabledService: DatepickerEnabledService) {
         this._sub = this._ifOpenService.openChange.subscribe((open) => {
             if (open) {
                 this.initializeCalendar();
@@ -67,5 +66,9 @@ export class ClrDateContainer {
         } else {
             this._dateNavigationService.selectedDay = null;
         }
+    }
+
+    ngOnDestroy() {
+        this._sub.unsubscribe();
     }
 }
