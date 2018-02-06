@@ -16,7 +16,7 @@ import {LocaleHelperService} from "./providers/locale-helper.service";
 import {DateIOService} from "./providers/date-io.service";
 
 export default function () {
-    fdescribe("", () => {
+    describe("Datepicker View Manager Component", () => {
         let context: TestContext<ClrDatepickerViewManager, TestComponent>;
         let viewManagerService: ViewManagerService;
 
