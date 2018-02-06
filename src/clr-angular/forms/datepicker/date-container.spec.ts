@@ -17,7 +17,7 @@ import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 import {Subscription} from "rxjs/Subscription";
 
 export default function () {
-    fdescribe("Date Container Component", () => {
+    describe("Date Container Component", () => {
         let context: TestContext<ClrDateContainer, TestComponent>;
         let enabledService: MockDatepickerEnabledService;
 

@@ -17,6 +17,7 @@ import DateNavigationServiceSpecs from "./providers/date-navigation.service.spec
 import DayComponentSpecs from "./day.spec";
 import DatepickerViewManagerSpecs from "./datepicker-view-manager.spec";
 import DateContainerSpecs from "./date-container.spec";
+import DaypickerSpecs from "./daypicker.spec";
 
 import {addHelpers} from "../../data/datagrid/helpers.spec";
 
@@ -43,5 +44,6 @@ fdescribe("Datepicker", function() {
         DayComponentSpecs();
         DatepickerViewManagerSpecs();
         DateContainerSpecs();
+        DaypickerSpecs();
     });
 });
