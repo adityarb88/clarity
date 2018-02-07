@@ -15,6 +15,10 @@ import {DatepickerViewService} from "./providers/datepicker-view.service";
 import {DateIOService} from "./providers/date-io.service";
 import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 import {Subscription} from "rxjs/Subscription";
+import {
+    MOCK_DATEPICKER_ENABLED_PROVIDER,
+    MockDatepickerEnabledService
+} from "./providers/datepicker-enabled.service.mock";
 
 export default function () {
     describe("Date Container Component", () => {
@@ -105,18 +109,4 @@ export default function () {
     `
 })
 class TestComponent {
-}
-
-@Injectable()
-class MockDatepickerEnabledService extends DatepickerEnabledService {
-    fakeEnabled: boolean = true;
-
-    get isEnabled(): boolean {
-        return this.fakeEnabled;
-    }
-}
-
-const MOCK_DATEPICKER_ENABLED_PROVIDER = {
-    provide: DatepickerEnabledService,
-    useClass: MockDatepickerEnabledService
 }

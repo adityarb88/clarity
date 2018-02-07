@@ -8,17 +8,10 @@ import {DateNavigationService} from "./date-navigation.service";
 import {DayModel} from "../model/day.model";
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../../utils/key-codes/key-codes";
 import {Subscription} from "rxjs/Subscription";
+import {createKeyboardEvent} from "../utils/test-utils";
 
 export default function () {
     describe("Date Navigation Service", () => {
-
-        function createKeyboardEvent(code: number): KeyboardEvent {
-            const event: KeyboardEvent = new KeyboardEvent("test");
-            Object.defineProperties(event, {
-                keyCode: {get: () => code}
-            });
-            return event;
-        }
 
         describe("Calendar Initialization", () => {
             let dateNavigationService: DateNavigationService;
@@ -165,7 +158,7 @@ export default function () {
                 dateNavigationService.initializeCalendar();
                 dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
 
-                const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW);
+                const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW, "keydown");
 
                 dateNavigationService.adjustCalendarFocusOnKeyDownEvent(upArrowEvent);
 
@@ -181,7 +174,7 @@ export default function () {
                 dateNavigationService.initializeCalendar();
                 dateNavigationService.focusedDay = new DayModel(2014, 11, 25);
 
-                const downArrowEvent: KeyboardEvent = createKeyboardEvent(DOWN_ARROW);
+                const downArrowEvent: KeyboardEvent = createKeyboardEvent(DOWN_ARROW, "keydown");
 
                 dateNavigationService.adjustCalendarFocusOnKeyDownEvent(downArrowEvent);
 
@@ -197,7 +190,7 @@ export default function () {
                 dateNavigationService.initializeCalendar();
                 dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
 
-                const leftArrowEvent: KeyboardEvent = createKeyboardEvent(LEFT_ARROW);
+                const leftArrowEvent: KeyboardEvent = createKeyboardEvent(LEFT_ARROW, "keydown");
 
                 dateNavigationService.adjustCalendarFocusOnKeyDownEvent(leftArrowEvent);
 
@@ -214,7 +207,7 @@ export default function () {
                 dateNavigationService.initializeCalendar();
                 dateNavigationService.focusedDay = new DayModel(2014, 11, 31);
 
-                const rightArrowEvent: KeyboardEvent = createKeyboardEvent(RIGHT_ARROW);
+                const rightArrowEvent: KeyboardEvent = createKeyboardEvent(RIGHT_ARROW, "keydown");
 
                 dateNavigationService.adjustCalendarFocusOnKeyDownEvent(rightArrowEvent);
 
@@ -261,7 +254,7 @@ export default function () {
                     count++;
                 });
                 expect(count).toBe(0);
-                const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW);
+                const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW, "keydown");
                 dateNavigationService.adjustCalendarFocusOnKeyDownEvent(upArrowEvent);
 
                 expect(count).toBe(1);
@@ -280,7 +273,7 @@ export default function () {
                 });
 
                 expect(count).toBe(0);
-                const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW);
+                const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW, "keydown");
                 dateNavigationService.adjustCalendarFocusOnKeyDownEvent(upArrowEvent);
 
                 expect(count).toBe(1);
