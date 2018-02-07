@@ -5,6 +5,7 @@
  */
 
 import {DayModel} from "./day.model";
+import {assertEqualDates} from "../utils/test-utils";
 
 export default function (): void {
     describe("DayModel", function () {
@@ -12,20 +13,12 @@ export default function (): void {
         const dayModel2: DayModel = new DayModel(2018, 5, 21);
         const dayModel3: DayModel = new DayModel(2018, 0, 1);
 
-        function assertEqualDates(date1: Date, date2: Date): void {
-            expect(
-                date1.getFullYear() === date2.getFullYear()
-                && date1.getMonth() === date2.getMonth()
-                && date1.getDate() === date2.getDate()
-            ).toBe(true);
-        }
-
         function incrementDayModelAndCompare(dayModel: DayModel, incrementBy: number) {
             const date: Date = dayModel.toDate();
             const testDate: Date = dayModel.incrementBy(incrementBy).toDate();
 
             date.setDate(date.getDate() + incrementBy);
-            assertEqualDates(date, testDate);
+            expect(assertEqualDates(date, testDate)).toBe(true);
         }
 
         it("2 DayModels are equal when the month, year and date matches", () => {
@@ -80,10 +73,10 @@ export default function (): void {
 
         it("returns a clone of the DayModel", () => {
             let testDayModel: DayModel = dayModel1.clone();
-            assertEqualDates(testDayModel.toDate(), dayModel1.toDate());
+            expect(assertEqualDates(testDayModel.toDate(), dayModel1.toDate())).toBe(true);
 
             testDayModel = dayModel2.clone();
-            assertEqualDates(testDayModel.toDate(), dayModel2.toDate());
+            expect(assertEqualDates(testDayModel.toDate(), dayModel2.toDate())).toBe(true);
         });
     });
 }
