@@ -111,7 +111,7 @@ export class ClrYearpicker implements AfterViewInit {
         }
     }
 
-    incrementFocusYearBy(value: number): void {
+    private incrementFocusYearBy(value: number): void {
         this._focusedYear = this._focusedYear + value;
         if (!this.yearRangeModel.inRange(this._focusedYear)) {
             if (value > 0) {
