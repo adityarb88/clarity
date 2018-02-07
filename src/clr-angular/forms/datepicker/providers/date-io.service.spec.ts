@@ -9,6 +9,7 @@ import {LocaleHelperService} from "./locale-helper.service";
 import {Subscription} from "rxjs/Subscription";
 import localeAk from "@angular/common/locales/ak";
 import {registerLocaleData} from "@angular/common";
+import {assertEqualDates} from "../utils/test-utils";
 
 registerLocaleData(localeAk);
 
@@ -16,14 +17,6 @@ export default function () {
     describe("Date IO Service", () => {
         let dateIOService: DateIOService;
         let localeHelperService: LocaleHelperService;
-
-        function assertEqualDates(date1: Date, date2: Date): void {
-            expect(
-                date1.getFullYear() === date2.getFullYear()
-                && date1.getMonth() === date2.getMonth()
-                && date1.getDate() === date2.getDate()
-            ).toBe(true);
-        }
 
         describe('Locale Formatting', function () {
             it("updates the cldrLocaleDateFormat based on the locale helper service", () => {
@@ -75,7 +68,7 @@ export default function () {
                 dateIOService.inputDate = "01/02/2015";
                 expect(dateIOService.date).not.toBeUndefined();
                 expect(dateIOService.date).not.toBeNull();
-                assertEqualDates(dateIOService.date, new Date(2015, 0, 2));
+                expect(assertEqualDates(dateIOService.date, new Date(2015, 0, 2))).toBe(true);
 
                 dateIOService.inputDate = "01/02/201";
                 expect(dateIOService.date).toBeNull();
