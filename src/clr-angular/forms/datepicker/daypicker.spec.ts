@@ -21,12 +21,18 @@ export default function () {
         let context: TestContext<ClrDaypicker, TestComponent>;
         let viewManagerService: ViewManagerService;
         let localeHelperService: LocaleHelperService;
+        let dateNavigationService: DateNavigationService;
 
         beforeEach(function () {
+            dateNavigationService = new DateNavigationService();
+            //Initializing selected day just to make sure that previous and next month tests become easier
+            dateNavigationService.selectedDay = new DayModel(2015, 1, 1);
+            dateNavigationService.initializeCalendar();
+
             context
                 = this.create(ClrDaypicker, TestComponent,
                 [
-                    DateNavigationService,
+                    {provide: DateNavigationService, useValue: dateNavigationService},
                     DateIOService,
                     IfOpenService,
                     ViewManagerService,
@@ -164,9 +170,4 @@ export default function () {
     `
 })
 class TestComponent {
-    constructor(private dateNavigationService: DateNavigationService) {
-        //Initializing selected day just to make sure that previous and next month tests become easier
-        this.dateNavigationService.selectedDay = new DayModel(2015, 1, 1);
-        this.dateNavigationService.initializeCalendar();
-    }
 }

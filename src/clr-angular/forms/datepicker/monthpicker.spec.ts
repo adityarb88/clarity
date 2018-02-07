@@ -13,17 +13,24 @@ import {ViewManagerService} from "./providers/view-manager.service";
 import {DatepickerViewService} from "./providers/datepicker-view.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
-import {DayModel} from "./model/day.model";
 import {async} from "@angular/core/testing";
 import {createKeyboardEvent} from "./utils/test-utils";
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+import {DayModel} from "./model/day.model";
 
 export default function () {
     describe("Monthpicker Component", () => {
         let context: TestContext<ClrMonthpicker, TestComponent>;
         let localeHelperService: LocaleHelperService;
+        let dateNavigationService: DateNavigationService;
+        const selectedMonth: number = 1;
 
         beforeEach(function () {
+            dateNavigationService = new DateNavigationService();
+            //Setting a selected date so that the calendar is initialized to that month and year.
+            dateNavigationService.selectedDay = new DayModel(2015, selectedMonth, 1);
+            dateNavigationService.initializeCalendar();
+
             context
                 = this.create(
                 ClrMonthpicker,
@@ -32,7 +39,7 @@ export default function () {
                     ViewManagerService,
                     DatepickerViewService,
                     IfOpenService,
-                    DateNavigationService,
+                    {provide: DateNavigationService, useValue: dateNavigationService},
                     LocaleHelperService,
                     DateIOService
                 ]
@@ -67,14 +74,14 @@ export default function () {
 
             it("has the correct month selected", () => {
                 const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll("button");
-                expect(buttons[context.testComponent.month].classList.contains("is-active")).toBe(true);
+                expect(buttons[selectedMonth].classList.contains("is-active")).toBe(true);
             });
 
             it("initializes the tab indices correctly", () => {
                 const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll("button");
                 let count: number = 0;
                 for (const button of buttons) {
-                    if (count === context.testComponent.month) {
+                    if (count === selectedMonth) {
                         expect(button.tabIndex).toBe(0);
                     } else {
                         expect(button.tabIndex).toBe(-1);
@@ -125,13 +132,13 @@ export default function () {
             });
 
             it("gets the current calendar month", () => {
-                expect(context.clarityDirective.calendarMonth).toBe(localeHelperService.localeMonthsWide[context.testComponent.month]);
+                expect(context.clarityDirective.calendarMonth).toBe(localeHelperService.localeMonthsWide[selectedMonth]);
             });
 
             it("gets the correct tabindex", () => {
                 let i = 0;
                 for (const month of context.clarityDirective.months) {
-                    if (i === context.testComponent.month) {
+                    if (i === selectedMonth) {
                         expect(context.clarityDirective.getTabIndex(month)).toBe(0);
                     } else {
                         expect(context.clarityDirective.getTabIndex(month)).toBe(-1);
@@ -212,11 +219,4 @@ export default function () {
     `
 })
 class TestComponent {
-    public month: number = 1; //If you change this, you might have to adjust a few tests.
-
-    constructor(private dateNavigationService: DateNavigationService) {
-        //Initializing selected day just to make sure that every time the same month is selected on initialization.
-        this.dateNavigationService.selectedDay = new DayModel(2015, this.month, 1);
-        this.dateNavigationService.initializeCalendar();
-    }
 }
