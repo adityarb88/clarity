@@ -20,7 +20,7 @@ import {FormsModule} from "@angular/forms";
 import {ClrFormsModule} from "../forms.module";
 
 export default function () {
-    fdescribe("Date Input Component", () => {
+    describe("Date Input Component", () => {
         let context: TestContext<ClrDateInput, TestComponent>;
         let enabledService: MockDatepickerEnabledService;
         let dateIOService: DateIOService;
