@@ -18,7 +18,7 @@ import {DatepickerViewService} from "./providers/datepicker-view.service";
         DatepickerViewService
     ],
     host: {
-        "[class.calendar]": "true"
+        "[class.datepicker]": "true"
     }
 })
 export class ClrDatepickerViewManager extends AbstractPopover {

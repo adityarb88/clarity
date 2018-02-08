@@ -51,11 +51,11 @@
         }
     }
 
-    .datepicker {
+    .date-input {
         flex: 1 1 auto;
     }
 
-    .calendar {
+    .datepicker {
         display: flex;
         flex-direction: column;
 
@@ -109,11 +109,15 @@
         text-align: center;
     }
 
+    .day {
+        display: inline-block;
+    }
+
     .weekdays {
         flex: 0 0 $clr-calendar-click-target;
     }
 
-    .day {
+    .weekday {
         font-size: $clr-day-font-size;
         font-weight: 600;
     }
@@ -127,7 +131,7 @@
         font-weight: $clr-calendar-picker-btn-font-weight;
     }
 
-    .date {
+    .day-btn {
         @include generate-calendar-button($padding: 0);
         @include generate-calendar-focus-style();
 
@@ -142,12 +146,12 @@
             font-weight: $clr-calendar-today-date-cell-font-weight;
         }
 
-        &.is-active {
+        &.is-selected {
             background: $clr-calendar-active-cell-background-color;
             color: $clr-calendar-active-cell-color;
         }
 
-        &.is-active:focus {
+        &.is-selected:focus {
             background: $clr-calendar-active-focus-cell-background-color
         }
 
@@ -207,12 +211,12 @@
         font-weight: $clr-calendar-picker-btn-font-weight;
         outline-offset: -5px;
 
-        &.is-active {
+        &.is-selected {
             background: $clr-calendar-active-cell-background-color;
             color: $clr-calendar-active-cell-color;
         }
 
-        &.is-active:focus {
+        &.is-selected:focus {
             background: $clr-calendar-active-focus-cell-background-color
         }
     }
