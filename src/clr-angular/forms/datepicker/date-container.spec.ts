@@ -4,21 +4,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {Component, Injectable} from "@angular/core";
+import {Component} from "@angular/core";
 import {TestContext} from "../../data/datagrid/helpers.spec";
 import {ClrDateContainer} from "./date-container";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
-import {ViewManagerService} from "./providers/view-manager.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
 import {DateIOService} from "./providers/date-io.service";
 import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 import {Subscription} from "rxjs/Subscription";
 import {
-    MOCK_DATEPICKER_ENABLED_PROVIDER,
     MockDatepickerEnabledService
 } from "./providers/datepicker-enabled.service.mock";
+import {TestBed} from "@angular/core/testing";
 
 export default function () {
     describe("Date Container Component", () => {
@@ -26,19 +24,20 @@ export default function () {
         let enabledService: MockDatepickerEnabledService;
 
         beforeEach(function () {
+            TestBed.overrideComponent(ClrDateContainer, {
+                set: {
+                    providers: [
+                        { provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService },
+                        IfOpenService,
+                        DateNavigationService,
+                        LocaleHelperService,
+                        DateIOService
+                    ]
+                }
+            });
+
             context
-                = this.create(
-                ClrDateContainer,
-                TestComponent,
-                [
-                    ViewManagerService,
-                    DatepickerViewService,
-                    IfOpenService,
-                    DateNavigationService,
-                    LocaleHelperService,
-                    DateIOService,
-                    MOCK_DATEPICKER_ENABLED_PROVIDER
-                ]);
+                = this.create(ClrDateContainer, TestComponent, []);
 
             enabledService = <MockDatepickerEnabledService>context.getClarityProvider(DatepickerEnabledService);
         });
@@ -48,10 +47,10 @@ export default function () {
                 expect(enabledService.isEnabled).toBe(true);
                 expect(context.clarityElement.querySelector(".datepicker-trigger")).not.toBeNull();
 
-                enabledService.fakeEnabled = false;
+                enabledService.fakeIsEnabled = false;
                 context.detectChanges();
 
-                expect(context.clarityElement.querySelector(".datepicker-trigger")).not.toBeNull();
+                expect(context.clarityElement.querySelector(".datepicker-trigger")).toBeNull();
             });
 
             it("clicking on the button toggles the datepicker popover", () => {

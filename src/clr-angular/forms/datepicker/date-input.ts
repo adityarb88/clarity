@@ -112,7 +112,7 @@ export class ClrDateInput implements OnDestroy {
     }
 
     @HostBinding("attr.type")
-    get isEnabled(): string {
+    get inputType(): string {
         return this._datepickerEnabledService.isEnabled ? "text" : "date";
     }
 

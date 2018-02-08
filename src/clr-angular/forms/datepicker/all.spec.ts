@@ -21,6 +21,7 @@ import DaypickerSpecs from "./daypicker.spec";
 import MonthpickerSpecs from "./monthpicker.spec";
 import YearpickerSpecs from "./yearpicker.spec";
 import CalendarSpecs from "./calendar.spec";
+import DateInputSpecs from "./date-input.spec";
 
 import {addHelpers} from "../../data/datagrid/helpers.spec";
 
@@ -51,5 +52,6 @@ fdescribe("Datepicker", function() {
         MonthpickerSpecs();
         YearpickerSpecs();
         CalendarSpecs();
+        DateInputSpecs();
     });
 });

@@ -10,10 +10,10 @@ import {DatepickerEnabledService} from "./datepicker-enabled.service";
 
 @Injectable()
 export class MockDatepickerEnabledService extends DatepickerEnabledService {
-    fakeEnabled: boolean = true;
+    fakeIsEnabled: boolean = true;
 
     get isEnabled(): boolean {
-        return this.fakeEnabled;
+        return this.fakeIsEnabled;
     }
 }
 
