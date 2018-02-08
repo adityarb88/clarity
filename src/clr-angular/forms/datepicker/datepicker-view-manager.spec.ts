@@ -60,8 +60,8 @@ export default function () {
             expect(context.clarityElement.children[0].tagName).toBe("CLR-YEARPICKER");
         });
 
-        it("has the .calendar class added to the host", () => {
-            expect(context.clarityElement.classList.contains("calendar")).toBe(true);
+        it("has the .datepicker class added to the host", () => {
+            expect(context.clarityElement.classList.contains("datepicker")).toBe(true);
         });
     });
 }

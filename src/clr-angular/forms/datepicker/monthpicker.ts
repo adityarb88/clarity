@@ -18,7 +18,7 @@ import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-cod
             class="calendar-btn month"
             *ngFor="let month of months"
             (click)="changeMonth(month)"
-            [class.is-active]="month === calendarMonth"
+            [class.is-selected]="month === calendarMonth"
             [attr.tabindex]="getTabIndex(month)">
             {{month}}
         </button>

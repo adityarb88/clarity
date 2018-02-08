@@ -12,7 +12,7 @@ import {LocaleHelperService} from "./providers/locale-helper.service";
     selector: "clr-daypicker",
     templateUrl: "./daypicker.html",
     host: {
-        "[class.daypicker]": "true",
+        "[class.daypicker]": "true"
     }
 })
 export class ClrDaypicker {

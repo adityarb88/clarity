@@ -12,7 +12,7 @@ import {ClrFocusTrapModule} from "../../utils/focus-trap/focus-trap.module";
 import {ClrIconModule} from "../../icon/icon.module";
 import {ClrConditionalModule} from "../../utils/conditional/conditional.module";
 import {ClrDateContainer} from "./date-container";
-import {ClrDatepicker} from "./datepicker";
+import {ClrDateInput} from "./date-input";
 import {ClrDatepickerViewManager} from "./datepicker-view-manager";
 import {ClrMonthpicker} from "./monthpicker";
 import {ClrYearpicker} from "./yearpicker";
@@ -22,7 +22,7 @@ import {ClrCalendar} from "./calendar";
 export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
     ClrDay,
     ClrDateContainer,
-    ClrDatepicker,
+    ClrDateInput,
     ClrDatepickerViewManager,
     ClrMonthpicker,
     ClrYearpicker,

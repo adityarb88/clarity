@@ -32,9 +32,9 @@ import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 
 @Directive({
     selector: "[clrDate]",
-    host: {"[class.datepicker]": "true"}
+    host: {"[class.date-input]": "true"}
 })
-export class ClrDatepicker implements OnDestroy {
+export class ClrDateInput implements OnDestroy {
     /**
      * Subscriptions to all the services and queries changes
      */
