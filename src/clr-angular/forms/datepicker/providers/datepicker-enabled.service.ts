@@ -4,16 +4,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {Injectable} from "@angular/core";
+import {Inject, Injectable} from "@angular/core";
 import {DATEPICKER_ENABLE_BREAKPOINT} from "../../../utils/breakpoints/breakpoints";
+import {DOCUMENT} from "@angular/common";
 
 @Injectable()
 export class DatepickerEnabledService {
-    constructor() {
-        this._isUserAgentMobile = /Mobi/.test(navigator.userAgent);
+    constructor(@Inject(DOCUMENT) private _document: Document) {
+        if (this._document) {
+            this._isUserAgentMobile = /Mobi/.test(_document.defaultView.navigator.userAgent);
+            this._innerWidth = _document.defaultView.innerWidth;
+        }
     }
 
     private _isUserAgentMobile: boolean = false;
+    private _innerWidth: number;
 
     /**
      * Returns if the calendar should be active or not.
@@ -25,8 +30,8 @@ export class DatepickerEnabledService {
         // What they recommend is:
         //"In summary, we recommend looking for the string 'Mobi'
         // anywhere in the User Agent to detect a mobile device."
-        if (window) {
-            if (window.innerWidth < DATEPICKER_ENABLE_BREAKPOINT && this._isUserAgentMobile) {
+        if (this._document) {
+            if (this._innerWidth < DATEPICKER_ENABLE_BREAKPOINT && this._isUserAgentMobile) {
                 return false;
             }
         }
