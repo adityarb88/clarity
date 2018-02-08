@@ -6,16 +6,18 @@
 
 import {TestContext} from "../../data/datagrid/helpers.spec";
 import {ClrDateInput} from "./date-input";
-import {Component} from "@angular/core";
+import {Component, DebugElement, ViewChild} from "@angular/core";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {DateIOService} from "./providers/date-io.service";
 import {MockDatepickerEnabledService} from "./providers/datepicker-enabled.service.mock";
 import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
-import {TestBed} from "@angular/core/testing";
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from "@angular/core/testing";
 import {ClrDateContainer} from "./date-container";
 import {By} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
+import {ClrFormsModule} from "../forms.module";
 
 export default function () {
     fdescribe("Date Input Component", () => {
@@ -134,6 +136,138 @@ export default function () {
                 });
             });
         });
+
+        describe("Datepicker with ngModel", () => {
+            let fixture: ComponentFixture<TestComponentWithNgModel>;
+            let compiled: any;
+            let dateContainerDebugElement: DebugElement;
+            let dateInputDebugElement: DebugElement;
+
+            beforeEach(function () {
+                TestBed.configureTestingModule({
+                    imports: [FormsModule, ClrFormsModule],
+                    declarations: [
+                        TestComponentWithNgModel
+                    ]
+                });
+
+                fixture = TestBed.createComponent(TestComponentWithNgModel);
+                fixture.detectChanges();
+                compiled = fixture.nativeElement;
+                dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
+                dateInputDebugElement = fixture.debugElement.query(By.directive(ClrDateInput));
+            });
+
+            it("accepts user input", fakeAsync(() => {
+                const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
+                expect(ioService.date).toBeUndefined();
+
+                fixture.componentInstance.dateValue = "01/02/2015";
+
+                fixture.detectChanges();
+                tick();
+
+                dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
+                fixture.detectChanges();
+
+                expect(ioService.date).not.toBeUndefined();
+                expect(ioService.date.getFullYear()).toBe(2015);
+                expect(ioService.date.getMonth()).toBe(0);
+                expect(ioService.date.getDate()).toBe(2);
+
+                fixture.componentInstance.dateValue = "01/02/201";
+
+                fixture.detectChanges();
+                tick();
+
+                dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
+                fixture.detectChanges();
+
+                expect(ioService.date).toBeNull();
+            }));
+
+            it("updates the input element value when the date is updated", () => {
+                const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
+
+                expect(fixture.componentInstance.dateValue).toBeUndefined();
+
+                const date = new Date(2015,1,1);
+                ioService.updateDate(date);
+
+                fixture.detectChanges();
+
+                expect(fixture.componentInstance.dateValue).toBe("02/01/2015");
+            });
+        });
+
+        describe("Datepicker with clrDate", () => {
+            let fixture: ComponentFixture<TestComponentWithClrDate>;
+            let compiled: any;
+            let dateContainerDebugElement: DebugElement;
+            let dateInputDebugElement: DebugElement;
+
+            beforeEach(function () {
+                TestBed.configureTestingModule({
+                    imports: [FormsModule, ClrFormsModule],
+                    declarations: [
+                        TestComponentWithClrDate
+                    ]
+                });
+
+                fixture = TestBed.createComponent(TestComponentWithClrDate);
+                fixture.detectChanges();
+                compiled = fixture.nativeElement;
+                dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
+                dateInputDebugElement = fixture.debugElement.query(By.directive(ClrDateInput));
+            });
+
+            it("supports a clrDate Input", () => {
+                const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
+                expect(ioService.date).toBeUndefined();
+
+                const date: Date = new Date();
+
+                fixture.componentInstance.date = date;
+
+                fixture.detectChanges();
+
+                expect(ioService.date.getFullYear()).toBe(date.getFullYear());
+                expect(ioService.date.getMonth()).toBe(date.getMonth());
+                expect(ioService.date.getDate()).toBe(date.getDate());
+            });
+
+            it("emits the output date correctly", () => {
+                const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
+                expect(ioService.date).toBeUndefined();
+                expect(fixture.componentInstance.date).toBeUndefined();
+
+                const date: Date = new Date();
+                ioService.updateDate(date);
+                fixture.detectChanges();
+
+                expect(fixture.componentInstance.date.getFullYear()).toBe(date.getFullYear());
+                expect(fixture.componentInstance.date.getMonth()).toBe(date.getMonth());
+                expect(fixture.componentInstance.date.getDate()).toBe(date.getDate());
+            });
+
+            it("emits the date when the user changes the input", () => {
+                dateInputDebugElement.nativeElement.value = "01/02/2015";
+                dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
+
+                fixture.detectChanges();
+
+                expect(fixture.componentInstance.date.getFullYear()).toBe(2015);
+                expect(fixture.componentInstance.date.getMonth()).toBe(0);
+                expect(fixture.componentInstance.date.getDate()).toBe(2);
+
+                dateInputDebugElement.nativeElement.value = "01/02/201";
+                dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
+
+                fixture.detectChanges();
+
+                expect(fixture.componentInstance.date).toBeNull();
+            });
+        });
     });
 }
 
@@ -151,5 +285,16 @@ class TestComponent {
     `
 })
 class TestComponentWithNgModel {
-    dateValue: string = "";
+    dateValue: string;
+
+    @ViewChild(ClrDateInput) dateInputInstance: ClrDateInput;
+}
+
+@Component ({
+    template: `
+        <input type="date" [(clrDate)]="date">
+    `
+})
+class TestComponentWithClrDate {
+    date: Date;
 }
