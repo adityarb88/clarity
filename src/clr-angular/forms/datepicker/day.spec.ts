@@ -55,18 +55,18 @@ export default function() {
                 expect(button.classList.contains("is-today")).toBe(false);
             });
 
-            it("adds the .is-active class to the button when the input day view is selected", function() {
+            it("adds the .is-selected class to the button when the input day view is selected", function() {
                 const button: HTMLButtonElement = context.clarityElement.children[0];
-                expect(button.classList.contains("is-active")).toBe(false);
+                expect(button.classList.contains("is-selected")).toBe(false);
                 context.testComponent.dayView.isSelected = true;
 
                 context.detectChanges();
-                expect(button.classList.contains("is-active")).toBe(true);
+                expect(button.classList.contains("is-selected")).toBe(true);
 
                 context.testComponent.dayView.isSelected = false;
 
                 context.detectChanges();
-                expect(button.classList.contains("is-active")).toBe(false);
+                expect(button.classList.contains("is-selected")).toBe(false);
             });
 
             it("adds the .is-disabled class to the button when the input day view is selected", function() {

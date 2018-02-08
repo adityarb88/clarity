@@ -16,17 +16,20 @@ import {DayModel} from "./model/day.model";
     selector: "clr-day",
     template: `
         <button
-            class="date"
+            class="day-btn"
             type="button"
             [class.is-today]="dayView.isTodaysDate"
             [class.is-disabled]="dayView.isDisabled"
-            [class.is-active]="dayView.isSelected"
+            [class.is-selected]="dayView.isSelected"
             [attr.tabindex]="dayView.tabIndex"
             (click)="setDay(dayView)"
             (focus)="onDayViewFocus(dayView)">
             {{dayView.dayModel.date}}
         </button>
-    `
+    `,
+    host: {
+        "[class.day]": "true"
+    }
 })
 export class ClrDay {
     constructor(

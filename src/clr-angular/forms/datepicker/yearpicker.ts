@@ -30,7 +30,7 @@ import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-cod
                 type="button"
                 class="calendar-btn year"
                 [attr.tabindex]="getTabIndex(year)"
-                [class.is-active]="year === calendarYear"
+                [class.is-selected]="year === calendarYear"
                 (click)="changeYear(year)">
                 {{year}}
             </button>

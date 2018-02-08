@@ -74,7 +74,7 @@ export default function () {
 
             it("has the correct month selected", () => {
                 const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll("button");
-                expect(buttons[selectedMonth].classList.contains("is-active")).toBe(true);
+                expect(buttons[selectedMonth].classList.contains("is-selected")).toBe(true);
             });
 
             it("initializes the tab indices correctly", () => {

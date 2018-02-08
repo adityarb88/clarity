@@ -18,7 +18,7 @@ import {createKeyboardEvent} from "./utils/test-utils";
 import {UP_ARROW} from "../../utils/key-codes/key-codes";
 
 export default function () {
-    fdescribe("Calendar Component", () => {
+    describe("Calendar Component", () => {
         let context: TestContext<ClrCalendar, TestComponent>;
         let dateNavigationService: DateNavigationService;
 

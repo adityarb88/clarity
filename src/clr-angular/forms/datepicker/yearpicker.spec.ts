@@ -102,16 +102,16 @@ export default function () {
                  expect(context.clarityElement.classList.contains("yearpicker")).toBe(true);
             });
 
-            it("adds a .is-active class on the selected year", () => {
+            it("adds a .is-selected class on the selected year", () => {
                 const yearIndex: number = context.clarityDirective.yearRangeModel.yearRange.indexOf(selectedYear);
                 const years: HTMLButtonElement[] = context.clarityElement.querySelectorAll(".year");
 
                 let count: number = 0;
                 for (const year of years) {
                     if (count === yearIndex) {
-                        expect(year.classList.contains("is-active")).toBe(true);
+                        expect(year.classList.contains("is-selected")).toBe(true);
                     } else {
-                        expect(year.classList.contains("is-active")).toBe(false);
+                        expect(year.classList.contains("is-selected")).toBe(false);
                     }
                     count++;
                 }
