@@ -25,7 +25,7 @@ import DateInputSpecs from "./date-input.spec";
 
 import {addHelpers} from "../../data/datagrid/helpers.spec";
 
-fdescribe("Datepicker", function() {
+describe("Datepicker", function() {
     addHelpers();
 
     describe("Model", function() {
