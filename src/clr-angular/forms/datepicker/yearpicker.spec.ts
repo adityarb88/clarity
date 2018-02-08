@@ -18,7 +18,7 @@ import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-cod
 import {async} from "@angular/core/testing";
 
 export default function () {
-    fdescribe("Yearpicker Component", () => {
+    describe("Yearpicker Component", () => {
         let context: TestContext<ClrYearpicker, TestComponent>;
         let dateNavigationService: DateNavigationService;
         const selectedYear: number = 2005;
