@@ -12,7 +12,7 @@ import {DOCUMENT} from "@angular/common";
 export class DatepickerEnabledService {
     constructor(@Inject(DOCUMENT) private _document: Document) {
         if (this._document) {
-            this._isUserAgentMobile = /Mobi/.test(_document.defaultView.navigator.userAgent);
+            this._isUserAgentMobile = /Mobi/i.test(_document.defaultView.navigator.userAgent);
             this._innerWidth = _document.defaultView.innerWidth;
         }
     }
