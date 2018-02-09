@@ -4,43 +4,36 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {TestContext} from "../../data/datagrid/helpers.spec";
-import {ClrYearpicker} from "./yearpicker";
 import {Component} from "@angular/core";
-import {IfOpenService} from "../../utils/conditional/if-open.service";
-import {DateIOService} from "./providers/date-io.service";
-import {ViewManagerService} from "./providers/view-manager.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {LocaleHelperService} from "./providers/locale-helper.service";
-import {createKeyboardEvent} from "./utils/test-utils";
-import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 import {async} from "@angular/core/testing";
 
-export default function () {
+import {TestContext} from "../../data/datagrid/helpers.spec";
+import {IfOpenService} from "../../utils/conditional/if-open.service";
+import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {LocaleHelperService} from "./providers/locale-helper.service";
+import {ViewManagerService} from "./providers/view-manager.service";
+import {createKeyboardEvent} from "./utils/test-utils";
+import {ClrYearpicker} from "./yearpicker";
+
+export default function() {
     describe("Yearpicker Component", () => {
         let context: TestContext<ClrYearpicker, TestComponent>;
         let dateNavigationService: DateNavigationService;
         const selectedYear: number = 2005;
 
-        beforeEach(function () {
+        beforeEach(function() {
             dateNavigationService = new DateNavigationService();
             dateNavigationService.initializeCalendar();
             dateNavigationService.changeYear(selectedYear);
 
-            context
-                = this.create(
-                ClrYearpicker,
-                TestComponent,
-                [
-                    ViewManagerService,
-                    DatepickerViewService,
-                    IfOpenService,
-                    {provide: DateNavigationService, useValue: dateNavigationService},
-                    LocaleHelperService,
-                    DateIOService
-                ]
-            );
+            context = this.create(ClrYearpicker, TestComponent, [
+                ViewManagerService, DatepickerViewService, IfOpenService,
+                {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService, DateIOService
+            ]);
         });
 
         describe("View Basics", () => {
@@ -99,7 +92,7 @@ export default function () {
             });
 
             it("adds a .yearpicker class on the host", () => {
-                 expect(context.clarityElement.classList.contains("yearpicker")).toBe(true);
+                expect(context.clarityElement.classList.contains("yearpicker")).toBe(true);
             });
 
             it("adds a .is-selected class on the selected year", () => {
@@ -118,35 +111,34 @@ export default function () {
             });
 
             it("updates the tab indices correctly", async(() => {
-                const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll(".year");
+                   const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll(".year");
 
-                expect(buttons[5].tabIndex).toBe(0);
+                   expect(buttons[5].tabIndex).toBe(0);
 
-                context.clarityElement.dispatchEvent(createKeyboardEvent(DOWN_ARROW, "keydown"));
-                context.detectChanges();
+                   context.clarityElement.dispatchEvent(createKeyboardEvent(DOWN_ARROW, "keydown"));
+                   context.detectChanges();
 
-                expect(buttons[5].tabIndex).toBe(-1);
-                expect(buttons[6].tabIndex).toBe(0);
+                   expect(buttons[5].tabIndex).toBe(-1);
+                   expect(buttons[6].tabIndex).toBe(0);
 
-                context.clarityElement.dispatchEvent(createKeyboardEvent(UP_ARROW, "keydown"));
-                context.detectChanges();
+                   context.clarityElement.dispatchEvent(createKeyboardEvent(UP_ARROW, "keydown"));
+                   context.detectChanges();
 
-                expect(buttons[6].tabIndex).toBe(-1);
-                expect(buttons[5].tabIndex).toBe(0);
+                   expect(buttons[6].tabIndex).toBe(-1);
+                   expect(buttons[5].tabIndex).toBe(0);
 
-                context.clarityElement.dispatchEvent(createKeyboardEvent(LEFT_ARROW, "keydown"));
-                context.detectChanges();
+                   context.clarityElement.dispatchEvent(createKeyboardEvent(LEFT_ARROW, "keydown"));
+                   context.detectChanges();
 
-                expect(buttons[5].tabIndex).toBe(-1);
-                expect(buttons[0].tabIndex).toBe(0);
+                   expect(buttons[5].tabIndex).toBe(-1);
+                   expect(buttons[0].tabIndex).toBe(0);
 
-                context.clarityElement.dispatchEvent(createKeyboardEvent(RIGHT_ARROW, "keydown"));
-                context.detectChanges();
+                   context.clarityElement.dispatchEvent(createKeyboardEvent(RIGHT_ARROW, "keydown"));
+                   context.detectChanges();
 
-                expect(buttons[0].tabIndex).toBe(-1);
-                expect(buttons[5].tabIndex).toBe(0);
-
-            }));
+                   expect(buttons[0].tabIndex).toBe(-1);
+                   expect(buttons[5].tabIndex).toBe(0);
+               }));
         });
 
         describe("Typescript API", () => {
@@ -158,7 +150,7 @@ export default function () {
                 expect(context.clarityDirective.yearRangeModel).not.toBeNull();
                 expect(context.clarityDirective.yearRangeModel.yearRange.length).toBe(10);
 
-                for(let i = 0; i < 10; i++) {
+                for (let i = 0; i < 10; i++) {
                     expect(context.clarityDirective.yearRangeModel.yearRange[i]).toBe(2000 + i);
                 }
             });
@@ -257,5 +249,4 @@ export default function () {
         <clr-yearpicker></clr-yearpicker>
     `
 })
-class TestComponent {
-}
+class TestComponent {}

@@ -5,20 +5,16 @@
  */
 
 import {NO_OF_DAYS_IN_A_WEEK, NO_OF_ROWS_IN_CALENDAR_VIEW, TOTAL_DAYS_IN_DAYS_VIEW} from "../utils/constants";
-import {DayViewModel} from "./day-view.model";
-import {CalendarModel} from "./calendar.model";
-import {DayModel} from "./day.model";
 import {getDay, getNumberOfDaysInTheMonth} from "../utils/date-utils";
 
-export class CalendarViewModel {
+import {CalendarModel} from "./calendar.model";
+import {DayViewModel} from "./day-view.model";
+import {DayModel} from "./day.model";
 
-    constructor(
-        public calendar: CalendarModel,
-        private selectedDay: DayModel,
-        private focusableDay: DayModel,
-        private today: DayModel,
-        public firstDayOfWeek: number) {
-            this.generateCalendarView();
+export class CalendarViewModel {
+    constructor(public calendar: CalendarModel, private selectedDay: DayModel, private focusableDay: DayModel,
+                private today: DayModel, public firstDayOfWeek: number) {
+        this.generateCalendarView();
     }
 
     private prevMonthDayViews: DayViewModel[] = [];
@@ -40,7 +36,8 @@ export class CalendarViewModel {
         this.generateDayViewsFromPrevMonth(calYear, calMonth, noOfDaysInPrevMonth);
         this.generateDayViewsFromCurrMonth(calYear, calMonth, noOfDaysInCurrMonth);
 
-        const noOfDaysInNextMonth: number = TOTAL_DAYS_IN_DAYS_VIEW - (noOfDaysInCurrMonth + this.prevMonthDayViews.length);
+        const noOfDaysInNextMonth: number =
+            TOTAL_DAYS_IN_DAYS_VIEW - (noOfDaysInCurrMonth + this.prevMonthDayViews.length);
 
         this.generateDayViewsFromNextMonth(calYear, calMonth, noOfDaysInNextMonth);
         this.formatView();
@@ -56,9 +53,8 @@ export class CalendarViewModel {
         const prevMonthCalendar: CalendarModel = (new CalendarModel(year, month)).previousMonth();
         const datesInPreviousMonth: DayViewModel[] =
             Array(datesFromPrevMonthInCalendarView).fill(null).map((date, index) => {
-                const day: DayModel =
-                    new DayModel(prevMonthCalendar.year, prevMonthCalendar.month,
-                        noOfDays - (datesFromPrevMonthInCalendarView - (index + 1)));
+                const day: DayModel = new DayModel(prevMonthCalendar.year, prevMonthCalendar.month,
+                                                   noOfDays - (datesFromPrevMonthInCalendarView - (index + 1)));
                 return new DayViewModel(day, false, true, false, false);
             });
         this.prevMonthDayViews = datesInPreviousMonth;
@@ -136,7 +132,8 @@ export class CalendarViewModel {
      * generates the CalendarView.
      */
     private formatView(): void {
-        const combinationArr: DayViewModel[] = [...this.prevMonthDayViews, ...this.currMonthDayViews, ...this.nextMonthDayViews];
+        const combinationArr: DayViewModel[] =
+            [...this.prevMonthDayViews, ...this.currMonthDayViews, ...this.nextMonthDayViews];
 
         const calendarView: DayViewModel[][] = [];
         for (let i = 0; i < NO_OF_ROWS_IN_CALENDAR_VIEW; i++) {

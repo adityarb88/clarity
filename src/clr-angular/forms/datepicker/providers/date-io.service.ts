@@ -5,14 +5,22 @@
  */
 
 import {Injectable} from "@angular/core";
-import {LocaleHelperService} from "./locale-helper.service";
+import {Observable} from "rxjs/Observable";
+import {Subject} from "rxjs/Subject";
+
 import {
-    BIG_ENDIAN, DEFAULT_LOCALE_FORMAT, InputDateDisplayFormat, LITTLE_ENDIAN,
-    LITTLE_ENDIAN_REGEX, MIDDLE_ENDIAN, MIDDLE_ENDIAN_REGEX, SEPARATORS
+    BIG_ENDIAN,
+    DEFAULT_LOCALE_FORMAT,
+    InputDateDisplayFormat,
+    LITTLE_ENDIAN,
+    LITTLE_ENDIAN_REGEX,
+    MIDDLE_ENDIAN,
+    MIDDLE_ENDIAN_REGEX,
+    SEPARATORS
 } from "../utils/constants";
 import {getNumberOfDaysInTheMonth, parseToFourDigitYear} from "../utils/date-utils";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
+
+import {LocaleHelperService} from "./locale-helper.service";
 
 @Injectable()
 export class DateIOService {
@@ -55,9 +63,9 @@ export class DateIOService {
         return this._date;
     }
 
-    //Not a setter because I want to keep this private
+    // Not a setter because I want to keep this private
     private setDate(value: Date) {
-        //If both are null do not do anything.
+        // If both are null do not do anything.
         if (!this._date && !value) {
             return;
         }
@@ -71,11 +79,8 @@ export class DateIOService {
         if (!date1 || !date2) {
             return false;
         }
-        return (
-            date1.getDate() === date2.getDate()
-            && date1.getMonth() === date2.getMonth()
-            && date1.getFullYear() === date2.getFullYear()
-        );
+        return (date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() &&
+                date1.getFullYear() === date2.getFullYear());
     }
 
     private processInput(value: string): Date {

@@ -4,19 +4,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {LocaleHelperService} from "./locale-helper.service";
-import localeFr from "@angular/common/locales/fr";
 import {registerLocaleData} from "@angular/common";
+import localeFr from "@angular/common/locales/fr";
+
+import {LocaleHelperService} from "./locale-helper.service";
 
 registerLocaleData(localeFr);
 
-export default function () {
+export default function() {
     describe("View Manager Service", () => {
         let localeHelperServiceUS: LocaleHelperService;
         let localeHelperServiceFr: LocaleHelperService;
 
-        const usDays: string[] = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-        const frDays: string[] = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+        const usDays: string[] = ["S", "M", "T", "W", "T", "F", "S"];
+        const frDays: string[] = ["D", "L", "M", "M", "J", "V", "S"];
 
         beforeEach(() => {
             localeHelperServiceFr = new LocaleHelperService("fr");
@@ -44,12 +45,13 @@ export default function () {
         });
 
         it("returns the locale days in narrow format " +
-            "according to the first day of the week", () => {
-            const a1: ReadonlyArray<string> = localeHelperServiceUS.localeDaysNarrow;
-            const a2: ReadonlyArray<string> = localeHelperServiceFr.localeDaysNarrow;
+               "according to the first day of the week",
+           () => {
+               const a1: ReadonlyArray<string> = localeHelperServiceUS.localeDaysNarrow;
+               const a2: ReadonlyArray<string> = localeHelperServiceFr.localeDaysNarrow;
 
-            expect(a1.length === usDays.length && a1.every((v, i) => v === usDays[i])).toBe(true);
-            expect(a2.length === usDays.length && a2.every((v, i) => v === frDays[i])).toBe(true);
-        });
+               expect(a1.length === usDays.length && a1.every((v, i) => v === usDays[i])).toBe(true);
+               expect(a2.length === usDays.length && a2.every((v, i) => v === frDays[i])).toBe(true);
+           });
     });
 }

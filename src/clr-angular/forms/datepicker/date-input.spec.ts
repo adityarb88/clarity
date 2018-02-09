@@ -4,58 +4,53 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {TestContext} from "../../data/datagrid/helpers.spec";
-import {ClrDateInput} from "./date-input";
 import {Component, DebugElement, ViewChild} from "@angular/core";
-import {IfOpenService} from "../../utils/conditional/if-open.service";
-import {DateIOService} from "./providers/date-io.service";
-import {MockDatepickerEnabledService} from "./providers/datepicker-enabled.service.mock";
-import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {LocaleHelperService} from "./providers/locale-helper.service";
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from "@angular/core/testing";
-import {ClrDateContainer} from "./date-container";
-import {By} from "@angular/platform-browser";
+import {ComponentFixture, fakeAsync, TestBed, tick} from "@angular/core/testing";
 import {FormsModule} from "@angular/forms";
-import {ClrFormsModule} from "../forms.module";
-import {FormControlService} from "../common/form-control.service";
+import {By} from "@angular/platform-browser";
 
-export default function () {
+import {TestContext} from "../../data/datagrid/helpers.spec";
+import {IfOpenService} from "../../utils/conditional/if-open.service";
+import {FormControlService} from "../common/form-control.service";
+import {ClrFormsModule} from "../forms.module";
+
+import {ClrDateContainer} from "./date-container";
+import {ClrDateInput} from "./date-input";
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
+import {MockDatepickerEnabledService} from "./providers/datepicker-enabled.service.mock";
+import {LocaleHelperService} from "./providers/locale-helper.service";
+
+export default function() {
     describe("Date Input Component", () => {
         let context: TestContext<ClrDateInput, TestComponent>;
         let enabledService: MockDatepickerEnabledService;
         let dateIOService: DateIOService;
 
         describe("Basics", () => {
-            beforeEach(function () {
+            beforeEach(function() {
                 TestBed.overrideComponent(ClrDateContainer, {
                     set: {
                         providers: [
-                            {provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService},
-                            IfOpenService,
-                            DateNavigationService,
-                            LocaleHelperService,
-                            DateIOService,
-                            FormControlService
+                            {provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService}, IfOpenService,
+                            DateNavigationService, LocaleHelperService, DateIOService, FormControlService
                         ]
                     }
                 });
 
                 context = this.create(ClrDateInput, TestComponent, []);
 
-                enabledService = <MockDatepickerEnabledService>context
-                    .fixture.debugElement.query(
-                        By.directive(ClrDateContainer)
-                    ).injector.get(DatepickerEnabledService);
-                dateIOService = context
-                    .fixture.debugElement.query(
-                        By.directive(ClrDateContainer)
-                    ).injector.get(DateIOService);
+                enabledService =
+                    <MockDatepickerEnabledService>context.fixture.debugElement.query(By.directive(ClrDateContainer))
+                        .injector.get(DatepickerEnabledService);
+                dateIOService =
+                    context.fixture.debugElement.query(By.directive(ClrDateContainer)).injector.get(DateIOService);
             });
 
             describe("Typescript API", () => {
                 it("gets the placeholder from the IO service", () => {
-                    //since we are testing with en-US
+                    // since we are testing with en-US
                     expect(context.clarityDirective.placeholderText).toBe("MM/DD/YYYY");
                 });
 
@@ -145,13 +140,9 @@ export default function () {
             let dateContainerDebugElement: DebugElement;
             let dateInputDebugElement: DebugElement;
 
-            beforeEach(function () {
-                TestBed.configureTestingModule({
-                    imports: [FormsModule, ClrFormsModule],
-                    declarations: [
-                        TestComponentWithNgModel
-                    ]
-                });
+            beforeEach(function() {
+                TestBed.configureTestingModule(
+                    {imports: [FormsModule, ClrFormsModule], declarations: [TestComponentWithNgModel]});
 
                 fixture = TestBed.createComponent(TestComponentWithNgModel);
                 fixture.detectChanges();
@@ -161,39 +152,39 @@ export default function () {
             });
 
             it("accepts user input", fakeAsync(() => {
-                const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
-                expect(ioService.date).toBeUndefined();
+                   const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
+                   expect(ioService.date).toBeUndefined();
 
-                fixture.componentInstance.dateValue = "01/02/2015";
+                   fixture.componentInstance.dateValue = "01/02/2015";
 
-                fixture.detectChanges();
-                tick();
+                   fixture.detectChanges();
+                   tick();
 
-                dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
-                fixture.detectChanges();
+                   dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
+                   fixture.detectChanges();
 
-                expect(ioService.date).not.toBeUndefined();
-                expect(ioService.date.getFullYear()).toBe(2015);
-                expect(ioService.date.getMonth()).toBe(0);
-                expect(ioService.date.getDate()).toBe(2);
+                   expect(ioService.date).not.toBeUndefined();
+                   expect(ioService.date.getFullYear()).toBe(2015);
+                   expect(ioService.date.getMonth()).toBe(0);
+                   expect(ioService.date.getDate()).toBe(2);
 
-                fixture.componentInstance.dateValue = "01/02/201";
+                   fixture.componentInstance.dateValue = "01/02/201";
 
-                fixture.detectChanges();
-                tick();
+                   fixture.detectChanges();
+                   tick();
 
-                dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
-                fixture.detectChanges();
+                   dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
+                   fixture.detectChanges();
 
-                expect(ioService.date).toBeNull();
-            }));
+                   expect(ioService.date).toBeNull();
+               }));
 
             it("updates the input element value when the date is updated", () => {
                 const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
 
                 expect(fixture.componentInstance.dateValue).toBeUndefined();
 
-                const date = new Date(2015,1,1);
+                const date = new Date(2015, 1, 1);
                 ioService.updateDate(date);
 
                 fixture.detectChanges();
@@ -208,13 +199,9 @@ export default function () {
             let dateContainerDebugElement: DebugElement;
             let dateInputDebugElement: DebugElement;
 
-            beforeEach(function () {
-                TestBed.configureTestingModule({
-                    imports: [FormsModule, ClrFormsModule],
-                    declarations: [
-                        TestComponentWithClrDate
-                    ]
-                });
+            beforeEach(function() {
+                TestBed.configureTestingModule(
+                    {imports: [FormsModule, ClrFormsModule], declarations: [TestComponentWithClrDate]});
 
                 fixture = TestBed.createComponent(TestComponentWithClrDate);
                 fixture.detectChanges();
@@ -278,8 +265,7 @@ export default function () {
         <input type="date" clrDate>
     `
 })
-class TestComponent {
-}
+class TestComponent {}
 
 @Component({
     template: `
@@ -292,7 +278,7 @@ class TestComponentWithNgModel {
     @ViewChild(ClrDateInput) dateInputInstance: ClrDateInput;
 }
 
-@Component ({
+@Component({
     template: `
         <input type="date" [(clrDate)]="date">
     `

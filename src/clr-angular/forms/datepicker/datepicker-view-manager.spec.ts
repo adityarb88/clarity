@@ -5,34 +5,28 @@
  */
 
 
-import {TestContext} from "../../data/datagrid/helpers.spec";
-import {ClrDatepickerViewManager} from "./datepicker-view-manager";
 import {Component} from "@angular/core";
-import {ViewManagerService} from "./providers/view-manager.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
-import {IfOpenService} from "../../utils/conditional/if-open.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {LocaleHelperService} from "./providers/locale-helper.service";
-import {DateIOService} from "./providers/date-io.service";
 
-export default function () {
+import {TestContext} from "../../data/datagrid/helpers.spec";
+import {IfOpenService} from "../../utils/conditional/if-open.service";
+
+import {ClrDatepickerViewManager} from "./datepicker-view-manager";
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {LocaleHelperService} from "./providers/locale-helper.service";
+import {ViewManagerService} from "./providers/view-manager.service";
+
+export default function() {
     describe("Datepicker View Manager Component", () => {
         let context: TestContext<ClrDatepickerViewManager, TestComponent>;
         let viewManagerService: ViewManagerService;
 
-        beforeEach(function () {
-            context
-                = this.create(
-                    ClrDatepickerViewManager,
-                    TestComponent,
-                    [
-                        ViewManagerService,
-                        DatepickerViewService,
-                        IfOpenService,
-                        DateNavigationService,
-                        LocaleHelperService,
-                        DateIOService
-                    ]);
+        beforeEach(function() {
+            context = this.create(ClrDatepickerViewManager, TestComponent, [
+                ViewManagerService, DatepickerViewService, IfOpenService, DateNavigationService, LocaleHelperService,
+                DateIOService
+            ]);
             viewManagerService = context.getClarityProvider(ViewManagerService);
         });
 
@@ -72,8 +66,7 @@ export default function () {
     `
 })
 class TestComponent {
-    constructor(
-        private dateNavigationService: DateNavigationService) {
+    constructor(private dateNavigationService: DateNavigationService) {
         this.dateNavigationService.initializeCalendar();
     }
 }

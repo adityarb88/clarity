@@ -6,11 +6,13 @@
 
 
 import {Component, Input} from "@angular/core";
-import {DayViewModel} from "./model/day-view.model";
-import {DateNavigationService} from "./providers/date-navigation.service";
+
 import {IfOpenService} from "../../utils/conditional/if-open.service";
-import {DateIOService} from "./providers/date-io.service";
+
+import {DayViewModel} from "./model/day-view.model";
 import {DayModel} from "./model/day.model";
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
 
 @Component({
     selector: "clr-day",
@@ -27,16 +29,11 @@ import {DayModel} from "./model/day.model";
             {{dayView.dayModel.date}}
         </button>
     `,
-    host: {
-        "[class.day]": "true"
-    }
+    host: {"[class.day]": "true"}
 })
 export class ClrDay {
-    constructor(
-        private _dateNavigationService: DateNavigationService,
-        private _dateIOService: DateIOService,
-        private _ifOpenService: IfOpenService) {
-    }
+    constructor(private _dateNavigationService: DateNavigationService, private _dateIOService: DateIOService,
+                private _ifOpenService: IfOpenService) {}
 
     @Input("clrDayView") dayView: DayViewModel;
 

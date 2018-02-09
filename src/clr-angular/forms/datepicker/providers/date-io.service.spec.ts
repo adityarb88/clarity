@@ -4,21 +4,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import {registerLocaleData} from "@angular/common";
+import localeAk from "@angular/common/locales/ak";
+import {Subscription} from "rxjs/Subscription";
+
+import {assertEqualDates} from "../utils/test-utils";
+
 import {DateIOService} from "./date-io.service";
 import {LocaleHelperService} from "./locale-helper.service";
-import {Subscription} from "rxjs/Subscription";
-import localeAk from "@angular/common/locales/ak";
-import {registerLocaleData} from "@angular/common";
-import {assertEqualDates} from "../utils/test-utils";
 
 registerLocaleData(localeAk);
 
-export default function () {
+export default function() {
     describe("Date IO Service", () => {
         let dateIOService: DateIOService;
         let localeHelperService: LocaleHelperService;
 
-        describe('Locale Formatting', function () {
+        describe("Locale Formatting", function() {
             it("updates the cldrLocaleDateFormat based on the locale helper service", () => {
                 const dateIOServ: DateIOService = new DateIOService();
                 const localeHelperServ: LocaleHelperService = new LocaleHelperService("en-US");
@@ -42,7 +44,7 @@ export default function () {
 
                 expect(dateIOServ.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe("2015/02/01");
 
-                //null dates return an empty string
+                // null dates return an empty string
                 expect(dateIOServ.toLocaleDisplayFormatString(null)).toBe("");
             });
         });
@@ -89,19 +91,19 @@ export default function () {
                 });
                 expect(count).toBe(0);
 
-                //Invalid Date to Invalid Date doesn't emit anything
+                // Invalid Date to Invalid Date doesn't emit anything
                 dateIOService.inputDate = "01/02/201";
                 expect(count).toBe(0);
 
-                //Valid Date
+                // Valid Date
                 dateIOService.inputDate = "01/02/2015";
                 expect(count).toBe(1);
 
-                //Valid Date to Invalid Date
+                // Valid Date to Invalid Date
                 dateIOService.inputDate = "01/02/201";
                 expect(count).toBe(2);
 
-                //Invalid Date to Valid Date
+                // Invalid Date to Valid Date
                 dateIOService.inputDate = "01/02/20";
                 expect(count).toBe(3);
 

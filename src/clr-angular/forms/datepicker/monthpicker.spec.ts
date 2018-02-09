@@ -5,45 +5,38 @@
  */
 
 import {Component} from "@angular/core";
-import {TestContext} from "../../data/datagrid/helpers.spec";
-import {ClrMonthpicker} from "./monthpicker";
-import {IfOpenService} from "../../utils/conditional/if-open.service";
-import {DateIOService} from "./providers/date-io.service";
-import {ViewManagerService} from "./providers/view-manager.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {LocaleHelperService} from "./providers/locale-helper.service";
 import {async} from "@angular/core/testing";
-import {createKeyboardEvent} from "./utils/test-utils";
-import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
-import {DayModel} from "./model/day.model";
 
-export default function () {
+import {TestContext} from "../../data/datagrid/helpers.spec";
+import {IfOpenService} from "../../utils/conditional/if-open.service";
+import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+
+import {DayModel} from "./model/day.model";
+import {ClrMonthpicker} from "./monthpicker";
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {LocaleHelperService} from "./providers/locale-helper.service";
+import {ViewManagerService} from "./providers/view-manager.service";
+import {createKeyboardEvent} from "./utils/test-utils";
+
+export default function() {
     describe("Monthpicker Component", () => {
         let context: TestContext<ClrMonthpicker, TestComponent>;
         let localeHelperService: LocaleHelperService;
         let dateNavigationService: DateNavigationService;
         const selectedMonth: number = 1;
 
-        beforeEach(function () {
+        beforeEach(function() {
             dateNavigationService = new DateNavigationService();
-            //Setting a selected date so that the calendar is initialized to that month and year.
+            // Setting a selected date so that the calendar is initialized to that month and year.
             dateNavigationService.selectedDay = new DayModel(2015, selectedMonth, 1);
             dateNavigationService.initializeCalendar();
 
-            context
-                = this.create(
-                ClrMonthpicker,
-                TestComponent,
-                [
-                    ViewManagerService,
-                    DatepickerViewService,
-                    IfOpenService,
-                    {provide: DateNavigationService, useValue: dateNavigationService},
-                    LocaleHelperService,
-                    DateIOService
-                ]
-            );
+            context = this.create(ClrMonthpicker, TestComponent, [
+                ViewManagerService, DatepickerViewService, IfOpenService,
+                {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService, DateIOService
+            ]);
             localeHelperService = context.getClarityProvider(LocaleHelperService);
         });
 
@@ -91,33 +84,33 @@ export default function () {
             });
 
             it("updates the tab indices correctly", async(() => {
-                const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll("button");
-                expect(buttons[1].tabIndex).toBe(0);
+                   const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll("button");
+                   expect(buttons[1].tabIndex).toBe(0);
 
-                context.clarityElement.dispatchEvent(createKeyboardEvent(DOWN_ARROW, "keydown"));
-                context.detectChanges();
+                   context.clarityElement.dispatchEvent(createKeyboardEvent(DOWN_ARROW, "keydown"));
+                   context.detectChanges();
 
-                expect(buttons[1].tabIndex).toBe(-1);
-                expect(buttons[2].tabIndex).toBe(0);
+                   expect(buttons[1].tabIndex).toBe(-1);
+                   expect(buttons[2].tabIndex).toBe(0);
 
-                context.clarityElement.dispatchEvent(createKeyboardEvent(UP_ARROW, "keydown"));
-                context.detectChanges();
+                   context.clarityElement.dispatchEvent(createKeyboardEvent(UP_ARROW, "keydown"));
+                   context.detectChanges();
 
-                expect(buttons[2].tabIndex).toBe(-1);
-                expect(buttons[1].tabIndex).toBe(0);
+                   expect(buttons[2].tabIndex).toBe(-1);
+                   expect(buttons[1].tabIndex).toBe(0);
 
-                context.clarityElement.dispatchEvent(createKeyboardEvent(RIGHT_ARROW, "keydown"));
-                context.detectChanges();
+                   context.clarityElement.dispatchEvent(createKeyboardEvent(RIGHT_ARROW, "keydown"));
+                   context.detectChanges();
 
-                expect(buttons[1].tabIndex).toBe(-1);
-                expect(buttons[7].tabIndex).toBe(0);
+                   expect(buttons[1].tabIndex).toBe(-1);
+                   expect(buttons[7].tabIndex).toBe(0);
 
-                context.clarityElement.dispatchEvent(createKeyboardEvent(LEFT_ARROW, "keydown"));
-                context.detectChanges();
+                   context.clarityElement.dispatchEvent(createKeyboardEvent(LEFT_ARROW, "keydown"));
+                   context.detectChanges();
 
-                expect(buttons[7].tabIndex).toBe(-1);
-                expect(buttons[1].tabIndex).toBe(0);
-            }));
+                   expect(buttons[7].tabIndex).toBe(-1);
+                   expect(buttons[1].tabIndex).toBe(0);
+               }));
         });
 
         describe("Typescript API", () => {
@@ -132,7 +125,8 @@ export default function () {
             });
 
             it("gets the current calendar month", () => {
-                expect(context.clarityDirective.calendarMonth).toBe(localeHelperService.localeMonthsWide[selectedMonth]);
+                expect(context.clarityDirective.calendarMonth)
+                    .toBe(localeHelperService.localeMonthsWide[selectedMonth]);
             });
 
             it("gets the correct tabindex", () => {
@@ -218,5 +212,4 @@ export default function () {
         <clr-monthpicker></clr-monthpicker>
     `
 })
-class TestComponent {
-}
+class TestComponent {}

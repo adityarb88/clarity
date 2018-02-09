@@ -11,7 +11,7 @@ import {CalendarModel} from "../model/calendar.model";
  * Returns the number of days in a month.
  */
 export function getNumberOfDaysInTheMonth(year: number, month: number): number {
-    //If we go to the next month, but use a day of 0, it returns the last day from the previous month
+    // If we go to the next month, but use a day of 0, it returns the last day from the previous month
     return (new Date(year, month + 1, 0)).getDate();
 }
 

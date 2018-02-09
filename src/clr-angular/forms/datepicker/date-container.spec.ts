@@ -5,41 +5,36 @@
  */
 
 import {Component} from "@angular/core";
-import {TestContext} from "../../data/datagrid/helpers.spec";
-import {ClrDateContainer} from "./date-container";
-import {LocaleHelperService} from "./providers/locale-helper.service";
-import {IfOpenService} from "../../utils/conditional/if-open.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {DateIOService} from "./providers/date-io.service";
-import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
-import {Subscription} from "rxjs/Subscription";
-import {
-    MockDatepickerEnabledService
-} from "./providers/datepicker-enabled.service.mock";
 import {TestBed} from "@angular/core/testing";
+import {Subscription} from "rxjs/Subscription";
+
+import {TestContext} from "../../data/datagrid/helpers.spec";
+import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {FormControlService} from "../common/form-control.service";
 
-export default function () {
+import {ClrDateContainer} from "./date-container";
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
+import {MockDatepickerEnabledService} from "./providers/datepicker-enabled.service.mock";
+import {LocaleHelperService} from "./providers/locale-helper.service";
+
+export default function() {
     describe("Date Container Component", () => {
         let context: TestContext<ClrDateContainer, TestComponent>;
         let enabledService: MockDatepickerEnabledService;
 
-        beforeEach(function () {
+        beforeEach(function() {
             TestBed.overrideComponent(ClrDateContainer, {
                 set: {
                     providers: [
-                        { provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService },
-                        IfOpenService,
-                        DateNavigationService,
-                        LocaleHelperService,
-                        DateIOService,
-                        FormControlService
+                        {provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService}, IfOpenService,
+                        DateNavigationService, LocaleHelperService, DateIOService, FormControlService
                     ]
                 }
             });
 
-            context
-                = this.create(ClrDateContainer, TestComponent, []);
+            context = this.create(ClrDateContainer, TestComponent, []);
 
             enabledService = <MockDatepickerEnabledService>context.getClarityProvider(DatepickerEnabledService);
         });
@@ -109,5 +104,4 @@ export default function () {
         </clr-date-container>
     `
 })
-class TestComponent {
-}
+class TestComponent {}

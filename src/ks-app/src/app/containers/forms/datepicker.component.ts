@@ -5,27 +5,35 @@
  */
 
 import {Component} from "@angular/core";
-
-import {ClrDateContainer, ClrDaypicker, ClrDateInput, ClrDatepickerViewManager, ClrDay, ClrMonthpicker, ClrYearpicker, ClrCalendar} from "@clr/angular";
+import {
+    ClrCalendar,
+    ClrDateContainer,
+    ClrDateInput,
+    ClrDatepickerViewManager,
+    ClrDay,
+    ClrDaypicker,
+    ClrMonthpicker,
+    ClrYearpicker
+} from "@clr/angular";
 
 @Component({templateUrl: "./datepicker.component.html"})
 export class KSDatepicker {
-  /**
-   * @description
-   * These exist so that the exported API from Clarity is tested when ks-app is compiled with --prod.
-   */
+    /**
+     * @description
+     * These exist so that the exported API from Clarity is tested when ks-app is compiled with --prod.
+     */
 
-  private aDateContainer: ClrDateContainer;
-  private aDaypicker: ClrDaypicker;
-  private aDateInput: ClrDateInput;
-  private aDatepickerViewManager: ClrDatepickerViewManager;
-  private aClrCalendar: ClrCalendar;
-  private aClrMonthpicker: ClrMonthpicker;
-  private aClrYearpicker: ClrYearpicker;
-  private aClrDay: ClrDay;
+    private aDateContainer: ClrDateContainer;
+    private aDaypicker: ClrDaypicker;
+    private aDateInput: ClrDateInput;
+    private aDatepickerViewManager: ClrDatepickerViewManager;
+    private aClrCalendar: ClrCalendar;
+    private aClrMonthpicker: ClrMonthpicker;
+    private aClrYearpicker: ClrYearpicker;
+    private aClrDay: ClrDay;
 
-  model: string = "01/02/2015";
-  model1: string = "01/02/2017";
-  date: Date = new Date();
-  date1: Date = new Date();
+    model: string = "01/02/2015";
+    model1: string = "01/02/2017";
+    date: Date = new Date();
+    date1: Date = new Date();
 }

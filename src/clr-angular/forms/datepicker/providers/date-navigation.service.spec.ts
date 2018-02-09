@@ -4,15 +4,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {DateNavigationService} from "./date-navigation.service";
-import {DayModel} from "../model/day.model";
-import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../../utils/key-codes/key-codes";
 import {Subscription} from "rxjs/Subscription";
+
+import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../../utils/key-codes/key-codes";
+import {DayModel} from "../model/day.model";
 import {createKeyboardEvent} from "../utils/test-utils";
 
-export default function () {
-    describe("Date Navigation Service", () => {
+import {DateNavigationService} from "./date-navigation.service";
 
+export default function() {
+    describe("Date Navigation Service", () => {
         describe("Calendar Initialization", () => {
             let dateNavigationService: DateNavigationService;
 
@@ -266,24 +267,25 @@ export default function () {
                 sub.unsubscribe();
             });
 
-            it("notifies after processing a keyboard event or if the user clicks on the button to move to the current month", () => {
-                let count: number = 0;
-                const sub: Subscription = dateNavigationService.calendarFocusChanged.subscribe(() => {
-                    count++;
-                });
+            it("notifies after processing a keyboard event or if the user clicks on the button to move to the current month",
+               () => {
+                   let count: number = 0;
+                   const sub: Subscription = dateNavigationService.calendarFocusChanged.subscribe(() => {
+                       count++;
+                   });
 
-                expect(count).toBe(0);
-                const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW, "keydown");
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(upArrowEvent);
+                   expect(count).toBe(0);
+                   const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW, "keydown");
+                   dateNavigationService.adjustCalendarFocusOnKeyDownEvent(upArrowEvent);
 
-                expect(count).toBe(1);
+                   expect(count).toBe(1);
 
-                dateNavigationService.moveToCurrentMonth();
+                   dateNavigationService.moveToCurrentMonth();
 
-                expect(count).toBe(2);
+                   expect(count).toBe(2);
 
-                sub.unsubscribe();
-            });
+                   sub.unsubscribe();
+               });
         });
     });
 }

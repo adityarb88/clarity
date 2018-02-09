@@ -4,16 +4,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {Inject, Injectable, LOCALE_ID} from "@angular/core";
 import {
     FormatWidth,
-    FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames,
+    FormStyle,
+    getLocaleDateFormat,
+    getLocaleDayNames,
+    getLocaleFirstDayOfWeek,
+    getLocaleMonthNames,
     TranslationWidth
 } from "@angular/common";
+import {Inject, Injectable, LOCALE_ID} from "@angular/core";
 
 @Injectable()
 export class LocaleHelperService {
-
     constructor(@Inject(LOCALE_ID) public locale: string) {
         this.initializeLocaleData();
     }
@@ -77,7 +80,8 @@ export class LocaleHelperService {
      * e.g. `[Jan, Feb, ...]` for en-US
      */
     private initializeLocaleMonthsAbbreviated(): void {
-        this._localeMonthsAbbreviated = getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Abbreviated);
+        this._localeMonthsAbbreviated =
+            getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Abbreviated);
     }
 
     /**

@@ -19,6 +19,4 @@ import {Component, LOCALE_ID} from "@angular/core";
     // providers: [{provide: LOCALE_ID, useValue: "de"}]
     // Do not remove the above comments. They are present to make sure that we can test different locales easily.
 })
-export class NgModelAutoWrappedDatepickerDemo {
-    model: string = "";
-}
+export class NgModelAutoWrappedDatepickerDemo { model: string = ""; }

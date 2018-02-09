@@ -8,7 +8,7 @@ import {Component, ElementRef, EventEmitter, NgZone} from "@angular/core";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {DatepickerViewService} from "./datepicker-view.service";
 
-export default function () {
+export default function() {
     describe("Calendar View Service", () => {
         let datepickerViewService: DatepickerViewService;
         let fixture: ComponentFixture<any>;
@@ -72,8 +72,7 @@ class MockNgZone extends NgZone {
     `
 })
 class TestComponent {
-    constructor(public elementRef: ElementRef) {
-    }
+    constructor(public elementRef: ElementRef) {}
 
     tabIndex: string = "0";
 }

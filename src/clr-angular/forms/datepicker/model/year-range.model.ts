@@ -48,6 +48,6 @@ export class YearRangeModel {
     }
 
     get midNumber(): number {
-        return this.yearRange[Math.floor(this.yearRange.length/2)];
+        return this.yearRange[Math.floor(this.yearRange.length / 2)];
     }
 }

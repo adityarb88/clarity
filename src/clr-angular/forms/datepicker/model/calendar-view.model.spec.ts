@@ -7,17 +7,17 @@
 
 import {CalendarViewModel} from "./calendar-view.model";
 import {CalendarModel} from "./calendar.model";
-import {DayModel} from "./day.model";
 import {DayViewModel} from "./day-view.model";
+import {DayModel} from "./day.model";
 
-export default function (): void {
-    describe("CalendarViewModel", function () {
-
+export default function(): void {
+    describe("CalendarViewModel", function() {
         const calJan2018: CalendarModel = new CalendarModel(2018, 0);
         const todaysDateInCal: DayModel = new DayModel(2018, 0, 1);
         const todaysDateNotInCal: DayModel = new DayModel(2018, 3, 25);
 
-        function testCalendarViewDates(prev: number[], curr: number[], next: number[], calendarViewModel: CalendarViewModel): void {
+        function testCalendarViewDates(prev: number[], curr: number[], next: number[],
+                                       calendarViewModel: CalendarViewModel): void {
             for (const calendarView of calendarViewModel.calendarView) {
                 for (const day of calendarView) {
                     if (prev.length > 0) {
@@ -34,7 +34,8 @@ export default function (): void {
             expect(next.length).toBe(0);
         }
 
-        function testCalendarViewSelectedDates(calendarViewModel: CalendarViewModel, x: number, y: number, checkAllFalse: boolean) {
+        function testCalendarViewSelectedDates(calendarViewModel: CalendarViewModel, x: number, y: number,
+                                               checkAllFalse: boolean) {
             const calView: DayViewModel[][] = calendarViewModel.calendarView;
             for (let i = 0; i < 6; i++) {
                 for (let j = 0; j < 7; j++) {
@@ -71,8 +72,7 @@ export default function (): void {
         }
 
         it("generates a CalendarViewModel with the CalendarView of 6x7", () => {
-            const testJan2018: CalendarViewModel
-                = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
+            const testJan2018: CalendarViewModel = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
 
             expect(testJan2018).not.toBeNull();
             expect(testJan2018.calendarView).not.toBeNull();
@@ -84,8 +84,7 @@ export default function (): void {
         });
 
         it("generates the calendar with the correct month, year and disabled values", () => {
-            const testJan2018: CalendarViewModel
-                = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
+            const testJan2018: CalendarViewModel = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
 
             const calView: DayViewModel[][] = testJan2018.calendarView;
 
@@ -116,8 +115,7 @@ export default function (): void {
         });
 
         it("generates a CalendarView w.r.t to the first day of the week", () => {
-            const testJan2018US: CalendarViewModel
-                = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
+            const testJan2018US: CalendarViewModel = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
             const prevUS: number[] = [31];
             const currUS: number[] = Array(31).fill(0).map((e, i) => i + 1);
             const nextUS: number[] = Array(10).fill(0).map((e, i) => i + 1);
@@ -138,79 +136,80 @@ export default function (): void {
 
         it("generates a CalendarView with the correct selected flag", () => {
             let dayModel: DayModel = new DayModel(2018, 0, 5);
-            let testJan2018US: CalendarViewModel
-                = new CalendarViewModel(calJan2018, dayModel, null, todaysDateInCal, 0);
+            let testJan2018US: CalendarViewModel =
+                new CalendarViewModel(calJan2018, dayModel, null, todaysDateInCal, 0);
 
-            //Only 1/5/2018 should be true
+            // Only 1/5/2018 should be true
             testCalendarViewSelectedDates(testJan2018US, 0, 5, false);
 
             dayModel = new DayModel(2017, 0, 5);
             testJan2018US = new CalendarViewModel(calJan2018, dayModel, null, todaysDateInCal, 0);
 
-            //Everything should be false
+            // Everything should be false
             testCalendarViewSelectedDates(testJan2018US, 0, 5, true);
         });
 
         it("sets the focusable date to today if focused " +
-            "or selected is not BUT todays date IS present in the calendar", () => {
-            const testJan2018US: CalendarViewModel
-                = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
+               "or selected is not BUT todays date IS present in the calendar",
+           () => {
+               const testJan2018US: CalendarViewModel =
+                   new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
 
-            //Only 1/1/2018 should be true
-            testCalendarViewFocusableDates(testJan2018US, 0, 1);
-        });
+               // Only 1/1/2018 should be true
+               testCalendarViewFocusableDates(testJan2018US, 0, 1);
+           });
 
         it("sets the focusable date to 15th of that calendar if focused, " +
-            "selected or todays date is not present in the calendar", () => {
-            const testJan2018US: CalendarViewModel
-                = new CalendarViewModel(calJan2018, null, null, todaysDateNotInCal, 0);
+               "selected or todays date is not present in the calendar",
+           () => {
+               const testJan2018US: CalendarViewModel =
+                   new CalendarViewModel(calJan2018, null, null, todaysDateNotInCal, 0);
 
-            //Only 1/15/2018 should be true
-            testCalendarViewFocusableDates(testJan2018US, 2, 1);
-        });
+               // Only 1/15/2018 should be true
+               testCalendarViewFocusableDates(testJan2018US, 2, 1);
+           });
 
         it("set the focusable date to the selected date if the focused date is null", () => {
             const dayModel: DayModel = new DayModel(2018, 0, 5);
-            const testJan2018US: CalendarViewModel
-                = new CalendarViewModel(calJan2018, dayModel, null, todaysDateInCal, 0);
+            const testJan2018US: CalendarViewModel =
+                new CalendarViewModel(calJan2018, dayModel, null, todaysDateInCal, 0);
 
-            //Only 1/5/2018 should be true
+            // Only 1/5/2018 should be true
             testCalendarViewFocusableDates(testJan2018US, 0, 5);
         });
 
         it("sets the focusable date to the focused date", () => {
             const dayModel: DayModel = new DayModel(2018, 0, 5);
-            const testJan2018US: CalendarViewModel
-                = new CalendarViewModel(calJan2018, null, dayModel, todaysDateInCal, 0);
+            const testJan2018US: CalendarViewModel =
+                new CalendarViewModel(calJan2018, null, dayModel, todaysDateInCal, 0);
 
-            //Only 1/5/2018 should be true
+            // Only 1/5/2018 should be true
             testCalendarViewFocusableDates(testJan2018US, 0, 5);
         });
 
         it("sets the old focusable flag to false before setting the new one to true", () => {
             let dayModel: DayModel = new DayModel(2018, 0, 5);
-            const testJan2018US: CalendarViewModel
-                = new CalendarViewModel(calJan2018, null, dayModel, todaysDateInCal, 0);
+            const testJan2018US: CalendarViewModel =
+                new CalendarViewModel(calJan2018, null, dayModel, todaysDateInCal, 0);
 
-            //Only 1/15/2018 should be true
+            // Only 1/15/2018 should be true
             testCalendarViewFocusableDates(testJan2018US, 0, 5);
 
             dayModel = new DayModel(2018, 0, 24);
             testJan2018US.updateFocusableDay(dayModel);
 
-            //Only 1/24/2018 should be true
+            // Only 1/24/2018 should be true
             testCalendarViewFocusableDates(testJan2018US, 3, 3);
 
             dayModel = new DayModel(2018, 0, 13);
             testJan2018US.updateFocusableDay(dayModel);
 
-            //Only 1/24/2018 should be true
+            // Only 1/24/2018 should be true
             testCalendarViewFocusableDates(testJan2018US, 1, 6);
         });
 
         it("internally updates the calendar view with a new calendar and focus date", () => {
-            const testJan2018US: CalendarViewModel
-                = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
+            const testJan2018US: CalendarViewModel = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
 
             let prevUS: number[] = [31];
             let currUS: number[] = Array(31).fill(0).map((e, i) => i + 1);

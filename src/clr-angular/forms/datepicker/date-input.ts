@@ -14,33 +14,30 @@ import {
     OnDestroy,
     Optional,
     Output,
-    Renderer2, Self,
+    Renderer2,
+    Self,
     ViewContainerRef
 } from "@angular/core";
 import {NgControl} from "@angular/forms";
 import {Subscription} from "rxjs/Subscription";
-import {ClrDateContainer} from "./date-container";
-import {DateIOService} from "./providers/date-io.service";
-import {LocaleHelperService} from "./providers/locale-helper.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
+
 import {WrappedFormControl} from "../common/wrapped-form-control";
 
-@Directive({
-    selector: "[clrDate]",
-    host: {"[class.date-input]": "true"}
-})
+import {ClrDateContainer} from "./date-container";
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
+import {LocaleHelperService} from "./providers/locale-helper.service";
+
+@Directive({selector: "[clrDate]", host: {"[class.date-input]": "true"}})
 export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnDestroy {
     /**
      * Subscriptions to all the services and queries changes
      */
     private _subscriptions: Subscription[] = [];
 
-    constructor(@Optional() private container: ClrDateContainer,
-                vcr: ViewContainerRef,
-                private elRef: ElementRef,
-                private renderer: Renderer2,
-                @Self() @Optional() private _ngControl: NgControl,
+    constructor(@Optional() private container: ClrDateContainer, vcr: ViewContainerRef, private elRef: ElementRef,
+                private renderer: Renderer2, @Self() @Optional() private _ngControl: NgControl,
                 @Optional() private _localeHelperService: LocaleHelperService,
                 @Optional() private _dateIOService: DateIOService,
                 @Optional() private _dateNavigationService: DateNavigationService,
@@ -117,15 +114,15 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     private initialLoad: boolean = true;
 
     ngAfterContentInit() {
-        //I don't know why I have to do this but after using the new HostWrapping Module I have to delay the processing of the initial
-        //Input set but the user to here.
-        //If I do not 2 issues occur:
-        //1. the Input setter is called before ngOnInit. ngOnInit initializes the services without which the setter fails
-        //2. The Renderer doesn't work before ngAfterContentInit
+        // I don't know why I have to do this but after using the new HostWrapping Module I have to delay the processing
+        // of the initial  Input set but the user to here.  If I do not 2 issues occur:
+        // 1. the Input setter is called before ngOnInit. ngOnInit initializes the services without which the setter
+        // fails
+        // 2. The Renderer doesn't work before ngAfterContentInit
         //(It used to before the new HostWrapping Module for some reason).
-        //I need the renderer to set the value property on the input to make sure that if the user has supplied a Date input object,
-        //we reflect it with the right date on the input field using the IO service.
-        //I am not sure if these are major issues or not but just noting them down here.
+        // I need the renderer to set the value property on the input to make sure that if the user has supplied a Date
+        // input object,  we reflect it with the right date on the input field using the IO service.  I am not sure if
+        // these are major issues or not but just noting them down here.
         if (this.initialLoad) {
             this.processDate(this.dateToProcessLater);
             this.initialLoad = false;
