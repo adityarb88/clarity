@@ -18,6 +18,7 @@ import {ClrDateContainer} from "./date-container";
 import {By} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {ClrFormsModule} from "../forms.module";
+import {FormControlService} from "../common/form-control.service";
 
 export default function () {
     describe("Date Input Component", () => {
@@ -34,7 +35,8 @@ export default function () {
                             IfOpenService,
                             DateNavigationService,
                             LocaleHelperService,
-                            DateIOService
+                            DateIOService,
+                            FormControlService
                         ]
                     }
                 });
