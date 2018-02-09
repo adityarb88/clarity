@@ -6,12 +6,9 @@
 import {Component, ElementRef, HostListener, OnDestroy} from "@angular/core";
 import {Subscription} from "rxjs/Subscription";
 
-import {IfOpenService} from "../../utils/conditional/if-open.service";
-
 import {CalendarViewModel} from "./model/calendar-view.model";
 import {CalendarModel} from "./model/calendar.model";
 import {DayModel} from "./model/day.model";
-import {DateIOService} from "./providers/date-io.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DatepickerViewService} from "./providers/datepicker-view.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
@@ -21,9 +18,8 @@ export class ClrCalendar implements OnDestroy {
     private _subs: Subscription[] = [];
 
     constructor(private _localeHelperService: LocaleHelperService,
-                private _dateNavigationService: DateNavigationService, private _ifOpenService: IfOpenService,
-                private _dateIOService: DateIOService, private _datepickerViewService: DatepickerViewService,
-                private _elRef: ElementRef) {
+                private _dateNavigationService: DateNavigationService,
+                private _datepickerViewService: DatepickerViewService, private _elRef: ElementRef) {
         this.generateCalendarView();
         this.initializeSubscriptions();
     }
