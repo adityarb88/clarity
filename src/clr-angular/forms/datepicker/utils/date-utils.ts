@@ -5,7 +5,6 @@
  */
 
 import {WeekDay} from "@angular/common";
-import {CalendarModel} from "../model/calendar.model";
 
 /**
  * Returns the number of days in a month.

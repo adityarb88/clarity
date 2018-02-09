@@ -19,8 +19,7 @@ import {ViewManagerService} from "./providers/view-manager.service";
     host: {"[class.datepicker]": "true"}
 })
 export class ClrDatepickerViewManager extends AbstractPopover {
-    constructor(@SkipSelf() parent: ElementRef, private _injector: Injector, private _elRef: ElementRef,
-                private _viewManagerService: ViewManagerService) {
+    constructor(@SkipSelf() parent: ElementRef, _injector: Injector, private _viewManagerService: ViewManagerService) {
         super(_injector, parent);
         this.configurePopover();
     }

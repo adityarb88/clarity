@@ -20,4 +20,4 @@ export class MockDatepickerEnabledService extends DatepickerEnabledService {
 export const MOCK_DATEPICKER_ENABLED_PROVIDER = {
     provide: DatepickerEnabledService,
     useClass: MockDatepickerEnabledService
-}
+};
