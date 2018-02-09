@@ -140,11 +140,7 @@ export class CalendarViewModel {
 
         const calendarView: DayViewModel[][] = [];
         for (let i = 0; i < NO_OF_ROWS_IN_CALENDAR_VIEW; i++) {
-            const tempArr: DayViewModel[] = [];
-            for (let j = 0; j < NO_OF_DAYS_IN_A_WEEK; j++) {
-                tempArr.push(combinationArr.shift());
-            }
-            calendarView.push(tempArr);
+            calendarView[i] = combinationArr.slice(i * NO_OF_DAYS_IN_A_WEEK, (i + 1) * NO_OF_DAYS_IN_A_WEEK);
         }
         this._calendarView = calendarView;
     }
