@@ -4,41 +4,36 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {TestContext} from "../../data/datagrid/helpers.spec";
 import {Component} from "@angular/core";
-import {ClrCalendar} from "./calendar";
+
+import {TestContext} from "../../data/datagrid/helpers.spec";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
-import {DateIOService} from "./providers/date-io.service";
-import {ViewManagerService} from "./providers/view-manager.service";
-import {DayModel} from "./model/day.model";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {LocaleHelperService} from "./providers/locale-helper.service";
-import {createKeyboardEvent} from "./utils/test-utils";
 import {UP_ARROW} from "../../utils/key-codes/key-codes";
 
-export default function () {
+import {ClrCalendar} from "./calendar";
+import {DayModel} from "./model/day.model";
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {LocaleHelperService} from "./providers/locale-helper.service";
+import {ViewManagerService} from "./providers/view-manager.service";
+import {createKeyboardEvent} from "./utils/test-utils";
+
+export default function() {
     describe("Calendar Component", () => {
         let context: TestContext<ClrCalendar, TestComponent>;
         let dateNavigationService: DateNavigationService;
 
-        beforeEach(function () {
+        beforeEach(function() {
             dateNavigationService = new DateNavigationService();
-            //Initializing selected day just to make sure that previous and next month tests become easier
+            // Initializing selected day just to make sure that previous and next month tests become easier
             dateNavigationService.selectedDay = new DayModel(2015, 0, 1);
             dateNavigationService.initializeCalendar();
 
-            context
-                = this.create(ClrCalendar, TestComponent,
-                [
-                    {provide: DateNavigationService, useValue: dateNavigationService},
-                    DateIOService,
-                    IfOpenService,
-                    ViewManagerService,
-                    LocaleHelperService,
-                    DatepickerViewService
-                ]
-            );
+            context = this.create(ClrCalendar, TestComponent, [
+                {provide: DateNavigationService, useValue: dateNavigationService}, DateIOService, IfOpenService,
+                ViewManagerService, LocaleHelperService, DatepickerViewService
+            ]);
         });
 
         describe("View Basics", () => {
@@ -55,8 +50,8 @@ export default function () {
 
         describe("Typescript API", () => {
             it("generates a CalendarViewModel on initialization", () => {
-                //Testing for the Jan 2015 calendar since that was the selected date in
-                //beforeEach before the calendar was initialized
+                // Testing for the Jan 2015 calendar since that was the selected date in
+                // beforeEach before the calendar was initialized
                 expect(context.clarityDirective.calendarViewModel).not.toBeNull();
                 expect(context.clarityDirective.calendarViewModel.calendar.month).toBe(0);
                 expect(context.clarityDirective.calendarViewModel.calendar.year).toBe(2015);
@@ -106,5 +101,4 @@ export default function () {
         <clr-calendar></clr-calendar>
     `
 })
-class TestComponent {
-}
+class TestComponent {}

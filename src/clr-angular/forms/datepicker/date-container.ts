@@ -4,15 +4,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {Component, OnDestroy} from "@angular/core";
-import {IfOpenService} from "../../utils/conditional/if-open.service";
-import {LocaleHelperService} from "./providers/locale-helper.service";
-import {DateIOService} from "./providers/date-io.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {DayModel} from "./model/day.model";
 import {Subscription} from "rxjs/Subscription";
-import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
+
+import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {DynamicWrapper} from "../../utils/host-wrapping";
 import {FormControlService} from "../common/form-control.service";
+
+import {DayModel} from "./model/day.model";
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
+import {LocaleHelperService} from "./providers/locale-helper.service";
 
 @Component({
     selector: "clr-date-container",
@@ -27,7 +29,10 @@ import {FormControlService} from "../common/form-control.service";
         </button>
         <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>
     `,
-    providers: [FormControlService, IfOpenService, LocaleHelperService, DateIOService, DateNavigationService, DatepickerEnabledService],
+    providers: [
+        FormControlService, IfOpenService, LocaleHelperService, DateIOService, DateNavigationService,
+        DatepickerEnabledService
+    ],
     host: {"[class.date-container]": "true"}
 })
 export class ClrDateContainer implements DynamicWrapper, OnDestroy {
@@ -35,10 +40,8 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy {
 
     private _sub: Subscription;
 
-    constructor(private _ifOpenService: IfOpenService,
-                private _dateNavigationService: DateNavigationService,
-                private _dateIOService: DateIOService,
-                private _datepickerEnabledService: DatepickerEnabledService) {
+    constructor(private _ifOpenService: IfOpenService, private _dateNavigationService: DateNavigationService,
+                private _dateIOService: DateIOService, private _datepickerEnabledService: DatepickerEnabledService) {
         this._sub = this._ifOpenService.openChange.subscribe((open) => {
             if (open) {
                 this.initializeCalendar();

@@ -7,11 +7,8 @@
 import {DayModel} from "./day.model";
 
 export class DayViewModel {
-    constructor(public dayModel: DayModel,
-                public isTodaysDate: boolean = false,
-                public isDisabled: boolean = false,
-                public isSelected: boolean = false,
-                public isFocusable: boolean = false) {}
+    constructor(public dayModel: DayModel, public isTodaysDate: boolean = false, public isDisabled: boolean = false,
+                public isSelected: boolean = false, public isFocusable: boolean = false) {}
 
     get tabIndex(): number {
         return this.isFocusable ? 0 : -1;

@@ -9,18 +9,26 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 import {ClarityModule} from "../../clr-angular";
 
-import {DatepickerDemo} from "./datepicker.demo";
-import {ROUTING} from "./datepicker.demo.routing";
-import {DatepickerInTemplateDrivenFormsDemo} from "./datepicker-in-template-driven-form";
-import {DatepickerInReactiveForms} from "./datepicker-in-reactive-forms";
-import {NgModelAutoWrappedDatepickerDemo} from "./ngmodel-auto-wrapped";
 import {DatepickerDateInputDemo} from "./datepicker-date-input";
 import {DatepickerDateInputWrapperPresentDemo} from "./datepicker-date-input-wrapper-present";
+import {DatepickerInReactiveForms} from "./datepicker-in-reactive-forms";
+import {DatepickerInTemplateDrivenFormsDemo} from "./datepicker-in-template-driven-form";
+import {DatepickerDemo} from "./datepicker.demo";
+import {ROUTING} from "./datepicker.demo.routing";
+import {NgModelAutoWrappedDatepickerDemo} from "./ngmodel-auto-wrapped";
 import {NgModelWrappedPresentDatepickerDemo} from "./ngmodel-wrapper-present";
 
 @NgModule({
     imports: [CommonModule, ClarityModule, ROUTING, FormsModule, ReactiveFormsModule],
-    declarations: [DatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms, NgModelAutoWrappedDatepickerDemo, NgModelWrappedPresentDatepickerDemo, DatepickerDateInputDemo, DatepickerDateInputWrapperPresentDemo],
-    exports: [DatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms, NgModelAutoWrappedDatepickerDemo, NgModelWrappedPresentDatepickerDemo, DatepickerDateInputDemo, DatepickerDateInputWrapperPresentDemo]
+    declarations: [
+        DatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms,
+        NgModelAutoWrappedDatepickerDemo, NgModelWrappedPresentDatepickerDemo, DatepickerDateInputDemo,
+        DatepickerDateInputWrapperPresentDemo
+    ],
+    exports: [
+        DatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms,
+        NgModelAutoWrappedDatepickerDemo, NgModelWrappedPresentDatepickerDemo, DatepickerDateInputDemo,
+        DatepickerDateInputWrapperPresentDemo
+    ]
 })
 export default class DatepickerDemoModule {}

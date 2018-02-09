@@ -4,11 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {AfterViewInit, Component, ElementRef, HostListener} from "@angular/core";
-import {LocaleHelperService} from "./providers/locale-helper.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {ViewManagerService} from "./providers/view-manager.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
+
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {LocaleHelperService} from "./providers/locale-helper.service";
+import {ViewManagerService} from "./providers/view-manager.service";
 
 @Component({
     selector: "clr-monthpicker",
@@ -28,11 +30,9 @@ import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-cod
     }
 })
 export class ClrMonthpicker implements AfterViewInit {
-    constructor(private _viewManagerService: ViewManagerService,
-                private _localeHelperService: LocaleHelperService,
+    constructor(private _viewManagerService: ViewManagerService, private _localeHelperService: LocaleHelperService,
                 private _dateNavigationService: DateNavigationService,
-                private _datepickerViewService: DatepickerViewService,
-                private _elRef: ElementRef) {
+                private _datepickerViewService: DatepickerViewService, private _elRef: ElementRef) {
         this._focusedMonth = this._dateNavigationService.calendar.month;
     }
 
@@ -57,9 +57,9 @@ export class ClrMonthpicker implements AfterViewInit {
         return month === this.months[this._focusedMonth] ? 0 : -1;
     }
 
-    //NOTE: Didn't move this to the date navigation service because
-    //the logic is fairly simple and it didn't make sense for me
-    //to create extra observables just to move this logic to the service.
+    // NOTE: Didn't move this to the date navigation service because
+    // the logic is fairly simple and it didn't make sense for me
+    // to create extra observables just to move this logic to the service.
     @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
         if (event) {

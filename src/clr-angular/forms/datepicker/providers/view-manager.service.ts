@@ -8,7 +8,6 @@ import {Injectable} from "@angular/core";
 
 @Injectable()
 export class ViewManagerService {
-
     private _monthView: boolean = false;
     private _yearView: boolean = false;
     private _dayView: boolean = true;

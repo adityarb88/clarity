@@ -5,13 +5,15 @@
  */
 
 import {Component} from "@angular/core";
-import {DayViewModel} from "./model/day-view.model";
+
 import {TestContext} from "../../data/datagrid/helpers.spec";
-import {ClrDay} from "./day";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {DateIOService} from "./providers/date-io.service";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
+
+import {ClrDay} from "./day";
+import {DayViewModel} from "./model/day-view.model";
 import {DayModel} from "./model/day.model";
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
 
 export default function() {
     describe("Day Component", () => {
@@ -25,12 +27,7 @@ export default function() {
             it("renders the content based on the input provided", function() {
                 expect(context.clarityElement.textContent.trim()).toMatch("1");
 
-                context.testComponent.dayView
-                    = new DayViewModel(new DayModel(2018, 0, 25),
-                    false,
-                    false,
-                    false,
-                    false);
+                context.testComponent.dayView = new DayViewModel(new DayModel(2018, 0, 25), false, false, false, false);
                 context.detectChanges();
 
                 expect(context.clarityElement.textContent.trim()).toMatch("25");
@@ -133,10 +130,10 @@ export default function() {
 
         describe("Typescript API", function() {
             it("updates the selected day when a Date is selected", () => {
-                //let ifOpenService: IfOpenService;
+                // let ifOpenService: IfOpenService;
                 const dateNavigationService: DateNavigationService = context.getClarityProvider(DateNavigationService);
-                const testDayView: DayViewModel
-                    = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
+                const testDayView: DayViewModel =
+                    new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
 
                 expect(dateNavigationService.selectedDay).toBeUndefined();
 
@@ -153,8 +150,8 @@ export default function() {
                 const dateIOService: DateIOService = context.getClarityProvider(DateIOService);
                 expect(dateIOService.date).toBeUndefined();
 
-                const testDayView: DayViewModel
-                    = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
+                const testDayView: DayViewModel =
+                    new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
 
                 context.clarityDirective.setDay(testDayView);
                 context.detectChanges();
@@ -168,8 +165,8 @@ export default function() {
                 const ifOpenService: IfOpenService = context.getClarityProvider(IfOpenService);
                 expect(ifOpenService.open).toBeUndefined();
 
-                const testDayView: DayViewModel
-                    = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
+                const testDayView: DayViewModel =
+                    new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
 
                 context.clarityDirective.setDay(testDayView);
                 context.detectChanges();
@@ -179,8 +176,8 @@ export default function() {
 
             it("updates the focusedDay when a day is focused", () => {
                 const dateNavigationService: DateNavigationService = context.getClarityProvider(DateNavigationService);
-                const testDayView: DayViewModel
-                    = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
+                const testDayView: DayViewModel =
+                    new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
 
                 expect(dateNavigationService.focusedDay).toBeUndefined();
 
@@ -208,5 +205,6 @@ class TestComponent {
     isFocusable: boolean = false;
     dayModel: DayModel = new DayModel(2018, 0, 1);
 
-    dayView: DayViewModel = new DayViewModel(this.dayModel, this.isToday, this.isDisabled, this.isSelected, this.isFocusable);
+    dayView: DayViewModel =
+        new DayViewModel(this.dayModel, this.isToday, this.isDisabled, this.isSelected, this.isFocusable);
 }

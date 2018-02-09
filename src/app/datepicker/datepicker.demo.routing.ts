@@ -3,15 +3,16 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import {RouterModule, Routes} from "@angular/router";
-import {DatepickerDemo} from "./datepicker.demo";
-import {DatepickerInTemplateDrivenFormsDemo} from "./datepicker-in-template-driven-form";
 import {ModuleWithProviders} from "@angular/core";
-import {DatepickerInReactiveForms} from "./datepicker-in-reactive-forms";
-import {NgModelAutoWrappedDatepickerDemo} from "./ngmodel-auto-wrapped";
-import {NgModelWrappedPresentDatepickerDemo} from "./ngmodel-wrapper-present";
+import {RouterModule, Routes} from "@angular/router";
+
 import {DatepickerDateInputDemo} from "./datepicker-date-input";
 import {DatepickerDateInputWrapperPresentDemo} from "./datepicker-date-input-wrapper-present";
+import {DatepickerInReactiveForms} from "./datepicker-in-reactive-forms";
+import {DatepickerInTemplateDrivenFormsDemo} from "./datepicker-in-template-driven-form";
+import {DatepickerDemo} from "./datepicker.demo";
+import {NgModelAutoWrappedDatepickerDemo} from "./ngmodel-auto-wrapped";
+import {NgModelWrappedPresentDatepickerDemo} from "./ngmodel-wrapper-present";
 
 const ROUTES: Routes = [{
     path: "",

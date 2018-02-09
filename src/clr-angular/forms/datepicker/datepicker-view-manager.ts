@@ -5,28 +5,22 @@
  */
 
 import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
+
 import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
-import {ViewManagerService} from "./providers/view-manager.service";
+
 import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {ViewManagerService} from "./providers/view-manager.service";
 
 @Component({
     selector: "clr-datepicker-view-manager",
     templateUrl: "./datepicker-view-manager.html",
-    providers: [
-        ViewManagerService,
-        DatepickerViewService
-    ],
-    host: {
-        "[class.datepicker]": "true"
-    }
+    providers: [ViewManagerService, DatepickerViewService],
+    host: {"[class.datepicker]": "true"}
 })
 export class ClrDatepickerViewManager extends AbstractPopover {
-    constructor(
-        @SkipSelf() parent: ElementRef,
-        private _injector: Injector,
-        private _elRef: ElementRef,
-        private _viewManagerService: ViewManagerService) {
+    constructor(@SkipSelf() parent: ElementRef, private _injector: Injector, private _elRef: ElementRef,
+                private _viewManagerService: ViewManagerService) {
         super(_injector, parent);
         this.configurePopover();
     }

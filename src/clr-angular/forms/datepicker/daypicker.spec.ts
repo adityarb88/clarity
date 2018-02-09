@@ -5,41 +5,36 @@
  */
 
 
-import {TestContext} from "../../data/datagrid/helpers.spec";
-import {ClrDaypicker} from "./daypicker";
 import {Component} from "@angular/core";
-import {IfOpenService} from "../../utils/conditional/if-open.service";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {DateIOService} from "./providers/date-io.service";
-import {ViewManagerService} from "./providers/view-manager.service";
-import {LocaleHelperService} from "./providers/locale-helper.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
-import {DayModel} from "./model/day.model";
 
-export default function () {
+import {TestContext} from "../../data/datagrid/helpers.spec";
+import {IfOpenService} from "../../utils/conditional/if-open.service";
+
+import {ClrDaypicker} from "./daypicker";
+import {DayModel} from "./model/day.model";
+import {DateIOService} from "./providers/date-io.service";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {LocaleHelperService} from "./providers/locale-helper.service";
+import {ViewManagerService} from "./providers/view-manager.service";
+
+export default function() {
     describe("Daypicker Component", () => {
         let context: TestContext<ClrDaypicker, TestComponent>;
         let viewManagerService: ViewManagerService;
         let localeHelperService: LocaleHelperService;
         let dateNavigationService: DateNavigationService;
 
-        beforeEach(function () {
+        beforeEach(function() {
             dateNavigationService = new DateNavigationService();
-            //Initializing selected day just to make sure that previous and next month tests become easier
+            // Initializing selected day just to make sure that previous and next month tests become easier
             dateNavigationService.selectedDay = new DayModel(2015, 1, 1);
             dateNavigationService.initializeCalendar();
 
-            context
-                = this.create(ClrDaypicker, TestComponent,
-                [
-                    {provide: DateNavigationService, useValue: dateNavigationService},
-                    DateIOService,
-                    IfOpenService,
-                    ViewManagerService,
-                    LocaleHelperService,
-                    DatepickerViewService
-                ]
-            );
+            context = this.create(ClrDaypicker, TestComponent, [
+                {provide: DateNavigationService, useValue: dateNavigationService}, DateIOService, IfOpenService,
+                ViewManagerService, LocaleHelperService, DatepickerViewService
+            ]);
             viewManagerService = context.getClarityProvider(ViewManagerService);
             localeHelperService = context.getClarityProvider(LocaleHelperService);
         });
@@ -169,5 +164,4 @@ export default function () {
         <clr-daypicker></clr-daypicker>
     `
 })
-class TestComponent {
-}
+class TestComponent {}

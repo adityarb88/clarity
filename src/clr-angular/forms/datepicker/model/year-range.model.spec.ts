@@ -6,7 +6,7 @@
 
 import {YearRangeModel} from "./year-range.model";
 
-export default function () {
+export default function() {
     describe("Year Range Model", () => {
         let startYear: number;
         let minYear: number;

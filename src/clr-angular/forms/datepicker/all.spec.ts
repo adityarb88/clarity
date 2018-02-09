@@ -4,26 +4,26 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import {addHelpers} from "../../data/datagrid/helpers.spec";
+
+import CalendarSpecs from "./calendar.spec";
+import DateContainerSpecs from "./date-container.spec";
+import DateInputSpecs from "./date-input.spec";
+import DatepickerViewManagerSpecs from "./datepicker-view-manager.spec";
+import DayComponentSpecs from "./day.spec";
+import DaypickerSpecs from "./daypicker.spec";
+import CalendarViewModelSpecs from "./model/calendar-view.model.spec";
+import CalendarModelSpecs from "./model/calendar.model.spec";
 import DayModelSpecs from "./model/day.model.spec";
 import YearRangeModelSpecs from "./model/year-range.model.spec";
-import CalendarModelSpecs from "./model/calendar.model.spec";
-import CalendarViewModelSpecs from "./model/calendar-view.model.spec";
-import ViewManagerServiceSpecs from "./providers/view-manager.service.spec";
-import LocaleHelperServiceSpecs from "./providers/locale-helper.service.spec";
-import DatepickerEnabledServiceSpecs from "./providers/datepicker-enabled.service.spec";
-import DatepickerViewServiceSpecs from "./providers/datepicker-view.service.spec";
+import MonthpickerSpecs from "./monthpicker.spec";
 import DateIOServiceSpecs from "./providers/date-io.service.spec";
 import DateNavigationServiceSpecs from "./providers/date-navigation.service.spec";
-import DayComponentSpecs from "./day.spec";
-import DatepickerViewManagerSpecs from "./datepicker-view-manager.spec";
-import DateContainerSpecs from "./date-container.spec";
-import DaypickerSpecs from "./daypicker.spec";
-import MonthpickerSpecs from "./monthpicker.spec";
+import DatepickerEnabledServiceSpecs from "./providers/datepicker-enabled.service.spec";
+import DatepickerViewServiceSpecs from "./providers/datepicker-view.service.spec";
+import LocaleHelperServiceSpecs from "./providers/locale-helper.service.spec";
+import ViewManagerServiceSpecs from "./providers/view-manager.service.spec";
 import YearpickerSpecs from "./yearpicker.spec";
-import CalendarSpecs from "./calendar.spec";
-import DateInputSpecs from "./date-input.spec";
-
-import {addHelpers} from "../../data/datagrid/helpers.spec";
 
 describe("Datepicker", function() {
     addHelpers();

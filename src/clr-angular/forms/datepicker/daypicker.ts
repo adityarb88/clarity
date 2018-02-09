@@ -4,23 +4,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {Component} from "@angular/core";
-import {ViewManagerService} from "./providers/view-manager.service";
+
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
+import {ViewManagerService} from "./providers/view-manager.service";
 
-@Component({
-    selector: "clr-daypicker",
-    templateUrl: "./daypicker.html",
-    host: {
-        "[class.daypicker]": "true"
-    }
-})
+@Component({selector: "clr-daypicker", templateUrl: "./daypicker.html", host: {"[class.daypicker]": "true"}})
 export class ClrDaypicker {
-    constructor(
-        private _viewManagerService: ViewManagerService,
-        private _dateNavigationService: DateNavigationService,
-        private _localeHelperService: LocaleHelperService) {
-    }
+    constructor(private _viewManagerService: ViewManagerService, private _dateNavigationService: DateNavigationService,
+                private _localeHelperService: LocaleHelperService) {}
 
     changeToMonthView(): void {
         this._viewManagerService.changeToMonthView();

@@ -4,11 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {AfterViewInit, Component, ElementRef, HostListener} from "@angular/core";
-import {DateNavigationService} from "./providers/date-navigation.service";
-import {YearRangeModel} from "./model/year-range.model";
-import {ViewManagerService} from "./providers/view-manager.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
+
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+
+import {YearRangeModel} from "./model/year-range.model";
+import {DateNavigationService} from "./providers/date-navigation.service";
+import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {ViewManagerService} from "./providers/view-manager.service";
 
 @Component({
     selector: "clr-yearpicker",
@@ -41,10 +43,8 @@ import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-cod
     }
 })
 export class ClrYearpicker implements AfterViewInit {
-    constructor(private _dateNavigationService: DateNavigationService,
-                private _viewManagerService: ViewManagerService,
-                private _datepickerViewService: DatepickerViewService,
-                private _elRef: ElementRef) {
+    constructor(private _dateNavigationService: DateNavigationService, private _viewManagerService: ViewManagerService,
+                private _datepickerViewService: DatepickerViewService, private _elRef: ElementRef) {
         this.yearRangeModel = new YearRangeModel(this._dateNavigationService.calendar.year);
         this._focusedYear = this._dateNavigationService.calendar.year;
     }
@@ -82,7 +82,7 @@ export class ClrYearpicker implements AfterViewInit {
         let focusYear: number = -1;
         if (this.yearRangeModel.inRange(this._focusedYear)) {
             focusYear = this._focusedYear;
-        } else if(this.yearRangeModel.inRange(this.calendarYear)) {
+        } else if (this.yearRangeModel.inRange(this.calendarYear)) {
             focusYear = this.calendarYear;
         } else {
             focusYear = this.yearRangeModel.midNumber;

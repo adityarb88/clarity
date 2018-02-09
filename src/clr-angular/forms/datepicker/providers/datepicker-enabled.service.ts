@@ -4,9 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {Inject, Injectable} from "@angular/core";
-import {DATEPICKER_ENABLE_BREAKPOINT} from "../../../utils/breakpoints/breakpoints";
 import {DOCUMENT} from "@angular/common";
+import {Inject, Injectable} from "@angular/core";
+
+import {DATEPICKER_ENABLE_BREAKPOINT} from "../../../utils/breakpoints/breakpoints";
 
 @Injectable()
 export class DatepickerEnabledService {

@@ -5,22 +5,22 @@
  */
 
 import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {Subject} from "rxjs/Subject";
+
+import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../../utils/key-codes/key-codes";
 import {CalendarModel} from "../model/calendar.model";
 import {DayModel} from "../model/day.model";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
-import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../../utils/key-codes/key-codes";
 
 @Injectable()
 export class DateNavigationService {
-
     private _calendar: CalendarModel;
 
     get calendar(): CalendarModel {
         return this._calendar;
     }
 
-    //not a setter because i want this to remain private
+    // not a setter because i want this to remain private
     private setCalendar(value: CalendarModel) {
         if (!this._calendar.isEqual(value)) {
             this._calendar = value;
@@ -29,7 +29,7 @@ export class DateNavigationService {
     }
 
     initializeCalendar(): void {
-        this.focusedDay = null; //Can be removed later on the store focus
+        this.focusedDay = null;  // Can be removed later on the store focus
         if (this.selectedDay) {
             this._calendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
         } else {
@@ -47,7 +47,7 @@ export class DateNavigationService {
     private initializeTodaysDate(): void {
         this._todaysFullDate = new Date();
         this._today = new DayModel(this._todaysFullDate.getFullYear(), this._todaysFullDate.getMonth(),
-            this._todaysFullDate.getDate());
+                                   this._todaysFullDate.getDate());
     }
 
     get today(): DayModel {
