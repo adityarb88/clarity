@@ -11,6 +11,8 @@ import {DateNavigationService} from "./providers/date-navigation.service";
 import {DayModel} from "./model/day.model";
 import {Subscription} from "rxjs/Subscription";
 import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
+import {DynamicWrapper} from "../../utils/host-wrapping";
+import {FormControlService} from "../common/form-control.service";
 
 @Component({
     selector: "clr-date-container",
@@ -25,10 +27,12 @@ import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
         </button>
         <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>
     `,
-    providers: [IfOpenService, LocaleHelperService, DateIOService, DateNavigationService, DatepickerEnabledService],
+    providers: [FormControlService, IfOpenService, LocaleHelperService, DateIOService, DateNavigationService, DatepickerEnabledService],
     host: {"[class.date-container]": "true"}
 })
-export class ClrDateContainer implements OnDestroy {
+export class ClrDateContainer implements DynamicWrapper, OnDestroy {
+    _dynamic: boolean = false;
+
     private _sub: Subscription;
 
     constructor(private _ifOpenService: IfOpenService,

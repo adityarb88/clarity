@@ -6,10 +6,10 @@
 import {Component, LOCALE_ID} from "@angular/core";
 
 @Component({
-    selector: "clr-basic-datepicker-demo",
+    selector: "clr-datepicker-date-input-wrapper-present-demo",
     // Note the .css extension here, not .scss. That's the best we can have at the moment.
     styleUrls: ["./datepicker.demo.scss"],
-    templateUrl: "./basic-datepicker.html",
+    templateUrl: "./datepicker-date-input-wrapper-present.html",
     providers: [{provide: LOCALE_ID, useValue: "en"}],
     // providers: [{provide: LOCALE_ID, useValue: "ar-AE"}]
     // providers: [{provide: LOCALE_ID, useValue: "hi"}]
@@ -19,24 +19,11 @@ import {Component, LOCALE_ID} from "@angular/core";
     // providers: [{provide: LOCALE_ID, useValue: "de"}]
     // Do not remove the above comments. They are present to make sure that we can test different locales easily.
 })
-export class BasicDatepickerDemo {
-    dateStr: string;
-    jsDate1: Date = new Date();
-    jsDate2: Date = new Date();
+export class DatepickerDateInputWrapperPresentDemo {
+    date: Date = new Date();
 
-    model: string = "";
-
-    datepickerChange(date: Date) {
-        console.log("Datepicker Output Changed", date);
-        if (date) {
-            this.dateStr = date.toLocaleDateString();
-        } else {
-            this.dateStr = "";
-        }
-    }
-
-    dateContainerChange(date: Date) {
+    dateChanged(date: Date) {
         console.log("Datepicker Container Output Changed", date);
-        this.jsDate1 = date;
+        this.date = date;
     }
 }

@@ -5,9 +5,6 @@
  */
 
 import {
-    ComponentFactory,
-    ComponentFactoryResolver,
-    ComponentRef,
     Directive,
     ElementRef,
     EventEmitter,
@@ -22,37 +19,38 @@ import {
 } from "@angular/core";
 import {NgControl} from "@angular/forms";
 import {Subscription} from "rxjs/Subscription";
-
-import {EmptyAnchor} from "../../utils/host-wrapping/empty-anchor";
 import {ClrDateContainer} from "./date-container";
 import {DateIOService} from "./providers/date-io.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
+import {WrappedFormControl} from "../common/wrapped-form-control";
 
 @Directive({
     selector: "[clrDate]",
     host: {"[class.date-input]": "true"}
 })
-export class ClrDateInput implements OnDestroy {
+export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnDestroy {
     /**
      * Subscriptions to all the services and queries changes
      */
     private _subscriptions: Subscription[] = [];
-    private compRef: ComponentRef<ClrDateContainer>;
 
     constructor(@Optional() private container: ClrDateContainer,
-                private vcr: ViewContainerRef,
+                vcr: ViewContainerRef,
                 private elRef: ElementRef,
                 private renderer: Renderer2,
-                private cfr: ComponentFactoryResolver,
                 @Self() @Optional() private _ngControl: NgControl,
                 @Optional() private _localeHelperService: LocaleHelperService,
                 @Optional() private _dateIOService: DateIOService,
                 @Optional() private _dateNavigationService: DateNavigationService,
                 @Optional() private _datepickerEnabledService: DatepickerEnabledService) {
-        if (!container) {
-            this.compRef = this.wrapContainer();
+        super(ClrDateContainer, vcr);
+    }
+
+    ngOnInit() {
+        super.ngOnInit();
+        if (!this.container) {
             this.populateContainerServices();
         }
         this._dateIOService.localeHelperService = this._localeHelperService;
@@ -60,25 +58,10 @@ export class ClrDateInput implements OnDestroy {
     }
 
     private populateContainerServices(): void {
-        this._localeHelperService = this.compRef.injector.get(LocaleHelperService);
-        this._dateIOService = this.compRef.injector.get(DateIOService);
-        this._dateNavigationService = this.compRef.injector.get(DateNavigationService);
-        this._datepickerEnabledService = this.compRef.injector.get(DatepickerEnabledService);
-    }
-
-    /**
-     * Wraps the Datepicker directive by the Datepicker container.
-     */
-    private wrapContainer(): ComponentRef<ClrDateContainer> {
-        // We need a new anchor, since we're projecting the current one.
-        this.vcr.createComponent(this.cfr.resolveComponentFactory(EmptyAnchor));
-        const factory: ComponentFactory<ClrDateContainer> =
-            this.cfr.resolveComponentFactory(ClrDateContainer);
-        const componentRef: ComponentRef<ClrDateContainer> =
-            this.vcr.createComponent(factory, undefined, undefined, [[this.elRef.nativeElement]]);
-        // We can now remove the useless anchor
-        this.vcr.remove(0);
-        return componentRef;
+        this._localeHelperService = this.getProviderFromContainer(LocaleHelperService);
+        this._dateIOService = this.getProviderFromContainer(DateIOService);
+        this._dateNavigationService = this.getProviderFromContainer(DateNavigationService);
+        this._datepickerEnabledService = this.getProviderFromContainer(DatepickerEnabledService);
     }
 
     /**
@@ -130,13 +113,40 @@ export class ClrDateInput implements OnDestroy {
         this._dateIOService.inputDate = value;
     }
 
-    @Input("clrDate")
-    set date(value: Date) {
-        if (value) {
+    private dateToProcessLater: Date;
+    private initialLoad: boolean = true;
+
+    ngAfterContentInit() {
+        //I don't know why I have to do this but after using the new HostWrapping Module I have to delay the processing of the initial
+        //Input set but the user to here.
+        //If I do not 2 issues occur:
+        //1. the Input setter is called before ngOnInit. ngOnInit initializes the services without which the setter fails
+        //2. The Renderer doesn't work before ngAfterContentInit
+        //(It used to before the new HostWrapping Module for some reason).
+        //I need the renderer to set the value property on the input to make sure that if the user has supplied a Date input object,
+        //we reflect it with the right date on the input field using the IO service.
+        //I am not sure if these are major issues or not but just noting them down here.
+        if (this.initialLoad) {
+            this.processDate(this.dateToProcessLater);
+            this.initialLoad = false;
+        }
+    }
+
+    private processDate(value: Date): void {
+        if (this._dateIOService && value) {
             this._dateIOService.inputDate = this._dateIOService.toLocaleDisplayFormatString(value);
             if (this._dateIOService.date) {
                 this.writeDateStr(this._dateIOService.inputDate);
             }
+        }
+    }
+
+    @Input("clrDate")
+    set date(value: Date) {
+        if (this.initialLoad) {
+            this.dateToProcessLater = value;
+        } else {
+            this.processDate(value);
         }
     }
 

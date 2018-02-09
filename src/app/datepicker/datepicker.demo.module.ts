@@ -9,15 +9,18 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 import {ClarityModule} from "../../clr-angular";
 
-import {BasicDatepickerDemo} from "./basic-datepicker";
 import {DatepickerDemo} from "./datepicker.demo";
 import {ROUTING} from "./datepicker.demo.routing";
 import {DatepickerInTemplateDrivenFormsDemo} from "./datepicker-in-template-driven-form";
 import {DatepickerInReactiveForms} from "./datepicker-in-reactive-forms";
+import {NgModelAutoWrappedDatepickerDemo} from "./ngmodel-auto-wrapped";
+import {DatepickerDateInputDemo} from "./datepicker-date-input";
+import {DatepickerDateInputWrapperPresentDemo} from "./datepicker-date-input-wrapper-present";
+import {NgModelWrappedPresentDatepickerDemo} from "./ngmodel-wrapper-present";
 
 @NgModule({
     imports: [CommonModule, ClarityModule, ROUTING, FormsModule, ReactiveFormsModule],
-    declarations: [DatepickerDemo, BasicDatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms],
-    exports: [DatepickerDemo, BasicDatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms]
+    declarations: [DatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms, NgModelAutoWrappedDatepickerDemo, NgModelWrappedPresentDatepickerDemo, DatepickerDateInputDemo, DatepickerDateInputWrapperPresentDemo],
+    exports: [DatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms, NgModelAutoWrappedDatepickerDemo, NgModelWrappedPresentDatepickerDemo, DatepickerDateInputDemo, DatepickerDateInputWrapperPresentDemo]
 })
 export default class DatepickerDemoModule {}

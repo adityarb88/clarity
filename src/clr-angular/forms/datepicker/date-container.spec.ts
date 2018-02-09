@@ -17,6 +17,7 @@ import {
     MockDatepickerEnabledService
 } from "./providers/datepicker-enabled.service.mock";
 import {TestBed} from "@angular/core/testing";
+import {FormControlService} from "../common/form-control.service";
 
 export default function () {
     describe("Date Container Component", () => {
@@ -31,7 +32,8 @@ export default function () {
                         IfOpenService,
                         DateNavigationService,
                         LocaleHelperService,
-                        DateIOService
+                        DateIOService,
+                        FormControlService
                     ]
                 }
             });
