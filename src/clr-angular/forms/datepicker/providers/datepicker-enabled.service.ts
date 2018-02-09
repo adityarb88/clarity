@@ -10,7 +10,7 @@ import {DOCUMENT} from "@angular/common";
 
 @Injectable()
 export class DatepickerEnabledService {
-    constructor(@Inject(DOCUMENT) private _document: Document) {
+    constructor(@Inject(DOCUMENT) private _document: any) {
         if (this._document) {
             this._isUserAgentMobile = /Mobi/i.test(_document.defaultView.navigator.userAgent);
             this._innerWidth = _document.defaultView.innerWidth;
