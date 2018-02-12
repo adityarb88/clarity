@@ -10,6 +10,13 @@ export class DayModel {
     constructor(public year: number, public month: number, public date: number) {}
 
     /**
+     * Returns the Calendar for the current DayModel.
+     */
+    get calendar(): CalendarModel {
+        return new CalendarModel(this.year, this.month);
+    }
+
+    /**
      * Checks if the passed CalendarDate is equal to itself.
      */
     isEqual(day: DayModel) {
@@ -26,6 +33,9 @@ export class DayModel {
         return new Date(this.year, this.month, this.date);
     }
 
+    /**
+     * Returns a new DayModel which is incremented based on the value passed.
+     */
     incrementBy(value: number): DayModel {
         // Creating new Javascript Date object to increment because
         // it will automatically take care of switching to next or previous
@@ -34,10 +44,9 @@ export class DayModel {
         return new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
     }
 
-    getCalendar(): CalendarModel {
-        return new CalendarModel(this.year, this.month);
-    }
-
+    /**
+     * Clones the current day model.
+     */
     clone(): DayModel {
         return new DayModel(this.year, this.month, this.date);
     }

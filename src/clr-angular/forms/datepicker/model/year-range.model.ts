@@ -14,6 +14,13 @@ export class YearRangeModel {
     yearRange: number[] = [];
 
     /**
+     * Gets the number in the middle of the range.
+     */
+    get midNumber(): number {
+        return this.yearRange[Math.floor(this.yearRange.length / 2)];
+    }
+
+    /**
      * Generates the year range based on the year parameter.
      * eg: If 2018 is passed the output will be [2010, 2011, ..., 2019]
      */
@@ -31,23 +38,31 @@ export class YearRangeModel {
         return Array.from({length: (ceil - floor)}, (v, k) => k + floor);
     }
 
+    /**
+     * Generates the YearRangeModel for the next decade.
+     */
     nextDecade(): YearRangeModel {
         return new YearRangeModel(this.year + 10);
     }
 
+    /**
+     * Generates the YearRangeModel for the previous decade.
+     */
     previousDecade(): YearRangeModel {
         return new YearRangeModel(this.year - 10);
     }
 
+    /**
+     * Generates the YearRangeModel for the current decade.
+     */
     currentDecade(): YearRangeModel {
         return new YearRangeModel((new Date()).getFullYear());
     }
 
+    /**
+     * Checks if the value is in the YearRangeModel.
+     */
     inRange(value: number): boolean {
         return this.yearRange.indexOf(value) > -1;
-    }
-
-    get midNumber(): number {
-        return this.yearRange[Math.floor(this.yearRange.length / 2)];
     }
 }

@@ -21,6 +21,15 @@ export class CalendarViewModel {
     private currMonthDayViews: DayViewModel[] = [];
     private nextMonthDayViews: DayViewModel[] = [];
 
+    private _calendarView: DayViewModel[][];
+
+    /**
+     * DayViewModel matrix. Size 6x7
+     */
+    get calendarView(): DayViewModel[][] {
+        return this._calendarView;
+    }
+
     /**
      * Generates a 6x7 matrix of DayViewModel based on the Calendar.
      * The 6x7 matrix is structured according to the first day of the week.
@@ -108,15 +117,6 @@ export class CalendarViewModel {
         }
     }
 
-    private _calendarView: DayViewModel[][];
-
-    /**
-     * DayViewModel matrix. Size 6x7
-     */
-    get calendarView(): DayViewModel[][] {
-        return this._calendarView;
-    }
-
     /**
      * Checks if the Day passed is in the CalendarView.
      */
@@ -142,12 +142,20 @@ export class CalendarViewModel {
         this._calendarView = calendarView;
     }
 
+    /**
+     * Initialize the selected day if the day is in the calendar.
+     */
     private initializeSelectedDay(): void {
         if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
             this.currMonthDayViews[this.selectedDay.date - 1].isSelected = true;
         }
     }
 
+    /**
+     * Initializes the focusable day if the day is in the calendar. If focusable day is not set, then
+     * we check for the selected day. If selected day is not set then check if today is in the current
+     * calendar. If not then just set the 15th of the current calendar month.
+     */
     private initializeFocusableDay(): void {
         if (this.focusableDay && this.isDayInCalendarView(this.focusableDay)) {
             this.setFocusableFlag(this.focusableDay, true);
@@ -169,6 +177,9 @@ export class CalendarViewModel {
         }
     }
 
+    /**
+     * Updates the Calendar Model along with the focusable day according to the value that is passed.
+     */
     updateCalendar(calendar: CalendarModel, focusableDay: DayModel): void {
         if (!this.calendar.isEqual(calendar)) {
             this.focusableDay = focusableDay;
@@ -177,6 +188,9 @@ export class CalendarViewModel {
         }
     }
 
+    /**
+     * Updates the focusable day in the calendar.
+     */
     updateFocusableDay(day: DayModel): void {
         this.setFocusableFlag(this.focusableDay, false);
         this.setFocusableFlag(day, true);

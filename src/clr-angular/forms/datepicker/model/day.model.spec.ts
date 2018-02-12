@@ -62,14 +62,14 @@ export default function(): void {
         });
 
         it("returns the Calendar in which the DayModel belongs in", () => {
-            expect(dayModel1.getCalendar()).not.toBeNull();
-            expect(dayModel2.getCalendar()).not.toBeNull();
+            expect(dayModel1.calendar).not.toBeNull();
+            expect(dayModel2.calendar).not.toBeNull();
 
-            expect(dayModel1.getCalendar().month).toBe(0);
-            expect(dayModel1.getCalendar().year).toBe(2018);
+            expect(dayModel1.calendar.month).toBe(0);
+            expect(dayModel1.calendar.year).toBe(2018);
 
-            expect(dayModel2.getCalendar().month).toBe(5);
-            expect(dayModel2.getCalendar().year).toBe(2018);
+            expect(dayModel2.calendar.month).toBe(5);
+            expect(dayModel2.calendar.year).toBe(2018);
         });
 
         it("returns a clone of the DayModel", () => {
