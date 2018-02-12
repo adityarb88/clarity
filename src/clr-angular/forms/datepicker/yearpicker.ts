@@ -49,9 +49,31 @@ export class ClrYearpicker implements AfterViewInit {
         this._focusedYear = this._dateNavigationService.calendar.year;
     }
 
+    /**
+     * YearRangeModel which is used to build the YearPicker view.
+     */
     yearRangeModel: YearRangeModel;
 
+    /**
+     * Keeps track of the current focused year.
+     */
     private _focusedYear: number;
+
+    /**
+     * Increments the focus year by the value passed. Updates the YearRangeModel if the
+     * new value is not in the current decade.
+     */
+    private incrementFocusYearBy(value: number): void {
+        this._focusedYear = this._focusedYear + value;
+        if (!this.yearRangeModel.inRange(this._focusedYear)) {
+            if (value > 0) {
+                this.yearRangeModel = this.yearRangeModel.nextDecade();
+            } else {
+                this.yearRangeModel = this.yearRangeModel.previousDecade();
+            }
+        }
+        this._datepickerViewService.focusCell(this._elRef);
+    }
 
     /**
      * Gets the year which the user is currently on.
@@ -60,24 +82,40 @@ export class ClrYearpicker implements AfterViewInit {
         return this._dateNavigationService.calendar.year;
     }
 
+    /**
+     * Calls the DateNavigationService to update the year value of the calendar.
+     * Also changes the view to the daypicker.
+     */
     changeYear(year: number): void {
         this._dateNavigationService.changeYear(year);
         this._viewManagerService.changeToDayPickerView();
     }
 
+    /**
+     * Updates the YearRangeModel to the previous decade.
+     */
     previousDecade(): void {
         this.yearRangeModel = this.yearRangeModel.previousDecade();
     }
 
+    /**
+     * Updates the YearRangeModel to the current decade.
+     */
     currentDecade(): void {
         this.yearRangeModel = this.yearRangeModel.currentDecade();
         this._datepickerViewService.focusCell(this._elRef);
     }
 
+    /**
+     * Updates the YearRangeModel to the next decade.
+     */
     nextDecade(): void {
         this.yearRangeModel = this.yearRangeModel.nextDecade();
     }
 
+    /**
+     * Compares the year passed to the focused year and returns the tab index.
+     */
     getTabIndex(year: number): number {
         let focusYear: number = -1;
         if (this.yearRangeModel.inRange(this._focusedYear)) {
@@ -91,8 +129,14 @@ export class ClrYearpicker implements AfterViewInit {
         return year === focusYear ? 0 : -1;
     }
 
+    /**
+     * Handles the Keyboard arrow navigation for the yearpicker.
+     */
     @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
+        // NOTE: Didn't move this to the date navigation service because
+        // the logic is fairly simple and it didn't make sense for me
+        // to create extra observables just to move this logic to the service.
         if (event) {
             const keyCode: number = event.keyCode;
             if (keyCode === UP_ARROW) {
@@ -111,18 +155,9 @@ export class ClrYearpicker implements AfterViewInit {
         }
     }
 
-    private incrementFocusYearBy(value: number): void {
-        this._focusedYear = this._focusedYear + value;
-        if (!this.yearRangeModel.inRange(this._focusedYear)) {
-            if (value > 0) {
-                this.yearRangeModel = this.yearRangeModel.nextDecade();
-            } else {
-                this.yearRangeModel = this.yearRangeModel.previousDecade();
-            }
-        }
-        this._datepickerViewService.focusCell(this._elRef);
-    }
-
+    /**
+     * Focuses on the current calendar year when the View is initialized.
+     */
     ngAfterViewInit() {
         this._datepickerViewService.focusCell(this._elRef);
     }

@@ -45,6 +45,11 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
         super(ClrDateContainer, vcr);
     }
 
+    /**
+     * 1. Populate services if the date container is not present.
+     * 2. Initialize Subscriptions.
+     * 3. Process User Input.
+     */
     ngOnInit() {
         super.ngOnInit();
         if (!this.container) {
@@ -54,9 +59,12 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
         this.processDate(this.dateValueOnInitialLoad);
     }
 
+    /**
+     * Write the initial input set by the user on to the input field.
+     */
     ngAfterViewInit() {
         // I don't know why I have to do this but after using the new HostWrapping Module I have to delay the processing
-        // of the initial  Input set but the user to here.  If I do not 2 issues occur:
+        // of the initial Input set by the user to here.  If I do not 2 issues occur:
         // 1. the Input setter is called before ngOnInit. ngOnInit initializes the services without which the setter
         // fails
         // 2. The Renderer doesn't work before ngAfterViewInit
@@ -70,6 +78,9 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
         this.initialLoad = false;
     }
 
+    /**
+     * Unsubscribes from the subscriptions.
+     */
     ngOnDestroy() {
         this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     }
@@ -111,6 +122,9 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
         this.renderer.setProperty(this.elRef.nativeElement, "value", value);
     }
 
+    /**
+     * Sets the Input Date on the DateIOService
+     */
     set inputDate(value: string) {
         this._dateIOService.inputDate = value;
     }
@@ -133,6 +147,9 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     private initialLoad: boolean = true;
     private dateValueOnInitialLoad: Date;
 
+    /**
+     * Javascript Date object input set by the user.
+     */
     @Input("clrDate")
     set date(value: Date) {
         if (this.initialLoad) {
@@ -146,16 +163,26 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
 
     @Output("clrDateChange") _dateUpdated: EventEmitter<Date> = new EventEmitter<Date>(false);
 
+    /**
+     * Returns the date format for the placeholder according to which the input should be entered by the user.
+     */
     @HostBinding("attr.placeholder")
     get placeholderText(): string {
         return this._dateIOService.placeholderText;
     }
 
+    /**
+     * Sets the input type to text when the datepicker is enabled. Reverts back to the native date input
+     * when the datepicker is disabled. Datepicker is disabled on mobiles.
+     */
     @HostBinding("attr.type")
     get inputType(): string {
         return this._datepickerEnabledService.isEnabled ? "text" : "date";
     }
 
+    /**
+     * Fires this method when the user changes the input focuses out of the input field.
+     */
     @HostListener("change", ["$event.target"])
     onValueChange(target: HTMLInputElement) {
         const value: string = target.value;

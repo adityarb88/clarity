@@ -35,12 +35,21 @@ export class ClrDay {
     constructor(private _dateNavigationService: DateNavigationService, private _dateIOService: DateIOService,
                 private _ifOpenService: IfOpenService) {}
 
+    /**
+     * DayViewModel input which is used to build the Day View.
+     */
     @Input("clrDayView") dayView: DayViewModel;
 
+    /**
+     * Updates the focusedDay in the DateNavigationService when the ClrDay is focused.
+     */
     onDayViewFocus(dayView: DayViewModel) {
         this._dateNavigationService.focusedDay = dayView.dayModel;
     }
 
+    /**
+     * Updates the selectedDay when the ClrDay is selected and closes the datepicker popover.
+     */
     setDay(dayView: DayViewModel): void {
         const day: DayModel = dayView.dayModel;
         this._dateNavigationService.selectedDay = day;
