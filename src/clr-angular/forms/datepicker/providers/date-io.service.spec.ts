@@ -22,27 +22,26 @@ export default function() {
 
         describe("Locale Formatting", function() {
             it("updates the cldrLocaleDateFormat based on the locale helper service", () => {
-                const dateIOServ: DateIOService = new DateIOService();
                 const localeHelperServ: LocaleHelperService = new LocaleHelperService("en-US");
-                expect(dateIOServ.cldrLocaleDateFormat).toBe("dd/MM/y");
-                dateIOServ.localeHelperService = localeHelperServ;
+                const dateIOServ: DateIOService = new DateIOService(localeHelperServ);
                 expect(dateIOServ.cldrLocaleDateFormat).toBe("M/d/yy");
+
+                const localeHelperServ1: LocaleHelperService = new LocaleHelperService("ak");
+                const dateIOServ1: DateIOService = new DateIOService(localeHelperServ1);
+
+                expect(dateIOServ1.cldrLocaleDateFormat).toBe("yy/MM/dd");
             });
 
             it("supports a method to convert a Date object to date string based on the locale", () => {
-                const dateIOServ: DateIOService = new DateIOService();
-                const localeHelperServ1: LocaleHelperService = new LocaleHelperService("en-US");
-                const localeHelperServ2: LocaleHelperService = new LocaleHelperService("ak");
-
-                expect(dateIOServ.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe("01/02/2015");
-
-                dateIOServ.localeHelperService = localeHelperServ1;
+                const localeHelperServ: LocaleHelperService = new LocaleHelperService("en-US");
+                const dateIOServ: DateIOService = new DateIOService(localeHelperServ);
 
                 expect(dateIOServ.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe("02/01/2015");
 
-                dateIOServ.localeHelperService = localeHelperServ2;
+                const localeHelperServ1: LocaleHelperService = new LocaleHelperService("ak");
+                const dateIOServ1: DateIOService = new DateIOService(localeHelperServ1);
 
-                expect(dateIOServ.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe("2015/02/01");
+                expect(dateIOServ1.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe("2015/02/01");
 
                 // null dates return an empty string
                 expect(dateIOServ.toLocaleDisplayFormatString(null)).toBe("");
@@ -52,8 +51,7 @@ export default function() {
         describe("Date Processing", () => {
             beforeEach(() => {
                 localeHelperService = new LocaleHelperService("en-US");
-                dateIOService = new DateIOService();
-                dateIOService.localeHelperService = localeHelperService;
+                dateIOService = new DateIOService(localeHelperService);
             });
 
             it("sets the right input date str when a valid date is entered", () => {
@@ -80,8 +78,7 @@ export default function() {
         describe("Subscriptions", () => {
             beforeEach(() => {
                 localeHelperService = new LocaleHelperService("en-US");
-                dateIOService = new DateIOService();
-                dateIOService.localeHelperService = localeHelperService;
+                dateIOService = new DateIOService(localeHelperService);
             });
 
             it("emits a date object when the dateInput has changed", () => {

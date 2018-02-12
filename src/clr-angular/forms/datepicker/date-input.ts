@@ -12,7 +12,8 @@ import {
     HostBinding,
     HostListener,
     Input,
-    OnDestroy, OnInit,
+    OnDestroy,
+    OnInit,
     Optional,
     Output,
     Renderer2,
@@ -28,7 +29,6 @@ import {ClrDateContainer} from "./date-container";
 import {DateIOService} from "./providers/date-io.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
-import {LocaleHelperService} from "./providers/locale-helper.service";
 
 @Directive({selector: "[clrDate]", host: {"[class.date-input]": "true"}})
 export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
@@ -39,7 +39,6 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
 
     constructor(@Optional() private container: ClrDateContainer, vcr: ViewContainerRef, private elRef: ElementRef,
                 private renderer: Renderer2, @Self() @Optional() private _ngControl: NgControl,
-                @Optional() private _localeHelperService: LocaleHelperService,
                 @Optional() private _dateIOService: DateIOService,
                 @Optional() private _dateNavigationService: DateNavigationService,
                 @Optional() private _datepickerEnabledService: DatepickerEnabledService) {
@@ -51,7 +50,6 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
         if (!this.container) {
             this.populateContainerServices();
         }
-        this._dateIOService.localeHelperService = this._localeHelperService;
         this.initializeSubscriptions();
         this.processDate(this.dateValueOnInitialLoad);
     }
@@ -80,7 +78,6 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
      * Populates the services from the container component.
      */
     private populateContainerServices(): void {
-        this._localeHelperService = this.getProviderFromContainer(LocaleHelperService);
         this._dateIOService = this.getProviderFromContainer(DateIOService);
         this._dateNavigationService = this.getProviderFromContainer(DateNavigationService);
         this._datepickerEnabledService = this.getProviderFromContainer(DatepickerEnabledService);

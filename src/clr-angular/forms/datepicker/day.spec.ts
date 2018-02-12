@@ -14,13 +14,15 @@ import {DayViewModel} from "./model/day-view.model";
 import {DayModel} from "./model/day.model";
 import {DateIOService} from "./providers/date-io.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
+import {LocaleHelperService} from "./providers/locale-helper.service";
 
 export default function() {
     describe("Day Component", () => {
         let context: TestContext<ClrDay, TestComponent>;
 
         beforeEach(function() {
-            context = this.create(ClrDay, TestComponent, [DateNavigationService, DateIOService, IfOpenService]);
+            context = this.create(ClrDay, TestComponent,
+                                  [LocaleHelperService, DateNavigationService, DateIOService, IfOpenService]);
         });
 
         describe("View Basics", function() {

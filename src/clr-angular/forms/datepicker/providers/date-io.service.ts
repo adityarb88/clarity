@@ -24,9 +24,13 @@ import {LocaleHelperService} from "./locale-helper.service";
 
 @Injectable()
 export class DateIOService {
-    private _localeHelperService: LocaleHelperService;
     public cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
     private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
+
+    constructor(private _localeHelperService: LocaleHelperService) {
+        this.cldrLocaleDateFormat = this._localeHelperService.localeDateFormat;
+        this.initializeLocaleDisplayFormat();
+    }
 
     private _inputDate: string;
 
@@ -85,12 +89,6 @@ export class DateIOService {
 
     private processInput(value: string): Date {
         return this.isValidInput(value);
-    }
-
-    set localeHelperService(service: LocaleHelperService) {
-        this._localeHelperService = service;
-        this.cldrLocaleDateFormat = this._localeHelperService.localeDateFormat;
-        this.initializeLocaleDisplayFormat();
     }
 
     private initializeLocaleDisplayFormat(): void {
