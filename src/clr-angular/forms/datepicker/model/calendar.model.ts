@@ -9,6 +9,9 @@ import {DayModel} from "./day.model";
 export class CalendarModel {
     constructor(public year: number, public month: number) {}
 
+    /**
+     * Checks if the calendar passed is equal to the current calendar.
+     */
     isEqual(calendar: CalendarModel) {
         if (calendar) {
             return this.year === calendar.year && this.month === calendar.month;
@@ -16,6 +19,9 @@ export class CalendarModel {
         return false;
     }
 
+    /**
+     * Checks if a DayModel is in the Calendar
+     */
     isDayInCalendar(day: DayModel): boolean {
         if (day) {
             return (this.year === day.year && this.month === day.month);
@@ -53,12 +59,18 @@ export class CalendarModel {
         return new CalendarModel(date.getFullYear(), date.getMonth());
     }
 
+    /**
+     * Updates the month value in the current calendar.
+     */
     updateMonth(month: number): void {
         if (month > -1 && month < 12) {
             this.month = month;
         }
     }
 
+    /**
+     * Updates the year value in the current calendar.
+     */
     updateYear(year: number): void {
         this.year = year;
     }

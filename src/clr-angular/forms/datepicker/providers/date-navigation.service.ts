@@ -108,7 +108,7 @@ export class DateNavigationService {
         if (this._calendar.isDayInCalendar(this.focusedDay)) {
             this._focusedDayChanged.next();
         } else {
-            this.setCalendar(this.focusedDay.getCalendar());
+            this.setCalendar(this.focusedDay.calendar);
         }
         this._calendarFocusChanged.next();
     }
