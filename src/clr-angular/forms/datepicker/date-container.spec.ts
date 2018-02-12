@@ -51,7 +51,7 @@ export default function() {
             });
 
             it("clicking on the button toggles the datepicker popover", () => {
-                spyOn(context.clarityDirective, "toggleCalendar");
+                spyOn(context.clarityDirective, "toggleDatepicker");
                 const button: HTMLButtonElement = context.clarityElement.querySelector(".datepicker-trigger");
 
                 button.click();
