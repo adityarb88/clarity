@@ -23,7 +23,7 @@ import {LocaleHelperService} from "./providers/locale-helper.service";
         <button
             type="button"
             class="datepicker-trigger"
-            (click)="toggleCalendar($event)"
+            (click)="toggleDatepicker($event)"
             *ngIf="isEnabled">
             <clr-icon shape="calendar"></clr-icon>
         </button>
@@ -36,6 +36,7 @@ import {LocaleHelperService} from "./providers/locale-helper.service";
     host: {"[class.date-container]": "true"}
 })
 export class ClrDateContainer implements DynamicWrapper, OnDestroy {
+    // Unused but have to add it :-(
     _dynamic: boolean = false;
 
     private _sub: Subscription;
@@ -49,22 +50,17 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy {
         });
     }
 
+    /**
+     * Returns if the Datepicker is enabled or not. If disabled, hides the datepicker trigger.
+     * @returns {boolean}
+     */
     get isEnabled(): boolean {
         return this._datepickerEnabledService.isEnabled;
     }
 
     /**
-     * Toggles the calendar.
+     * Converts the Date javascript object into a DayModel which will be used to initialize the Calendar.
      */
-    toggleCalendar(event: MouseEvent) {
-        this._ifOpenService.toggleWithEvent(event);
-    }
-
-    private initializeCalendar(): void {
-        this.processUserInput();
-        this._dateNavigationService.initializeCalendar();
-    }
-
     private processUserInput(): void {
         const date: Date = this._dateIOService.date;
         if (date) {
@@ -75,6 +71,24 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy {
         }
     }
 
+    /**
+     * Processes the user input and Initializes the Calendar everytime the datepicker popover is open.
+     */
+    private initializeCalendar(): void {
+        this.processUserInput();
+        this._dateNavigationService.initializeCalendar();
+    }
+
+    /**
+     * Toggles the Datepicker Popover.
+     */
+    toggleDatepicker(event: MouseEvent) {
+        this._ifOpenService.toggleWithEvent(event);
+    }
+
+    /**
+     * Unsubscribe from subscriptions.
+     */
     ngOnDestroy() {
         this._sub.unsubscribe();
     }

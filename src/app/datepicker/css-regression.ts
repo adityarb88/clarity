@@ -12,6 +12,4 @@ import {Component, LOCALE_ID} from "@angular/core";
     templateUrl: "./css-regression.html",
     providers: [{provide: LOCALE_ID, useValue: "en"}]
 })
-export class DatepickerCSSRegressionDemo {
-    date: Date = new Date(2017, 4, 1);
-}
+export class DatepickerCSSRegressionDemo { date: Date = new Date(2017, 4, 1); }

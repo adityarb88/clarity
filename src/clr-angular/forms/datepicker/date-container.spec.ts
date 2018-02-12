@@ -57,7 +57,7 @@ export default function() {
                 button.click();
                 context.detectChanges();
 
-                expect(context.clarityDirective.toggleCalendar).toHaveBeenCalled();
+                expect(context.clarityDirective.toggleDatepicker).toHaveBeenCalled();
             });
 
             it("projects the date input", () => {
@@ -85,7 +85,7 @@ export default function() {
                 });
 
                 expect(flag).toBeUndefined();
-                context.clarityDirective.toggleCalendar(fakeEvent);
+                context.clarityDirective.toggleDatepicker(fakeEvent);
                 context.detectChanges();
 
                 expect(flag).not.toBeUndefined();

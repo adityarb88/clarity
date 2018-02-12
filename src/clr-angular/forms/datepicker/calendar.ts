@@ -24,20 +24,14 @@ export class ClrCalendar implements OnDestroy {
         this.initializeSubscriptions();
     }
 
-    private initializeSubscriptions(): void {
-        this._subs.push(this._dateNavigationService.calendarChanged.subscribe(() => {
-            this.calendarViewModel.updateCalendar(this.calendar, this.focusedDay);
-        }));
+    /**
+     * Calendar View Model to generate the Calendar.
+     */
+    calendarViewModel: CalendarViewModel;
 
-        this._subs.push(this._dateNavigationService.focusedDayChanged.subscribe(() => {
-            this.calendarViewModel.updateFocusableDay(this.focusedDay);
-        }));
-
-        this._subs.push(this._dateNavigationService.calendarFocusChanged.subscribe(() => {
-            this._datepickerViewService.focusCell(this._elRef);
-        }));
-    }
-
+    /**
+     * Gets the locale days according to the TranslationWidth.Narrow format.
+     */
     get localeDaysNarrow(): ReadonlyArray<string> {
         return this._localeHelperService.localeDaysNarrow;
     }
@@ -58,22 +52,53 @@ export class ClrCalendar implements OnDestroy {
         return this._dateNavigationService.today;
     }
 
-    calendarViewModel: CalendarViewModel;
+    /**
+     * Initialize subscriptions to:
+     * 1. update the calendar view model.
+     * 2. update the focusable day in the calendar view model.
+     * 3. focus on the focusable day in the calendar.
+     */
+    private initializeSubscriptions(): void {
+        this._subs.push(this._dateNavigationService.calendarChanged.subscribe(() => {
+            this.calendarViewModel.updateCalendar(this.calendar, this.focusedDay);
+        }));
 
+        this._subs.push(this._dateNavigationService.focusedDayChanged.subscribe(() => {
+            this.calendarViewModel.updateFocusableDay(this.focusedDay);
+        }));
+
+        this._subs.push(this._dateNavigationService.calendarFocusChanged.subscribe(() => {
+            this._datepickerViewService.focusCell(this._elRef);
+        }));
+    }
+
+    /**
+     * Generates the Calendar View based on the calendar retrieved from the DateNavigationService.
+     */
     private generateCalendarView(): void {
         this.calendarViewModel = new CalendarViewModel(this.calendar, this.selectedDay, this.focusedDay, this.today,
                                                        this._localeHelperService.firstDayOfWeek);
     }
 
+    /**
+     * Delegates Keyboard arrow navigation to the DateNavigationService.
+     * @param {KeyboardEvent} event
+     */
     @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
         this._dateNavigationService.adjustCalendarFocusOnKeyDownEvent(event);
     }
 
+    /**
+     * Focuses on the focusable day when the Calendar View is initialized.
+     */
     ngAfterViewInit() {
         this._datepickerViewService.focusCell(this._elRef);
     }
 
+    /**
+     * Unsubscribe from subscriptions.
+     */
     ngOnDestroy(): void {
         this._subs.forEach((sub: Subscription) => sub.unsubscribe());
     }

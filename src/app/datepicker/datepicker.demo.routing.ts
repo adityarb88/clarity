@@ -6,6 +6,7 @@
 import {ModuleWithProviders} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 
+import {DatepickerCSSRegressionDemo} from "./css-regression";
 import {DatepickerDateInputDemo} from "./datepicker-date-input";
 import {DatepickerDateInputWrapperPresentDemo} from "./datepicker-date-input-wrapper-present";
 import {DatepickerInReactiveForms} from "./datepicker-in-reactive-forms";
@@ -13,7 +14,6 @@ import {DatepickerInTemplateDrivenFormsDemo} from "./datepicker-in-template-driv
 import {DatepickerDemo} from "./datepicker.demo";
 import {NgModelAutoWrappedDatepickerDemo} from "./ngmodel-auto-wrapped";
 import {NgModelWrappedPresentDatepickerDemo} from "./ngmodel-wrapper-present";
-import {DatepickerCSSRegressionDemo} from "./css-regression";
 
 const ROUTES: Routes = [{
     path: "",

@@ -9,6 +9,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 import {ClarityModule} from "../../clr-angular";
 
+import {DatepickerCSSRegressionDemo} from "./css-regression";
 import {DatepickerDateInputDemo} from "./datepicker-date-input";
 import {DatepickerDateInputWrapperPresentDemo} from "./datepicker-date-input-wrapper-present";
 import {DatepickerInReactiveForms} from "./datepicker-in-reactive-forms";
@@ -17,7 +18,6 @@ import {DatepickerDemo} from "./datepicker.demo";
 import {ROUTING} from "./datepicker.demo.routing";
 import {NgModelAutoWrappedDatepickerDemo} from "./ngmodel-auto-wrapped";
 import {NgModelWrappedPresentDatepickerDemo} from "./ngmodel-wrapper-present";
-import {DatepickerCSSRegressionDemo} from "./css-regression";
 
 @NgModule({
     imports: [CommonModule, ClarityModule, ROUTING, FormsModule, ReactiveFormsModule],
