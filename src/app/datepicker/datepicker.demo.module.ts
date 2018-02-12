@@ -17,18 +17,19 @@ import {DatepickerDemo} from "./datepicker.demo";
 import {ROUTING} from "./datepicker.demo.routing";
 import {NgModelAutoWrappedDatepickerDemo} from "./ngmodel-auto-wrapped";
 import {NgModelWrappedPresentDatepickerDemo} from "./ngmodel-wrapper-present";
+import {DatepickerCSSRegressionDemo} from "./css-regression";
 
 @NgModule({
     imports: [CommonModule, ClarityModule, ROUTING, FormsModule, ReactiveFormsModule],
     declarations: [
         DatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms,
         NgModelAutoWrappedDatepickerDemo, NgModelWrappedPresentDatepickerDemo, DatepickerDateInputDemo,
-        DatepickerDateInputWrapperPresentDemo
+        DatepickerDateInputWrapperPresentDemo, DatepickerCSSRegressionDemo
     ],
     exports: [
         DatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms,
         NgModelAutoWrappedDatepickerDemo, NgModelWrappedPresentDatepickerDemo, DatepickerDateInputDemo,
-        DatepickerDateInputWrapperPresentDemo
+        DatepickerDateInputWrapperPresentDemo, DatepickerCSSRegressionDemo
     ]
 })
 export default class DatepickerDemoModule {}

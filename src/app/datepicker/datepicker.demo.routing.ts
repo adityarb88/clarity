@@ -13,6 +13,7 @@ import {DatepickerInTemplateDrivenFormsDemo} from "./datepicker-in-template-driv
 import {DatepickerDemo} from "./datepicker.demo";
 import {NgModelAutoWrappedDatepickerDemo} from "./ngmodel-auto-wrapped";
 import {NgModelWrappedPresentDatepickerDemo} from "./ngmodel-wrapper-present";
+import {DatepickerCSSRegressionDemo} from "./css-regression";
 
 const ROUTES: Routes = [{
     path: "",
@@ -24,7 +25,8 @@ const ROUTES: Routes = [{
         {path: "datepicker-date-input", component: DatepickerDateInputDemo},
         {path: "datepicker-date-input-wrapper-present", component: DatepickerDateInputWrapperPresentDemo},
         {path: "template-driven-forms", component: DatepickerInTemplateDrivenFormsDemo},
-        {path: "reactive-forms", component: DatepickerInReactiveForms}
+        {path: "reactive-forms", component: DatepickerInReactiveForms},
+        {path: "css-regression", component: DatepickerCSSRegressionDemo}
     ]
 }];
 
