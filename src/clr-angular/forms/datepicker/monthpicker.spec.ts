@@ -75,9 +75,9 @@ export default function() {
                 let count: number = 0;
                 for (const button of buttons) {
                     if (count === selectedMonth) {
-                        expect(button.tabIndex).toBe(0);
+                        expect(button.tabIndex).toBe(context.clarityDirective.getTabIndex(count));
                     } else {
-                        expect(button.tabIndex).toBe(-1);
+                        expect(button.tabIndex).toBe(context.clarityDirective.getTabIndex(count));
                     }
                     count++;
                 }
@@ -124,20 +124,18 @@ export default function() {
                 }
             });
 
-            it("gets the current calendar month", () => {
-                expect(context.clarityDirective.calendarMonth)
-                    .toBe(localeHelperService.localeMonthsWide[selectedMonth]);
+            it("gets the current month name in wide format", () => {
+                expect(context.clarityDirective.calendarMonthIndex)
+                    .toBe(selectedMonth);
             });
 
             it("gets the correct tabindex", () => {
-                let i = 0;
-                for (const month of context.clarityDirective.months) {
+                for (let i = 0; i < context.clarityDirective.monthNames.length; i++) {
                     if (i === selectedMonth) {
-                        expect(context.clarityDirective.getTabIndex(month)).toBe(0);
+                        expect(context.clarityDirective.getTabIndex(i)).toBe(0);
                     } else {
-                        expect(context.clarityDirective.getTabIndex(month)).toBe(-1);
+                        expect(context.clarityDirective.getTabIndex(i)).toBe(-1);
                     }
-                    i++;
                 }
             });
 
@@ -147,61 +145,59 @@ export default function() {
                 viewManagerService.changeToMonthView();
                 expect(viewManagerService.monthView).toBe(true);
 
-                context.clarityDirective.changeMonth(localeHelperService.localeMonthsWide[0]);
+                context.clarityDirective.changeMonth(0);
 
                 expect(viewManagerService.monthView).toBe(false);
                 expect(viewManagerService.dayView).toBe(true);
             });
 
-            it("updates month value in the date navigation service", () => {
+            it("updates the month value in the date navigation service", () => {
                 const dateNavService: DateNavigationService = context.getClarityProvider(DateNavigationService);
 
                 expect(dateNavService.calendar.month).toBe(1);
 
-                context.clarityDirective.changeMonth(localeHelperService.localeMonthsWide[4]);
+                context.clarityDirective.changeMonth(4);
 
                 expect(dateNavService.calendar.month).toBe(4);
             });
 
             it("handles keyboard navigation", () => {
-                const months: ReadonlyArray<string> = context.clarityDirective.months;
-
-                expect(context.clarityDirective.getTabIndex(months[1])).toBe(0);
+                expect(context.clarityDirective.getTabIndex(1)).toBe(0);
 
                 context.clarityDirective.onKeyDown(createKeyboardEvent(UP_ARROW, "keydown"));
                 context.detectChanges();
 
-                expect(context.clarityDirective.getTabIndex(months[0])).toBe(0);
+                expect(context.clarityDirective.getTabIndex(0)).toBe(0);
 
                 context.clarityDirective.onKeyDown(createKeyboardEvent(UP_ARROW, "keydown"));
                 context.detectChanges();
 
-                expect(context.clarityDirective.getTabIndex(months[0])).toBe(0);
+                expect(context.clarityDirective.getTabIndex(0)).toBe(0);
 
                 context.clarityDirective.onKeyDown(createKeyboardEvent(DOWN_ARROW, "keydown"));
                 context.detectChanges();
 
-                expect(context.clarityDirective.getTabIndex(months[1])).toBe(0);
+                expect(context.clarityDirective.getTabIndex(1)).toBe(0);
 
                 context.clarityDirective.onKeyDown(createKeyboardEvent(DOWN_ARROW, "keydown"));
                 context.detectChanges();
 
-                expect(context.clarityDirective.getTabIndex(months[2])).toBe(0);
+                expect(context.clarityDirective.getTabIndex(2)).toBe(0);
 
                 context.clarityDirective.onKeyDown(createKeyboardEvent(RIGHT_ARROW, "keydown"));
                 context.detectChanges();
 
-                expect(context.clarityDirective.getTabIndex(months[8])).toBe(0);
+                expect(context.clarityDirective.getTabIndex(8)).toBe(0);
 
                 context.clarityDirective.onKeyDown(createKeyboardEvent(RIGHT_ARROW, "keydown"));
                 context.detectChanges();
 
-                expect(context.clarityDirective.getTabIndex(months[8])).toBe(0);
+                expect(context.clarityDirective.getTabIndex(8)).toBe(0);
 
                 context.clarityDirective.onKeyDown(createKeyboardEvent(LEFT_ARROW, "keydown"));
                 context.detectChanges();
 
-                expect(context.clarityDirective.getTabIndex(months[2])).toBe(0);
+                expect(context.clarityDirective.getTabIndex(2)).toBe(0);
             });
         });
     });

@@ -18,10 +18,10 @@ import {ViewManagerService} from "./providers/view-manager.service";
         <button
             type="button"
             class="calendar-btn month"
-            *ngFor="let month of months"
-            (click)="changeMonth(month)"
-            [class.is-selected]="month === calendarMonth"
-            [attr.tabindex]="getTabIndex(month)">
+            *ngFor="let month of monthNames; let monthIndex = index"
+            (click)="changeMonth(monthIndex)"
+            [class.is-selected]="monthIndex === calendarMonthIndex"
+            [attr.tabindex]="getTabIndex(monthIndex)">
             {{month}}
         </button>
     `,
@@ -33,45 +33,43 @@ export class ClrMonthpicker implements AfterViewInit {
     constructor(private _viewManagerService: ViewManagerService, private _localeHelperService: LocaleHelperService,
                 private _dateNavigationService: DateNavigationService,
                 private _datepickerViewService: DatepickerViewService, private _elRef: ElementRef) {
-        this._focusedMonth = this._dateNavigationService.calendar.month;
+        this._focusedMonthIndex = this._dateNavigationService.calendar.month;
     }
 
     /**
      * Keeps track of the current focused month.
      */
-    private _focusedMonth: number;
+    private _focusedMonthIndex: number;
 
     /**
      * Gets the months array which is used to rendered the monthpicker view.
      * Months are in the TranslationWidth.Wide format.
      */
-    get months(): ReadonlyArray<string> {
+    get monthNames(): ReadonlyArray<string> {
         return this._localeHelperService.localeMonthsWide;
     }
 
     /**
      * Gets the month value of the Calendar.
      */
-    get calendarMonth(): string {
-        const calMonth: number = this._dateNavigationService.calendar.month;
-        return this.months[calMonth];
+    get calendarMonthIndex(): number {
+        return this._dateNavigationService.calendar.month;
     }
 
     /**
      * Calls the DateNavigationService to update the month value of the calendar.
      * Also changes the view to the daypicker.
      */
-    changeMonth(month: string) {
-        const calMonth: number = this.months.indexOf(month);
-        this._dateNavigationService.changeMonth(calMonth);
+    changeMonth(monthIndex: number) {
+        this._dateNavigationService.changeMonth(monthIndex);
         this._viewManagerService.changeToDayPickerView();
     }
 
     /**
      * Compares the month passed to the focused month and returns the tab index.
      */
-    getTabIndex(month: string): number {
-        return month === this.months[this._focusedMonth] ? 0 : -1;
+    getTabIndex(monthIndex: number): number {
+        return monthIndex === this._focusedMonthIndex ? 0 : -1;
     }
 
     /**
@@ -84,21 +82,21 @@ export class ClrMonthpicker implements AfterViewInit {
         // to create extra observables just to move this logic to the service.
         if (event) {
             const keyCode: number = event.keyCode;
-            if (keyCode === UP_ARROW && this._focusedMonth > 0) {
+            if (keyCode === UP_ARROW && this._focusedMonthIndex > 0) {
                 event.preventDefault();
-                this._focusedMonth--;
+                this._focusedMonthIndex--;
                 this._datepickerViewService.focusCell(this._elRef);
-            } else if (keyCode === DOWN_ARROW && this._focusedMonth < 11) {
+            } else if (keyCode === DOWN_ARROW && this._focusedMonthIndex < 11) {
                 event.preventDefault();
-                this._focusedMonth++;
+                this._focusedMonthIndex++;
                 this._datepickerViewService.focusCell(this._elRef);
-            } else if (keyCode === RIGHT_ARROW && this._focusedMonth < 6) {
+            } else if (keyCode === RIGHT_ARROW && this._focusedMonthIndex < 6) {
                 event.preventDefault();
-                this._focusedMonth = this._focusedMonth + 6;
+                this._focusedMonthIndex = this._focusedMonthIndex + 6;
                 this._datepickerViewService.focusCell(this._elRef);
-            } else if (keyCode === LEFT_ARROW && this._focusedMonth > 5) {
+            } else if (keyCode === LEFT_ARROW && this._focusedMonthIndex > 5) {
                 event.preventDefault();
-                this._focusedMonth = this._focusedMonth - 6;
+                this._focusedMonthIndex = this._focusedMonthIndex - 6;
                 this._datepickerViewService.focusCell(this._elRef);
             }
         }
