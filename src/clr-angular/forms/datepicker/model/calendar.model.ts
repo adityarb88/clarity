@@ -58,20 +58,4 @@ export class CalendarModel {
         const date: Date = new Date();
         return new CalendarModel(date.getFullYear(), date.getMonth());
     }
-
-    /**
-     * Updates the month value in the current calendar.
-     */
-    updateMonth(month: number): void {
-        if (month > -1 && month < 12) {
-            this.month = month;
-        }
-    }
-
-    /**
-     * Updates the year value in the current calendar.
-     */
-    updateYear(year: number): void {
-        this.year = year;
-    }
 }

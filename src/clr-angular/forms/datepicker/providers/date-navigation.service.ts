@@ -83,11 +83,11 @@ export class DateNavigationService {
     public focusedDay: DayModel;
 
     changeMonth(month: number): void {
-        this._calendar.updateMonth(month);
+        this._calendar = new CalendarModel(this._calendar.year, month);
     }
 
     changeYear(year: number): void {
-        this._calendar.updateYear(year);
+        this._calendar = new CalendarModel(year, this._calendar.month);
     }
 
     moveToNextMonth(): void {
