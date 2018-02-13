@@ -40,17 +40,13 @@ export default function(): void {
             const date2: Date = dayModel2.toDate();
 
             expect(date1).not.toBeNull();
-            expect(date1.getDate()).toBe(1);
-            expect(date1.getMonth()).toBe(0);
-            expect(date1.getFullYear()).toBe(2018);
-
             expect(date2).not.toBeNull();
-            expect(date2.getDate()).toBe(21);
-            expect(date2.getMonth()).toBe(5);
-            expect(date2.getFullYear()).toBe(2018);
+
+            expect(date1.getTime()).toEqual(new Date(2018, 0, 1).getTime());
+            expect(date2.getTime()).toEqual(new Date(2018, 5, 21).getTime());
         });
 
-        it("provides a method to clone a DayModel and increment or decrement it by a number of days", () => {
+        it("provides a method to increment or decrement it a DayModel by a number of days", () => {
             incrementDayModelAndCompare(dayModel2, 20);
             incrementDayModelAndCompare(dayModel2, -20);
 
@@ -74,6 +70,9 @@ export default function(): void {
 
         it("returns a clone of the DayModel", () => {
             let testDayModel: DayModel = dayModel1.clone();
+
+            expect(testDayModel).not.toBe(dayModel1);
+
             expect(assertEqualDates(testDayModel.toDate(), dayModel1.toDate())).toBe(true);
 
             testDayModel = dayModel2.clone();

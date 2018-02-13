@@ -16,6 +16,7 @@ import {
     LITTLE_ENDIAN_REGEX,
     MIDDLE_ENDIAN,
     MIDDLE_ENDIAN_REGEX,
+    NON_NEGATIVE_NUMBER,
     SEPARATORS
 } from "../utils/constants";
 import {getNumberOfDaysInTheMonth, parseToFourDigitYear} from "../utils/date-utils";
@@ -42,7 +43,7 @@ export class DateIOService {
      * This setter is used for setting the inputDate when the user types in the input.
      */
     set inputDate(value: string) {
-        const date: Date = this.processInput(value);
+        const date: Date = this.isValidInput(value);
         if (date) {
             this.setDate(date);
             this._inputDate = value;
@@ -85,10 +86,6 @@ export class DateIOService {
         }
         return (date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() &&
                 date1.getFullYear() === date2.getFullYear());
-    }
-
-    private processInput(value: string): Date {
-        return this.isValidInput(value);
     }
 
     private initializeLocaleDisplayFormat(): void {
@@ -144,7 +141,7 @@ export class DateIOService {
      * Credit: https://stackoverflow.com/a/24457420/8960224
      */
     private isNonNegativeNumber(num: string): boolean {
-        return /^\d+$/.test(num);
+        return NON_NEGATIVE_NUMBER.test(num);
     }
 
     /**
@@ -164,20 +161,14 @@ export class DateIOService {
      * Note: Month is 0 based.
      */
     private isValidMonth(month: number): boolean {
-        if (month > -1 && month < 12) {
-            return true;
-        }
-        return false;
+        return (month > -1 && month < 12);
     }
 
     /**
      * Checks if the date is valid depending on the year and month provided.
      */
     private isValidDate(year: number, month: number, date: number): boolean {
-        if (date > 0 && date <= getNumberOfDaysInTheMonth(year, month)) {
-            return true;
-        }
-        return false;
+        return (date > 0 && date <= getNumberOfDaysInTheMonth(year, month));
     }
 
     /**
@@ -204,16 +195,8 @@ export class DateIOService {
         if (!this.isValidMonth(m) || !this.isValidDate(y, m, d)) {
             return null;
         }
-        if (year.length === 2) {
-            y = parseToFourDigitYear(y);
-            if (y === -1) {
-                return null;
-            }
-            return new Date(y, m, d);
-        } else if (year.length === 4) {
-            return new Date(y, m, d);
-        }
-        return null;
+        const result: number = parseToFourDigitYear(y);
+        return result !== -1 ? (new Date(result, m, d)) : null;
     }
 
     /**
@@ -228,15 +211,10 @@ export class DateIOService {
             return null;
         }
         const dateParts: string[] = date.split(separator);
-        if (dateParts.length !== 3) {
+        if (dateParts.length !== 3 || !this.areDatePartsNumbers(dateParts)) {
             return null;
         }
-        if (!this.areDatePartsNumbers(dateParts)) {
-            return null;
-        }
-        const firstPart: string = dateParts[0];
-        const secondPart: string = dateParts[1];
-        const thirdPart: string = dateParts[2];
+        const [firstPart, secondPart, thirdPart] = dateParts;
         if (this.localeDisplayFormat === LITTLE_ENDIAN) {
             // secondPart is month && firstPart is date
             return this.validateAndGetDate(thirdPart, secondPart, firstPart);

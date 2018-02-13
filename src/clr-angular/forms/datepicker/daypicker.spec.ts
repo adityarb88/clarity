@@ -101,23 +101,23 @@ export default function() {
 
         describe("Typescript API", () => {
             it("moves to the month view", () => {
-                expect(viewManagerService.dayView).toBe(true);
+                expect(viewManagerService.isDayView).toBe(true);
 
                 context.clarityDirective.changeToMonthView();
                 context.detectChanges();
 
-                expect(viewManagerService.dayView).toBe(false);
-                expect(viewManagerService.monthView).toBe(true);
+                expect(viewManagerService.isDayView).toBe(false);
+                expect(viewManagerService.isMonthView).toBe(true);
             });
 
             it("moves to the year view", () => {
-                expect(viewManagerService.dayView).toBe(true);
+                expect(viewManagerService.isDayView).toBe(true);
 
                 context.clarityDirective.changeToYearView();
                 context.detectChanges();
 
-                expect(viewManagerService.dayView).toBe(false);
-                expect(viewManagerService.yearView).toBe(true);
+                expect(viewManagerService.isDayView).toBe(false);
+                expect(viewManagerService.isYearView).toBe(true);
             });
 
             it("moves to the previous month", () => {

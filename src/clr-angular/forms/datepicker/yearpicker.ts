@@ -45,8 +45,8 @@ import {ViewManagerService} from "./providers/view-manager.service";
 export class ClrYearpicker implements AfterViewInit {
     constructor(private _dateNavigationService: DateNavigationService, private _viewManagerService: ViewManagerService,
                 private _datepickerViewService: DatepickerViewService, private _elRef: ElementRef) {
-        this.yearRangeModel = new YearRangeModel(this._dateNavigationService.calendar.year);
-        this._focusedYear = this._dateNavigationService.calendar.year;
+        this.yearRangeModel = new YearRangeModel(this.calendarYear);
+        this._focusedYear = this.calendarYear;
     }
 
     /**
@@ -58,6 +58,13 @@ export class ClrYearpicker implements AfterViewInit {
      * Keeps track of the current focused year.
      */
     private _focusedYear: number;
+
+    /**
+     * Gets the year which the user is currently on.
+     */
+    get calendarYear(): number {
+        return this._dateNavigationService.displayedCalendar.year;
+    }
 
     /**
      * Increments the focus year by the value passed. Updates the YearRangeModel if the
@@ -76,13 +83,6 @@ export class ClrYearpicker implements AfterViewInit {
     }
 
     /**
-     * Gets the year which the user is currently on.
-     */
-    get calendarYear(): number {
-        return this._dateNavigationService.calendar.year;
-    }
-
-    /**
      * Calls the DateNavigationService to update the year value of the calendar.
      * Also changes the view to the daypicker.
      */
@@ -96,6 +96,8 @@ export class ClrYearpicker implements AfterViewInit {
      */
     previousDecade(): void {
         this.yearRangeModel = this.yearRangeModel.previousDecade();
+        // Year in the yearpicker is not focused because while navigating to a different decade,
+        // you want the focus to remain on the decade switcher arrows.
     }
 
     /**
@@ -111,22 +113,21 @@ export class ClrYearpicker implements AfterViewInit {
      */
     nextDecade(): void {
         this.yearRangeModel = this.yearRangeModel.nextDecade();
+        // Year in the yearpicker is not focused because while navigating to a different decade,
+        // you want the focus to remain on the decade switcher arrows.
     }
 
     /**
      * Compares the year passed to the focused year and returns the tab index.
      */
     getTabIndex(year: number): number {
-        let focusYear: number = -1;
         if (this.yearRangeModel.inRange(this._focusedYear)) {
-            focusYear = this._focusedYear;
+            return this._focusedYear === year ? 0 : -1;
         } else if (this.yearRangeModel.inRange(this.calendarYear)) {
-            focusYear = this.calendarYear;
+            return this.calendarYear === year ? 0 : -1;
         } else {
-            focusYear = this.yearRangeModel.midNumber;
+            return this.yearRangeModel.middleYear === year ? 0 : -1;
         }
-        this._focusedYear = focusYear;
-        return year === focusYear ? 0 : -1;
     }
 
     /**

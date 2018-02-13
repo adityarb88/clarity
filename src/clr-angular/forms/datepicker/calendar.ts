@@ -6,12 +6,15 @@
 import {Component, ElementRef, HostListener, OnDestroy} from "@angular/core";
 import {Subscription} from "rxjs/Subscription";
 
+import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+
 import {CalendarViewModel} from "./model/calendar-view.model";
 import {CalendarModel} from "./model/calendar.model";
 import {DayModel} from "./model/day.model";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DatepickerViewService} from "./providers/datepicker-view.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
+import {NO_OF_DAYS_IN_A_WEEK} from "./utils/constants";
 
 @Component({selector: "clr-calendar", templateUrl: "./calendar.html"})
 export class ClrCalendar implements OnDestroy {
@@ -37,7 +40,7 @@ export class ClrCalendar implements OnDestroy {
     }
 
     get calendar(): CalendarModel {
-        return this._dateNavigationService.calendar;
+        return this._dateNavigationService.displayedCalendar;
     }
 
     get selectedDay(): DayModel {
@@ -59,15 +62,15 @@ export class ClrCalendar implements OnDestroy {
      * 3. focus on the focusable day in the calendar.
      */
     private initializeSubscriptions(): void {
-        this._subs.push(this._dateNavigationService.calendarChanged.subscribe(() => {
-            this.calendarViewModel.updateCalendar(this.calendar, this.focusedDay);
+        this._subs.push(this._dateNavigationService.displayedCalendarChange.subscribe(() => {
+            this.generateCalendarView();
         }));
 
-        this._subs.push(this._dateNavigationService.focusedDayChanged.subscribe(() => {
-            this.calendarViewModel.updateFocusableDay(this.focusedDay);
+        this._subs.push(this._dateNavigationService.focusedDayChange.subscribe((focusedDay: DayModel) => {
+            this.calendarViewModel.updateFocusableDay(focusedDay);
         }));
 
-        this._subs.push(this._dateNavigationService.calendarFocusChanged.subscribe(() => {
+        this._subs.push(this._dateNavigationService.focusOnCalendarChange.subscribe(() => {
             this._datepickerViewService.focusCell(this._elRef);
         }));
     }
@@ -82,11 +85,31 @@ export class ClrCalendar implements OnDestroy {
 
     /**
      * Delegates Keyboard arrow navigation to the DateNavigationService.
-     * @param {KeyboardEvent} event
      */
     @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
-        this._dateNavigationService.adjustCalendarFocusOnKeyDownEvent(event);
+        if (event && this.focusedDay) {
+            switch (event.keyCode) {
+                case UP_ARROW:
+                    event.preventDefault();
+                    this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);
+                    break;
+                case DOWN_ARROW:
+                    event.preventDefault();
+                    this._dateNavigationService.incrementFocusDay(NO_OF_DAYS_IN_A_WEEK);
+                    break;
+                case LEFT_ARROW:
+                    event.preventDefault();
+                    this._dateNavigationService.incrementFocusDay(-1);
+                    break;
+                case RIGHT_ARROW:
+                    event.preventDefault();
+                    this._dateNavigationService.incrementFocusDay(1);
+                    break;
+                default:
+                    break;  // No default case. TSLint x-(
+            }
+        }
     }
 
     /**

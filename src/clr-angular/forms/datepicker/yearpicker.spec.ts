@@ -11,6 +11,8 @@ import {TestContext} from "../../data/datagrid/helpers.spec";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 
+import {DayModel} from "./model/day.model";
+import {ClrMonthpicker} from "./monthpicker";
 import {DateIOService} from "./providers/date-io.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DatepickerViewService} from "./providers/datepicker-view.service";
@@ -23,20 +25,25 @@ export default function() {
     describe("Yearpicker Component", () => {
         let context: TestContext<ClrYearpicker, TestComponent>;
         let dateNavigationService: DateNavigationService;
-        const selectedYear: number = 2005;
+        const selectedYear: number = 2003;
 
-        beforeEach(function() {
+        function initializeCalendar(selYear: number) {
             dateNavigationService = new DateNavigationService();
             dateNavigationService.initializeCalendar();
-            dateNavigationService.changeYear(selectedYear);
-
-            context = this.create(ClrYearpicker, TestComponent, [
-                ViewManagerService, DatepickerViewService, IfOpenService,
-                {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService, DateIOService
-            ]);
-        });
+            dateNavigationService.changeYear(selYear);
+        }
 
         describe("View Basics", () => {
+            beforeEach(function() {
+                initializeCalendar(selectedYear);
+
+                context = this.create(ClrYearpicker, TestComponent, [
+                    ViewManagerService, DatepickerViewService, IfOpenService,
+                    {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService,
+                    DateIOService
+                ]);
+            });
+
             it("renders the year range", () => {
                 const years: HTMLButtonElement[] = context.clarityElement.querySelectorAll(".year");
                 expect(years).not.toBeNull();
@@ -113,46 +120,55 @@ export default function() {
             it("updates the tab indices correctly", async(() => {
                    const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll(".year");
 
-                   expect(buttons[5].tabIndex).toBe(0);
+                   expect(buttons[3].tabIndex).toBe(0);
 
                    context.clarityElement.dispatchEvent(createKeyboardEvent(DOWN_ARROW, "keydown"));
                    context.detectChanges();
 
-                   expect(buttons[5].tabIndex).toBe(-1);
-                   expect(buttons[6].tabIndex).toBe(0);
+                   expect(buttons[3].tabIndex).toBe(-1);
+                   expect(buttons[4].tabIndex).toBe(0);
 
                    context.clarityElement.dispatchEvent(createKeyboardEvent(UP_ARROW, "keydown"));
                    context.detectChanges();
 
-                   expect(buttons[6].tabIndex).toBe(-1);
-                   expect(buttons[5].tabIndex).toBe(0);
-
-                   context.clarityElement.dispatchEvent(createKeyboardEvent(LEFT_ARROW, "keydown"));
-                   context.detectChanges();
-
-                   expect(buttons[5].tabIndex).toBe(-1);
-                   expect(buttons[0].tabIndex).toBe(0);
+                   expect(buttons[4].tabIndex).toBe(-1);
+                   expect(buttons[3].tabIndex).toBe(0);
 
                    context.clarityElement.dispatchEvent(createKeyboardEvent(RIGHT_ARROW, "keydown"));
                    context.detectChanges();
 
-                   expect(buttons[0].tabIndex).toBe(-1);
-                   expect(buttons[5].tabIndex).toBe(0);
+                   expect(buttons[3].tabIndex).toBe(-1);
+                   expect(buttons[8].tabIndex).toBe(0);
+
+                   context.clarityElement.dispatchEvent(createKeyboardEvent(LEFT_ARROW, "keydown"));
+                   context.detectChanges();
+
+                   expect(buttons[8].tabIndex).toBe(-1);
+                   expect(buttons[3].tabIndex).toBe(0);
                }));
         });
 
         describe("Typescript API", () => {
+            beforeEach(function() {
+                initializeCalendar(selectedYear);
+
+                context = this.create(ClrYearpicker, TestComponent, [
+                    ViewManagerService, DatepickerViewService, IfOpenService,
+                    {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService,
+                    DateIOService
+                ]);
+            });
+
             it("has access to the calendar year", () => {
                 expect(context.clarityDirective.calendarYear).toBe(selectedYear);
             });
 
             it("generates a YearRangeModel based on the selected year on initialization", () => {
+                const testArr: number[] = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009];
                 expect(context.clarityDirective.yearRangeModel).not.toBeNull();
                 expect(context.clarityDirective.yearRangeModel.yearRange.length).toBe(10);
 
-                for (let i = 0; i < 10; i++) {
-                    expect(context.clarityDirective.yearRangeModel.yearRange[i]).toBe(2000 + i);
-                }
+                expect(context.clarityDirective.yearRangeModel.yearRange).toEqual(testArr);
             });
 
             it("updates the year range model when moving to the previous decade", () => {
@@ -198,47 +214,97 @@ export default function() {
                 const viewManagerService: ViewManagerService = context.getClarityProvider(ViewManagerService);
 
                 viewManagerService.changeToYearView();
-                expect(viewManagerService.yearView).toBe(true);
+                expect(viewManagerService.isYearView).toBe(true);
 
                 context.clarityDirective.changeYear(2015);
 
-                expect(viewManagerService.yearView).toBe(false);
-                expect(viewManagerService.dayView).toBe(true);
+                expect(viewManagerService.isYearView).toBe(false);
+                expect(viewManagerService.isDayView).toBe(true);
             });
 
             it("updates year value in the date navigation service", () => {
                 const dateNavService: DateNavigationService = context.getClarityProvider(DateNavigationService);
 
-                expect(dateNavService.calendar.year).toBe(selectedYear);
+                expect(dateNavService.displayedCalendar.year).toBe(selectedYear);
 
                 context.clarityDirective.changeYear(2015);
 
-                expect(dateNavService.calendar.year).toBe(2015);
+                expect(dateNavService.displayedCalendar.year).toBe(2015);
+            });
+        });
+
+        describe("Keyboard Navigation", () => {
+            // Yearpicker Layout
+            // 2000 | 2005
+            // 2001 | 2006
+            // 2002 | 2007
+            // 2003 | 2008
+            // 2004 | 2009
+
+            function createYearPicker(scope: any, selYear: number) {
+                initializeCalendar(selYear);
+
+                context = scope.create(ClrYearpicker, TestComponent, [
+                    ViewManagerService, DatepickerViewService, IfOpenService,
+                    {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService,
+                    DateIOService
+                ]);
+            }
+
+            it("handles up arrow", function() {
+                createYearPicker(this, 2010);
+
+                // Boundary
+                expect(context.clarityDirective.getTabIndex(2010)).toBe(0);
+                expect(context.clarityDirective.yearRangeModel.inRange(2009)).toBe(false);
+
+                for (let i = 2009; i >= 2000; i--) {
+                    context.clarityDirective.onKeyDown(createKeyboardEvent(UP_ARROW, "keydown"));
+                    expect(context.clarityDirective.getTabIndex(i)).toBe(0);
+                }
+
+                expect(context.clarityDirective.yearRangeModel.inRange(2010)).toBe(false);
             });
 
-            it("handles keyboard navigation", () => {
-                let year: number = selectedYear;
-                expect(context.clarityDirective.getTabIndex(year)).toBe(0);
+            it("handles down arrow", function() {
+                createYearPicker(this, 2009);
 
-                context.clarityDirective.onKeyDown(createKeyboardEvent(UP_ARROW, "keydown"));
-                year--;
-                expect(context.clarityDirective.getTabIndex(year)).toBe(0);
+                // Boundary
+                expect(context.clarityDirective.getTabIndex(2009)).toBe(0);
+                expect(context.clarityDirective.yearRangeModel.inRange(2010)).toBe(false);
 
-                context.clarityDirective.onKeyDown(createKeyboardEvent(UP_ARROW, "keydown"));
-                year--;
-                expect(context.clarityDirective.getTabIndex(year)).toBe(0);
+                for (let i = 2010; i <= 2019; i++) {
+                    context.clarityDirective.onKeyDown(createKeyboardEvent(DOWN_ARROW, "keydown"));
+                    expect(context.clarityDirective.getTabIndex(i)).toBe(0);
+                }
 
-                context.clarityDirective.onKeyDown(createKeyboardEvent(DOWN_ARROW, "keydown"));
-                year++;
-                expect(context.clarityDirective.getTabIndex(year)).toBe(0);
+                expect(context.clarityDirective.yearRangeModel.inRange(2010)).toBe(true);
+            });
 
+            it("handles right arrow", function() {
+                createYearPicker(this, 2001);
+                expect(context.clarityDirective.getTabIndex(2001)).toBe(0);
                 context.clarityDirective.onKeyDown(createKeyboardEvent(RIGHT_ARROW, "keydown"));
-                year += 5;
-                expect(context.clarityDirective.getTabIndex(year)).toBe(0);
+                expect(context.clarityDirective.getTabIndex(2006)).toBe(0);
 
+                // Boundary
+                expect(context.clarityDirective.yearRangeModel.inRange(2011)).toBe(false);
+                context.clarityDirective.onKeyDown(createKeyboardEvent(RIGHT_ARROW, "keydown"));
+                expect(context.clarityDirective.yearRangeModel.inRange(2011)).toBe(true);
+                expect(context.clarityDirective.getTabIndex(2011)).toBe(0);
+            });
+
+            it("handles left arrow", function() {
+                createYearPicker(this, 2005);
+                expect(context.clarityDirective.getTabIndex(2005)).toBe(0);
                 context.clarityDirective.onKeyDown(createKeyboardEvent(LEFT_ARROW, "keydown"));
-                year -= 5;
-                expect(context.clarityDirective.getTabIndex(year)).toBe(0);
+                expect(context.clarityDirective.getTabIndex(2000)).toBe(0);
+
+                // Boundary
+                expect(context.clarityDirective.yearRangeModel.inRange(1995)).toBe(false);
+                context.clarityDirective.onKeyDown(createKeyboardEvent(LEFT_ARROW, "keydown"));
+                expect(context.clarityDirective.yearRangeModel.inRange(1995)).toBe(true);
+                expect(context.clarityDirective.getTabIndex(1995)).toBe(0);
             });
         });
     });

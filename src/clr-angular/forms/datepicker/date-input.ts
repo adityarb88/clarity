@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import {isPlatformBrowser} from "@angular/common";
 import {
     AfterViewInit,
     Directive,
@@ -11,11 +12,13 @@ import {
     EventEmitter,
     HostBinding,
     HostListener,
+    Inject,
     Input,
     OnDestroy,
     OnInit,
     Optional,
     Output,
+    PLATFORM_ID,
     Renderer2,
     Self,
     ViewContainerRef
@@ -41,7 +44,8 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
                 private renderer: Renderer2, @Self() @Optional() private _ngControl: NgControl,
                 @Optional() private _dateIOService: DateIOService,
                 @Optional() private _dateNavigationService: DateNavigationService,
-                @Optional() private _datepickerEnabledService: DatepickerEnabledService) {
+                @Optional() private _datepickerEnabledService: DatepickerEnabledService,
+                @Inject(PLATFORM_ID) private platformId: Object) {
         super(ClrDateContainer, vcr);
     }
 
@@ -163,12 +167,14 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
 
     @Output("clrDateChange") _dateUpdated: EventEmitter<Date> = new EventEmitter<Date>(false);
 
+    @Input() placeholder: string;
+
     /**
      * Returns the date format for the placeholder according to which the input should be entered by the user.
      */
     @HostBinding("attr.placeholder")
     get placeholderText(): string {
-        return this._dateIOService.placeholderText;
+        return this.placeholder ? this.placeholder : this._dateIOService.placeholderText;
     }
 
     /**
@@ -177,7 +183,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
      */
     @HostBinding("attr.type")
     get inputType(): string {
-        return this._datepickerEnabledService.isEnabled ? "text" : "date";
+        return (isPlatformBrowser(this.platformId) && this._datepickerEnabledService.isEnabled) ? "text" : "date";
     }
 
     /**

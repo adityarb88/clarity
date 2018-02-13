@@ -12,12 +12,12 @@ import {LocaleHelperService} from "./locale-helper.service";
 registerLocaleData(localeFr);
 
 export default function() {
-    describe("View Manager Service", () => {
+    describe("Locale Helper Service", () => {
         let localeHelperServiceUS: LocaleHelperService;
         let localeHelperServiceFr: LocaleHelperService;
 
         const usDays: string[] = ["S", "M", "T", "W", "T", "F", "S"];
-        const frDays: string[] = ["D", "L", "M", "M", "J", "V", "S"];
+        const frDays: string[] = ["L", "M", "M", "J", "V", "S", "D"];
 
         beforeEach(() => {
             localeHelperServiceFr = new LocaleHelperService("fr");

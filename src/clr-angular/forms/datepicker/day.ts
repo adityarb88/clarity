@@ -52,6 +52,15 @@ export class ClrDay {
      */
     setDay(dayView: DayViewModel): void {
         const day: DayModel = dayView.dayModel;
+        // TODO: As of now both date navigation service and
+        // date io service store the selected day.
+        // Only one should be responsible for managing this.
+        // Eudes and Jeremy mentioned that it should be the
+        // DateNavigationService but most of the logic for building up the selected date
+        // based on the user date is in the date io service.
+        // I will figure out a good plan
+        // to make this change.
+        // I don't have the time to do that right now.
         this._dateNavigationService.selectedDay = day;
         this._dateIOService.updateDate(day.toDate());
         this._ifOpenService.open = false;

@@ -32,14 +32,14 @@ export class ClrDaypicker {
      * Returns the month value of the calendar in the TranslationWidth.Abbreviated format.
      */
     get calendarMonth(): string {
-        return this._localeHelperService.localeMonthsAbbreviated[this._dateNavigationService.calendar.month];
+        return this._localeHelperService.localeMonthsAbbreviated[this._dateNavigationService.displayedCalendar.month];
     }
 
     /**
      * Returns the year value of the calendar.
      */
     get calendarYear(): number {
-        return this._dateNavigationService.calendar.year;
+        return this._dateNavigationService.displayedCalendar.year;
     }
 
     /**

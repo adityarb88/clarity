@@ -15,6 +15,25 @@ export default function(): void {
         const dayModel1: DayModel = new DayModel(2018, 5, 25);
         const dayModel2: DayModel = new DayModel(2018, 1, 25);
 
+        function testDaysInCalendarModel(year: number) {
+            for (let i = 0; i < 12; i++) {
+                const calModel: CalendarModel = new CalendarModel(year, i);
+                expect(calModel.days).not.toBeFalsy();
+
+                // Month is 0 based but date is 1 based. We go to the next month and get the 0th date
+                // which is the last date of the prev month.
+                const daysInMonth: number = new Date(year, i + 1, 0).getDate();
+                expect(calModel.days.length).toBe(daysInMonth);
+            }
+        }
+
+        it("generates an array of DayModels indicating the days in that calendar month", () => {
+            testDaysInCalendarModel(2018);
+
+            // Leap Year
+            testDaysInCalendarModel(2016);
+        });
+
         it("checks if the passed CalendarDate is in the CalendarView or not", () => {
             expect(calendarModel1.year).toBe(2018);
             expect(calendarModel1.month).toBe(5);
@@ -56,32 +75,6 @@ export default function(): void {
             calModel = calModel.previousMonth();
             expect(calModel.year).toBe(2017);
             expect(calModel.month).toBe(11);
-        });
-
-        it("returns a CalendarModel from the current month", () => {
-            const date: Date = new Date();
-            const calModel: CalendarModel = calendarModel1.currentMonth();
-
-            expect(calModel.year).toBe(date.getFullYear());
-            expect(calModel.month).toBe(date.getMonth());
-        });
-
-        it("supports a function to update the Calendar Month", () => {
-            const calendarModel: CalendarModel = new CalendarModel(2015, 2);
-            calendarModel.updateMonth(4);
-            expect(calendarModel.month).toBe(4);
-
-            calendarModel.updateMonth(-1);
-            expect(calendarModel.month).toBe(4);
-
-            calendarModel.updateMonth(12);
-            expect(calendarModel.month).toBe(4);
-        });
-
-        it("supports a function to update the Calendar Year", () => {
-            const calendarModel: CalendarModel = new CalendarModel(2015, 2);
-            calendarModel.updateYear(2018);
-            expect(calendarModel.year).toBe(2018);
         });
     });
 }

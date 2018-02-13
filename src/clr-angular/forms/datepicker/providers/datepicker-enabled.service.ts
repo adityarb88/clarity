@@ -8,12 +8,13 @@ import {DOCUMENT} from "@angular/common";
 import {Inject, Injectable} from "@angular/core";
 
 import {DATEPICKER_ENABLE_BREAKPOINT} from "../../../utils/breakpoints/breakpoints";
+import {MOBILE_USERAGENT_REGEX} from "../utils/constants";
 
 @Injectable()
 export class DatepickerEnabledService {
     constructor(@Inject(DOCUMENT) private _document: any) {
         if (this._document) {
-            this._isUserAgentMobile = /Mobi/i.test(_document.defaultView.navigator.userAgent);
+            this._isUserAgentMobile = MOBILE_USERAGENT_REGEX.test(_document.defaultView.navigator.userAgent);
             this._innerWidth = _document.defaultView.innerWidth;
         }
     }

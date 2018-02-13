@@ -15,6 +15,9 @@ import {
 } from "@angular/common";
 import {Inject, Injectable, LOCALE_ID} from "@angular/core";
 
+/**
+ * This service extracts the Angular CLDR data needed by the datepicker.
+ */
 @Injectable()
 export class LocaleHelperService {
     constructor(@Inject(LOCALE_ID) public locale: string) {
@@ -51,11 +54,12 @@ export class LocaleHelperService {
      * Initializes the locale data.
      */
     private initializeLocaleData(): void {
-        this.initializeLocaleDaysNarrow();
+        // Order in which these functions is called is very important.
         this.initializeFirstDayOfWeek();
+        this.initializeLocaleDateFormat();
         this.initializeLocaleMonthsAbbreviated();
         this.initializeLocaleMonthsWide();
-        this.initializeLocaleDateFormat();
+        this.initializeLocaleDaysNarrow();
     }
 
     /**
@@ -64,7 +68,7 @@ export class LocaleHelperService {
      */
     private initializeLocaleDaysNarrow(): void {
         // Get locale day names starting with Sunday
-        const tempArr: string[] = getLocaleDayNames(this.locale, FormStyle.Format, TranslationWidth.Narrow);
+        const tempArr: string[] = getLocaleDayNames(this.locale, FormStyle.Format, TranslationWidth.Narrow).slice();
         // Get first day of the week based on the locale
         const firstDayOfWeek: number = this.firstDayOfWeek;
         // Rearrange the tempArr to start with the first day of the week based on the locale.
@@ -81,7 +85,7 @@ export class LocaleHelperService {
      */
     private initializeLocaleMonthsAbbreviated(): void {
         this._localeMonthsAbbreviated =
-            getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Abbreviated);
+            getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Abbreviated).slice();
     }
 
     /**
@@ -89,7 +93,7 @@ export class LocaleHelperService {
      * e.g. `[January, February, ...]` for en-US
      */
     private initializeLocaleMonthsWide(): void {
-        this._localeMonthsWide = getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Wide);
+        this._localeMonthsWide = getLocaleMonthNames(this.locale, FormStyle.Format, TranslationWidth.Wide).slice();
     }
 
     /**

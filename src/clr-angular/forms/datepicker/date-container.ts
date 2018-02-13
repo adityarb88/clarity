@@ -52,7 +52,6 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy {
 
     /**
      * Returns if the Datepicker is enabled or not. If disabled, hides the datepicker trigger.
-     * @returns {boolean}
      */
     get isEnabled(): boolean {
         return this._datepickerEnabledService.isEnabled;

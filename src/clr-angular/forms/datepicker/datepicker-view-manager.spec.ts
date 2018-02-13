@@ -31,7 +31,7 @@ export default function() {
         });
 
         it("shows the daypicker when dayView is set to true", () => {
-            expect(context.clarityDirective.dayView).toBe(true);
+            expect(context.clarityDirective.isDayView).toBe(true);
             expect(context.clarityElement.children.length).toBe(1);
             expect(context.clarityElement.children[0].tagName).toBe("CLR-DAYPICKER");
         });
@@ -40,7 +40,7 @@ export default function() {
             viewManagerService.changeToMonthView();
             context.detectChanges();
 
-            expect(context.clarityDirective.monthView).toBe(true);
+            expect(context.clarityDirective.isMonthView).toBe(true);
             expect(context.clarityElement.children.length).toBe(1);
             expect(context.clarityElement.children[0].tagName).toBe("CLR-MONTHPICKER");
         });
@@ -49,7 +49,7 @@ export default function() {
             viewManagerService.changeToYearView();
             context.detectChanges();
 
-            expect(context.clarityDirective.yearView).toBe(true);
+            expect(context.clarityDirective.isYearView).toBe(true);
             expect(context.clarityElement.children.length).toBe(1);
             expect(context.clarityElement.children[0].tagName).toBe("CLR-YEARPICKER");
         });

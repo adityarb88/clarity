@@ -57,12 +57,12 @@ export default function() {
             it("sets the right input date str when a valid date is entered", () => {
                 dateIOService.inputDate = "01/02/2015";
                 expect(dateIOService.inputDate).toBe("01/02/2015");
+
+                dateIOService.inputDate = "01/02/201";
+                expect(dateIOService.inputDate).toBe("");
             });
 
             it("supports a date property which is populated according to the dateInput", () => {
-                expect(dateIOService.date).toBeUndefined();
-
-                dateIOService.inputDate = "01/02/201";
                 expect(dateIOService.date).toBeUndefined();
 
                 dateIOService.inputDate = "01/02/2015";
@@ -70,20 +70,87 @@ export default function() {
                 expect(dateIOService.date).not.toBeNull();
                 expect(assertEqualDates(dateIOService.date, new Date(2015, 0, 2))).toBe(true);
 
-                dateIOService.inputDate = "01/02/201";
+                // Leap Year
+                dateIOService.inputDate = "02/29/2016";
+                expect(assertEqualDates(dateIOService.date, new Date(2016, 1, 29))).toBe(true);
+            });
+
+            it("sets the date property to null when an invalid date is entered", () => {
+                expect(dateIOService.date).toBeUndefined();
+                dateIOService.inputDate = "abcd";
+                expect(dateIOService.date).toBeUndefined();
+
+                dateIOService.inputDate = "01/02/2015";
+                expect(dateIOService.date).not.toBeUndefined();
+                expect(dateIOService.date).not.toBeNull();
+                expect(assertEqualDates(dateIOService.date, new Date(2015, 0, 2))).toBe(true);
+            });
+
+            it("parse a two digit year", () => {
+                dateIOService.inputDate = "01/02/20";
+                expect(dateIOService.date).not.toBeNull();
+                expect(assertEqualDates(dateIOService.date, new Date(2020, 0, 2))).toBe(true);
+
+                // Invalid date with 2 digit year
+                dateIOService.inputDate = "51/02/20";
                 expect(dateIOService.date).toBeNull();
+            });
+
+            it("should not parse a five digit year", () => {
+                dateIOService.inputDate = "01/02/10000";
+                expect(dateIOService.date).toBeUndefined();
+            });
+
+            it("should not parse a three digit year", () => {
+                dateIOService.inputDate = "01/02/201";
+                expect(dateIOService.date).toBeUndefined();
+            });
+
+            it("should not parse a 1 digit year", () => {
+                dateIOService.inputDate = "01/02/2";
+                expect(dateIOService.date).toBeUndefined();
+            });
+
+            it("parse a 1 digit date", () => {
+                dateIOService.inputDate = "01/2/2015";
+                expect(dateIOService.date).not.toBeUndefined();
+                expect(assertEqualDates(dateIOService.date, new Date(2015, 0, 2))).toBe(true);
+            });
+
+            it("parses a 1 digit month", () => {
+                dateIOService.inputDate = "1/02/2015";
+                expect(dateIOService.date).not.toBeUndefined();
+                expect(assertEqualDates(dateIOService.date, new Date(2015, 0, 2))).toBe(true);
+            });
+
+            it("ignores invalid months", () => {
+                dateIOService.inputDate = "13/02/2015";
+                expect(dateIOService.date).toBeUndefined();
+            });
+
+            it("ignores negative dates", () => {
+                dateIOService.inputDate = "13/-2/2015";
+                expect(dateIOService.date).toBeUndefined();
             });
         });
 
         describe("Subscriptions", () => {
+            let sub: Subscription;
+
             beforeEach(() => {
                 localeHelperService = new LocaleHelperService("en-US");
                 dateIOService = new DateIOService(localeHelperService);
             });
 
+            afterEach(() => {
+                if (sub) {
+                    sub.unsubscribe();
+                }
+            });
+
             it("emits a date object when the dateInput has changed", () => {
                 let count: number = 0;
-                const sub: Subscription = dateIOService.dateUpdated.subscribe(() => {
+                sub = dateIOService.dateUpdated.subscribe(() => {
                     count++;
                 });
                 expect(count).toBe(0);
@@ -103,13 +170,11 @@ export default function() {
                 // Invalid Date to Valid Date
                 dateIOService.inputDate = "01/02/20";
                 expect(count).toBe(3);
-
-                sub.unsubscribe();
             });
 
             it("emits a date string when the Date is updated", () => {
                 let outputStr: string;
-                dateIOService.dateStrUpdated.subscribe((dateStr) => {
+                sub = dateIOService.dateStrUpdated.subscribe((dateStr) => {
                     outputStr = dateStr;
                 });
 

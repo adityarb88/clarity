@@ -184,6 +184,11 @@
     }
 
     .monthpicker,
+    .yearpicker {
+        min-height: $clr-monthpicker-min-height;
+    }
+
+    .monthpicker,
     .yearpicker,
     .years {
         display: flex;

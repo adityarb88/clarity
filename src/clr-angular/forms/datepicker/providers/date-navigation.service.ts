@@ -7,35 +7,29 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
-
-import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../../utils/key-codes/key-codes";
 import {CalendarModel} from "../model/calendar.model";
 import {DayModel} from "../model/day.model";
 
+/**
+ * This service is responsible for:
+ * 1. Initializing the displayed calendar.
+ * 2. Moving the calendar to the next, previous or current months
+ * 3. Managing the focused and selected day models.
+ */
 @Injectable()
 export class DateNavigationService {
-    private _calendar: CalendarModel;
+    private _displayedCalendar: CalendarModel;
 
-    get calendar(): CalendarModel {
-        return this._calendar;
+    get displayedCalendar(): CalendarModel {
+        return this._displayedCalendar;
     }
 
     // not a setter because i want this to remain private
-    private setCalendar(value: CalendarModel) {
-        if (!this._calendar.isEqual(value)) {
-            this._calendar = value;
-            this._calendarChanged.next();
+    private setDisplayedCalendar(value: CalendarModel) {
+        if (!this._displayedCalendar.isEqual(value)) {
+            this._displayedCalendar = value;
+            this._displayedCalendarChange.next();
         }
-    }
-
-    initializeCalendar(): void {
-        this.focusedDay = null;  // Can be removed later on the store focus
-        if (this.selectedDay) {
-            this._calendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
-        } else {
-            this._calendar = new CalendarModel(this.currentYear, this.currentMonth);
-        }
-        this.initializeTodaysDate();
     }
 
     /**
@@ -54,105 +48,87 @@ export class DateNavigationService {
         return this._today;
     }
 
-    /**
-     * Returns the current date.
-     * eg: 1, 2, 3, ... 31.
-     */
-    get currentDate(): number {
-        return this._todaysFullDate.getDate();
-    }
-
-    /**
-     * Returns the current month as a 0-based value.
-     * eg: 0, 1, 2, ... 12.
-     */
-    get currentMonth(): number {
-        return this._todaysFullDate.getMonth();
-    }
-
-    /**
-     * Returns the current year.
-     * eg: 2018
-     */
-    get currentYear(): number {
-        return this._todaysFullDate.getFullYear();
-    }
-
     public selectedDay: DayModel;
 
     public focusedDay: DayModel;
 
+    /**
+     * Initializes the calendar based on the selected day.
+     */
+    initializeCalendar(): void {
+        this.focusedDay = null;  // Can be removed later on the store focus
+        this.initializeTodaysDate();
+        if (this.selectedDay) {
+            this._displayedCalendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
+        } else {
+            this._displayedCalendar = new CalendarModel(this.today.year, this.today.month);
+        }
+    }
+
     changeMonth(month: number): void {
-        this._calendar.updateMonth(month);
+        this.setDisplayedCalendar(new CalendarModel(this._displayedCalendar.year, month));
     }
 
     changeYear(year: number): void {
-        this._calendar.updateYear(year);
+        this.setDisplayedCalendar(new CalendarModel(year, this._displayedCalendar.month));
     }
 
+    /**
+     * Moves the displayed calendar to the next month.
+     */
     moveToNextMonth(): void {
-        this.setCalendar(this._calendar.nextMonth());
+        this.setDisplayedCalendar(this._displayedCalendar.nextMonth());
     }
 
+    /**
+     * Moves the displayed calendar to the previous month.
+     */
     moveToPreviousMonth(): void {
-        this.setCalendar(this._calendar.previousMonth());
+        this.setDisplayedCalendar(this._displayedCalendar.previousMonth());
     }
 
+    /**
+     * Moves the displayed calendar to the current month and year.
+     */
     moveToCurrentMonth(): void {
-        this.setCalendar(this._calendar.currentMonth());
-        this._calendarFocusChanged.next();
+        this.setDisplayedCalendar(new CalendarModel(this.today.year, this.today.month));
+        this._focusOnCalendarChange.next();
     }
 
-    private incrementFocusDay(value: number): void {
+    incrementFocusDay(value: number): void {
         this.focusedDay = this.focusedDay.incrementBy(value);
-        if (this._calendar.isDayInCalendar(this.focusedDay)) {
-            this._focusedDayChanged.next();
+        if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
+            this._focusedDayChange.next(this.focusedDay);
         } else {
-            this.setCalendar(this.focusedDay.calendar);
+            this.setDisplayedCalendar(this.focusedDay.calendar);
         }
-        this._calendarFocusChanged.next();
+        this._focusOnCalendarChange.next();
     }
 
-    private _calendarChanged: Subject<void> = new Subject<void>();
+    private _displayedCalendarChange: Subject<void> = new Subject<void>();
 
-    get calendarChanged(): Observable<void> {
-        return this._calendarChanged.asObservable();
+    /**
+     * This observable lets the subscriber know that the displayed calendar has changed.
+     */
+    get displayedCalendarChange(): Observable<void> {
+        return this._displayedCalendarChange.asObservable();
     }
 
-    private _calendarFocusChanged: Subject<boolean> = new Subject<boolean>();
+    private _focusOnCalendarChange: Subject<void> = new Subject<void>();
 
-    get calendarFocusChanged(): Observable<boolean> {
-        return this._calendarFocusChanged.asObservable();
+    /**
+     * This observable lets the subscriber know that the focus should be applied on the calendar.
+     */
+    get focusOnCalendarChange(): Observable<void> {
+        return this._focusOnCalendarChange.asObservable();
     }
 
-    private _focusedDayChanged: Subject<void> = new Subject<void>();
+    private _focusedDayChange: Subject<DayModel> = new Subject<DayModel>();
 
-    get focusedDayChanged(): Observable<void> {
-        return this._focusedDayChanged.asObservable();
-    }
-
-    adjustCalendarFocusOnKeyDownEvent(event: KeyboardEvent) {
-        if (event && this.focusedDay) {
-            switch (event.keyCode) {
-                case UP_ARROW:
-                    event.preventDefault();
-                    this.incrementFocusDay(-7);
-                    break;
-                case DOWN_ARROW:
-                    event.preventDefault();
-                    this.incrementFocusDay(7);
-                    break;
-                case LEFT_ARROW:
-                    event.preventDefault();
-                    this.incrementFocusDay(-1);
-                    break;
-                case RIGHT_ARROW:
-                    event.preventDefault();
-                    this.incrementFocusDay(1);
-                    break;
-                default:
-                    break;  // No default case. TSLint x-(
-            }
-        }
+    /**
+     * This observable lets the subscriber know that the focused day in the displayed calendar has changed.
+     */
+    get focusedDayChange(): Observable<DayModel> {
+        return this._focusedDayChange.asObservable();
     }
 }

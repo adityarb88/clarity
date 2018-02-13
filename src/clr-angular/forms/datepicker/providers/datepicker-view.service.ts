@@ -4,20 +4,26 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {ElementRef, Injectable, NgZone} from "@angular/core";
+import {isPlatformBrowser} from "@angular/common";
+import {ElementRef, Inject, Injectable, NgZone, PLATFORM_ID} from "@angular/core";
 import {first} from "rxjs/operator/first";
 
+/**
+ * This service focuses the day that is focusable in the calendar.
+ */
 @Injectable()
 export class DatepickerViewService {
-    constructor(private _ngZone: NgZone) {}
+    constructor(private _ngZone: NgZone, @Inject(PLATFORM_ID) private platformId: Object) {}
 
     // Credit: Material: https://github.com/angular/material2/blob/master/src/lib/datepicker/calendar.ts
     focusCell(elRef: ElementRef): void {
         this._ngZone.runOutsideAngular(() => {
             first.call(this._ngZone.onStable.asObservable()).subscribe(() => {
-                const focusEl = elRef.nativeElement.querySelector("[tabindex=\"0\"]");
-                if (focusEl) {
-                    focusEl.focus();
+                if (isPlatformBrowser(this.platformId)) {
+                    const focusEl = elRef.nativeElement.querySelector("[tabindex=\"0\"]");
+                    if (focusEl) {
+                        focusEl.focus();
+                    }
                 }
             });
         });

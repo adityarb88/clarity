@@ -15,39 +15,39 @@ export default function() {
         });
 
         it("Initializes the View Manager with the DayPicker", () => {
-            expect(viewManagerService.dayView).toBe(true);
-            expect(viewManagerService.monthView).toBe(false);
-            expect(viewManagerService.yearView).toBe(false);
+            expect(viewManagerService.isDayView).toBe(true);
+            expect(viewManagerService.isMonthView).toBe(false);
+            expect(viewManagerService.isYearView).toBe(false);
         });
 
         it("provides a method to change to month view", () => {
             viewManagerService.changeToMonthView();
 
-            expect(viewManagerService.dayView).toBe(false);
-            expect(viewManagerService.monthView).toBe(true);
-            expect(viewManagerService.yearView).toBe(false);
+            expect(viewManagerService.isDayView).toBe(false);
+            expect(viewManagerService.isMonthView).toBe(true);
+            expect(viewManagerService.isYearView).toBe(false);
         });
 
         it("provides a method to change to year view", () => {
             viewManagerService.changeToYearView();
 
-            expect(viewManagerService.dayView).toBe(false);
-            expect(viewManagerService.monthView).toBe(false);
-            expect(viewManagerService.yearView).toBe(true);
+            expect(viewManagerService.isDayView).toBe(false);
+            expect(viewManagerService.isMonthView).toBe(false);
+            expect(viewManagerService.isYearView).toBe(true);
         });
 
         it("provides a method to change to day view", () => {
             viewManagerService.changeToMonthView();
 
-            expect(viewManagerService.dayView).toBe(false);
-            expect(viewManagerService.monthView).toBe(true);
-            expect(viewManagerService.yearView).toBe(false);
+            expect(viewManagerService.isDayView).toBe(false);
+            expect(viewManagerService.isMonthView).toBe(true);
+            expect(viewManagerService.isYearView).toBe(false);
 
             viewManagerService.changeToDayPickerView();
 
-            expect(viewManagerService.dayView).toBe(true);
-            expect(viewManagerService.monthView).toBe(false);
-            expect(viewManagerService.yearView).toBe(false);
+            expect(viewManagerService.isDayView).toBe(true);
+            expect(viewManagerService.isMonthView).toBe(false);
+            expect(viewManagerService.isYearView).toBe(false);
         });
     });
 }

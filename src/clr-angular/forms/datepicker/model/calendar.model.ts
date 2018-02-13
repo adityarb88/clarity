@@ -4,10 +4,26 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import {getNumberOfDaysInTheMonth} from "../utils/date-utils";
+
 import {DayModel} from "./day.model";
 
 export class CalendarModel {
-    constructor(public year: number, public month: number) {}
+    constructor(public year: number, public month: number) {
+        this.initializeDaysInCalendar();
+    }
+
+    days: DayModel[];
+
+    /**
+     * Populates the days array with the DayModels in the current Calendar.
+     */
+    private initializeDaysInCalendar(): void {
+        const noOfDaysInCalendar: number = getNumberOfDaysInTheMonth(this.year, this.month);
+        this.days = Array(noOfDaysInCalendar).fill(null).map((date, index) => {
+            return new DayModel(this.year, this.month, index + 1);
+        });
+    }
 
     /**
      * Checks if the calendar passed is equal to the current calendar.
@@ -49,29 +65,5 @@ export class CalendarModel {
         } else {
             return new CalendarModel(this.year, this.month + 1);
         }
-    }
-
-    /**
-     * Returns CalendarModel of the current month.
-     */
-    currentMonth(): CalendarModel {
-        const date: Date = new Date();
-        return new CalendarModel(date.getFullYear(), date.getMonth());
-    }
-
-    /**
-     * Updates the month value in the current calendar.
-     */
-    updateMonth(month: number): void {
-        if (month > -1 && month < 12) {
-            this.month = month;
-        }
-    }
-
-    /**
-     * Updates the year value in the current calendar.
-     */
-    updateYear(year: number): void {
-        this.year = year;
     }
 }

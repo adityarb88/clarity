@@ -71,6 +71,36 @@ export default function(): void {
             }
         }
 
+        function testCalendarDayViews(year: number, month: number, prevDays: number[], noOfCurrDays: number,
+                                      nextDays: number[]): void {
+            const calViewModel: CalendarViewModel =
+                new CalendarViewModel(new CalendarModel(year, month), null, null, todaysDateInCal, 0);
+            const calView: DayViewModel[][] = calViewModel.calendarView;
+
+            let count: number = 1;
+            for (const view of calView) {
+                for (const day of view) {
+                    if (prevDays.length > 0) {
+                        expect(prevDays[0]).toBe(day.dayModel.date);
+                        prevDays.splice(0, 1);
+                        expect(day.isDisabled).toBe(true);
+                    } else if (count <= noOfCurrDays) {
+                        expect(count).toBe(day.dayModel.date);
+                        expect(day.isDisabled).toBe(false);
+                        count++;
+                    } else if (nextDays.length > 0) {
+                        expect(nextDays[0]).toBe(day.dayModel.date);
+                        nextDays.splice(0, 1);
+                        expect(day.isDisabled).toBe(true);
+                    }
+                }
+            }
+
+            expect(prevDays.length).toBe(0);
+            expect(count).toBe(noOfCurrDays + 1);
+            expect(nextDays.length).toBe(0);
+        }
+
         it("generates a CalendarViewModel with the CalendarView of 6x7", () => {
             const testJan2018: CalendarViewModel = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
 
@@ -83,6 +113,17 @@ export default function(): void {
             }
         });
 
+        it("generates the calendar view with the correct prev, curr and next day views", () => {
+            // Jan 2018
+            testCalendarDayViews(2018, 0, [31], 31, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+            // July 2018
+            testCalendarDayViews(2018, 6, [], 31, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+
+            // Feb 2015
+            testCalendarDayViews(2015, 1, [], 28, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+        });
+
         it("generates the calendar with the correct month, year and disabled values", () => {
             const testJan2018: CalendarViewModel = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
 
@@ -91,9 +132,9 @@ export default function(): void {
             let prevCount = 1;
             let currCount = 31;
 
-            const prev = [];
-            const curr = [];
-            const next = [];
+            const prev: DayViewModel[] = [];
+            const curr: DayViewModel[] = [];
+            const next: DayViewModel[] = [];
 
             for (const view of calView) {
                 for (const day of view) {
@@ -206,22 +247,6 @@ export default function(): void {
 
             // Only 1/24/2018 should be true
             testCalendarViewFocusableDates(testJan2018US, 1, 6);
-        });
-
-        it("internally updates the calendar view with a new calendar and focus date", () => {
-            const testJan2018US: CalendarViewModel = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
-
-            let prevUS: number[] = [31];
-            let currUS: number[] = Array(31).fill(0).map((e, i) => i + 1);
-            let nextUS: number[] = Array(10).fill(0).map((e, i) => i + 1);
-            testCalendarViewDates(prevUS, currUS, nextUS, testJan2018US);
-
-            testJan2018US.updateCalendar(new CalendarModel(2018, 1), new DayModel(2018, 1, 1));
-
-            prevUS = [28, 29, 30, 31];
-            currUS = Array(28).fill(0).map((e, i) => i + 1);
-            nextUS = Array(10).fill(0).map((e, i) => i + 1);
-            testCalendarViewDates(prevUS, currUS, nextUS, testJan2018US);
         });
     });
 }

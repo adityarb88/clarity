@@ -5,7 +5,7 @@
  */
 
 import {NO_OF_DAYS_IN_A_WEEK, NO_OF_ROWS_IN_CALENDAR_VIEW, TOTAL_DAYS_IN_DAYS_VIEW} from "../utils/constants";
-import {getDay, getNumberOfDaysInTheMonth} from "../utils/date-utils";
+import {getDay} from "../utils/date-utils";
 
 import {CalendarModel} from "./calendar.model";
 import {DayViewModel} from "./day-view.model";
@@ -14,12 +14,10 @@ import {DayModel} from "./day.model";
 export class CalendarViewModel {
     constructor(public calendar: CalendarModel, private selectedDay: DayModel, private focusableDay: DayModel,
                 private today: DayModel, public firstDayOfWeek: number) {
-        this.generateCalendarView();
+        this.initializeCalendarView();
     }
 
-    private prevMonthDayViews: DayViewModel[] = [];
     private currMonthDayViews: DayViewModel[] = [];
-    private nextMonthDayViews: DayViewModel[] = [];
 
     private _calendarView: DayViewModel[][];
 
@@ -36,67 +34,50 @@ export class CalendarViewModel {
      * 6 rows to accommodate months which might have dates spanning over 6 weeks.
      * 7 columns because there are 7 days in a week :P :D
      */
-    private generateCalendarView(): void {
-        const calYear: number = this.calendar.year;
-        const calMonth: number = this.calendar.month;
-        const noOfDaysInPrevMonth: number = getNumberOfDaysInTheMonth(calYear, calMonth - 1);
-        const noOfDaysInCurrMonth: number = getNumberOfDaysInTheMonth(calYear, calMonth);
+    private initializeCalendarView(): void {
+        // Generate prev and next month calendar models.
+        const prevMonthCalendar: CalendarModel = this.calendar.previousMonth();
+        const nextMonthCalendar: CalendarModel = this.calendar.nextMonth();
 
-        this.generateDayViewsFromPrevMonth(calYear, calMonth, noOfDaysInPrevMonth);
-        this.generateDayViewsFromCurrMonth(calYear, calMonth, noOfDaysInCurrMonth);
+        // Get no of days from prev and next months.
+        const daysFromPrevMonthInCalView: number =
+            this.numDaysFromPrevMonthInCalView(this.calendar.year, this.calendar.month);
+        const daysFromNextMonthInCalView: number =
+            TOTAL_DAYS_IN_DAYS_VIEW - (this.calendar.days.length + daysFromPrevMonthInCalView);
 
-        const noOfDaysInNextMonth: number =
-            TOTAL_DAYS_IN_DAYS_VIEW - (noOfDaysInCurrMonth + this.prevMonthDayViews.length);
+        // Generate prev, curr and next day view models
+        let prevMonthDayViews: DayViewModel[] = [];
+        let nextMonthDayViews: DayViewModel[] = [];
 
-        this.generateDayViewsFromNextMonth(calYear, calMonth, noOfDaysInNextMonth);
-        this.formatView();
+        if (daysFromPrevMonthInCalView > 0) {
+            prevMonthDayViews =
+                this.generateDayViewModels(prevMonthCalendar.days.slice(-1 * daysFromPrevMonthInCalView), true, false);
+        }
+
+        this.currMonthDayViews = this.generateDayViewModels(this.calendar.days, false, true);
+
+        if (daysFromNextMonthInCalView > 0) {
+            nextMonthDayViews =
+                this.generateDayViewModels(nextMonthCalendar.days.slice(0, daysFromNextMonthInCalView), true, false);
+        }
+
+        // Generate calendar view and initialize flags
+        this._calendarView = this.generateCalendarView(prevMonthDayViews, this.currMonthDayViews, nextMonthDayViews);
         this.initializeSelectedDay();
         this.initializeFocusableDay();
     }
 
     /**
-     * Generates the DayViewModels required in the current view from the previous month.
+     * Generates a DayViewModel array based on the DayModel passed
      */
-    private generateDayViewsFromPrevMonth(year: number, month: number, noOfDays: number): void {
-        const datesFromPrevMonthInCalendarView: number = this.noOfDaysFromPreviousMonthInCalendarView(year, month);
-        const prevMonthCalendar: CalendarModel = (new CalendarModel(year, month)).previousMonth();
-        const datesInPreviousMonth: DayViewModel[] =
-            Array(datesFromPrevMonthInCalendarView).fill(null).map((date, index) => {
-                const day: DayModel = new DayModel(prevMonthCalendar.year, prevMonthCalendar.month,
-                                                   noOfDays - (datesFromPrevMonthInCalendarView - (index + 1)));
-                return new DayViewModel(day, false, true, false, false);
-            });
-        this.prevMonthDayViews = datesInPreviousMonth;
-    }
-
-    /**
-     * Generates the DayViewModels for the current month.
-     */
-    private generateDayViewsFromCurrMonth(year: number, month: number, noOfDays: number): void {
-        const datesinCurrentMonth: DayViewModel[] = Array(noOfDays).fill(null).map((date, index) => {
-            const day: DayModel = new DayModel(year, month, index + 1);
-            return new DayViewModel(day, false, false, false, false);
+    private generateDayViewModels(days: DayModel[], isDisabled: boolean, isCurrentCalendar: boolean): DayViewModel[] {
+        const dayViews: DayViewModel[] = days.map((day) => {
+            return new DayViewModel(day, false, isDisabled, false, false);
         });
-
-        // Check for today's date
-        const todaysDate: Date = new Date();
-        if (year === todaysDate.getFullYear() && month === todaysDate.getMonth()) {
-            datesinCurrentMonth[todaysDate.getDate() - 1].isTodaysDate = true;
+        if (isCurrentCalendar && this.calendar.isDayInCalendar(this.today)) {
+            dayViews[this.today.date - 1].isTodaysDate = true;
         }
-        this.currMonthDayViews = datesinCurrentMonth;
-    }
-
-    /**
-     * Generates the DayViewModels required in the current view from the next month.
-     */
-    private generateDayViewsFromNextMonth(year: number, month: number, noOfDays: number): void {
-        const nextMonthCalendar: CalendarModel = (new CalendarModel(year, month)).nextMonth();
-        const datesInNextMonth: DayViewModel[] = Array(noOfDays).fill(null).map((date, index) => {
-            const day: DayModel = new DayModel(nextMonthCalendar.year, nextMonthCalendar.month, index + 1);
-            return new DayViewModel(day, false, true, false, false);
-        });
-
-        this.nextMonthDayViews = datesInNextMonth;
+        return dayViews;
     }
 
     /**
@@ -107,8 +88,8 @@ export class CalendarViewModel {
      * (this.getDay function would return 3 since
      * first day of the week is 0), we need the 3 days from the previous month.
      */
-    private noOfDaysFromPreviousMonthInCalendarView(year: number, month: number): number {
-        const firstDayOfCurrMonth: number = getDay(year, month, 1);
+    private numDaysFromPrevMonthInCalView(currentYear: number, currentMonth: number): number {
+        const firstDayOfCurrMonth: number = getDay(currentYear, currentMonth, 1);
 
         if (firstDayOfCurrMonth >= this.firstDayOfWeek) {
             return firstDayOfCurrMonth - this.firstDayOfWeek;
@@ -131,15 +112,14 @@ export class CalendarViewModel {
      * Using the DayViewModels from the previous, current and next month, this function
      * generates the CalendarView.
      */
-    private formatView(): void {
-        const combinationArr: DayViewModel[] =
-            [...this.prevMonthDayViews, ...this.currMonthDayViews, ...this.nextMonthDayViews];
+    private generateCalendarView(prev: DayViewModel[], curr: DayViewModel[], next: DayViewModel[]): DayViewModel[][] {
+        const combinationArr: DayViewModel[] = [...prev, ...curr, ...next];
 
         const calendarView: DayViewModel[][] = [];
         for (let i = 0; i < NO_OF_ROWS_IN_CALENDAR_VIEW; i++) {
             calendarView[i] = combinationArr.slice(i * NO_OF_DAYS_IN_A_WEEK, (i + 1) * NO_OF_DAYS_IN_A_WEEK);
         }
-        this._calendarView = calendarView;
+        return calendarView;
     }
 
     /**
@@ -174,17 +154,6 @@ export class CalendarViewModel {
     private setFocusableFlag(day: DayModel, flag: boolean): void {
         if (day) {
             this.currMonthDayViews[day.date - 1].isFocusable = flag;
-        }
-    }
-
-    /**
-     * Updates the Calendar Model along with the focusable day according to the value that is passed.
-     */
-    updateCalendar(calendar: CalendarModel, focusableDay: DayModel): void {
-        if (!this.calendar.isEqual(calendar)) {
-            this.focusableDay = focusableDay;
-            this.calendar = calendar;
-            this.generateCalendarView();
         }
     }
 
