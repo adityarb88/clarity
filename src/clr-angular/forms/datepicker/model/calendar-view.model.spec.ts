@@ -207,21 +207,5 @@ export default function(): void {
             // Only 1/24/2018 should be true
             testCalendarViewFocusableDates(testJan2018US, 1, 6);
         });
-
-        it("internally updates the calendar view with a new calendar and focus date", () => {
-            const testJan2018US: CalendarViewModel = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 0);
-
-            let prevUS: number[] = [31];
-            let currUS: number[] = Array(31).fill(0).map((e, i) => i + 1);
-            let nextUS: number[] = Array(10).fill(0).map((e, i) => i + 1);
-            testCalendarViewDates(prevUS, currUS, nextUS, testJan2018US);
-
-            testJan2018US.updateCalendar(new CalendarModel(2018, 1), new DayModel(2018, 1, 1));
-
-            prevUS = [28, 29, 30, 31];
-            currUS = Array(28).fill(0).map((e, i) => i + 1);
-            nextUS = Array(10).fill(0).map((e, i) => i + 1);
-            testCalendarViewDates(prevUS, currUS, nextUS, testJan2018US);
-        });
     });
 }

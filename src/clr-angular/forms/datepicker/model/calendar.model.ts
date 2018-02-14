@@ -5,9 +5,24 @@
  */
 
 import {DayModel} from "./day.model";
+import {getNumberOfDaysInTheMonth} from "../utils/date-utils";
 
 export class CalendarModel {
-    constructor(public year: number, public month: number) {}
+    constructor(public year: number, public month: number) {
+        this.initializeDaysInCalendar();
+    }
+
+    days: DayModel[];
+
+    /**
+     * Populates the days array with the DayModels in the current Calendar.
+     */
+    private initializeDaysInCalendar(): void {
+        const noOfDaysInCalendar: number = getNumberOfDaysInTheMonth(this.year, this.month);
+        this.days = Array(noOfDaysInCalendar).fill(null).map((date, index) => {
+            return new DayModel(this.year, this.month, index + 1);
+        });
+    }
 
     /**
      * Checks if the calendar passed is equal to the current calendar.

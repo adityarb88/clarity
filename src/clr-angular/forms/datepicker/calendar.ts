@@ -59,15 +59,15 @@ export class ClrCalendar implements OnDestroy {
      * 3. focus on the focusable day in the calendar.
      */
     private initializeSubscriptions(): void {
-        this._subs.push(this._dateNavigationService.calendarChanged.subscribe(() => {
-            this.calendarViewModel.updateCalendar(this.calendar, this.focusedDay);
+        this._subs.push(this._dateNavigationService.displayedCalendarChange.subscribe(() => {
+            this.generateCalendarView();
         }));
 
-        this._subs.push(this._dateNavigationService.focusedDayChanged.subscribe(() => {
+        this._subs.push(this._dateNavigationService.focusedDayChange.subscribe(() => {
             this.calendarViewModel.updateFocusableDay(this.focusedDay);
         }));
 
-        this._subs.push(this._dateNavigationService.calendarFocusChanged.subscribe(() => {
+        this._subs.push(this._dateNavigationService.focusOnCalendarChange.subscribe(() => {
             this._datepickerViewService.focusCell(this._elRef);
         }));
     }

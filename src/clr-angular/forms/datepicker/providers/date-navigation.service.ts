@@ -24,7 +24,7 @@ export class DateNavigationService {
     private setDisplayedCalendar(value: CalendarModel) {
         if (!this._displayedCalendar.isEqual(value)) {
             this._displayedCalendar = value;
-            this._calendarChanged.next();
+            this._displayedCalendarChange.next();
         }
     }
 
@@ -83,11 +83,11 @@ export class DateNavigationService {
     public focusedDay: DayModel;
 
     changeMonth(month: number): void {
-        this._displayedCalendar = new CalendarModel(this._displayedCalendar.year, month);
+        this.setDisplayedCalendar(new CalendarModel(this._displayedCalendar.year, month));
     }
 
     changeYear(year: number): void {
-        this._displayedCalendar = new CalendarModel(year, this._displayedCalendar.month);
+        this.setDisplayedCalendar(new CalendarModel(year, this._displayedCalendar.month));
     }
 
     moveToNextMonth(): void {
@@ -100,35 +100,44 @@ export class DateNavigationService {
 
     moveToCurrentMonth(): void {
         this.setDisplayedCalendar(this._displayedCalendar.currentMonth());
-        this._calendarFocusChanged.next();
+        this._focusOnCalendarChange.next();
     }
 
     private incrementFocusDay(value: number): void {
         this.focusedDay = this.focusedDay.incrementBy(value);
         if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
-            this._focusedDayChanged.next();
+            this._focusedDayChange.next();
         } else {
             this.setDisplayedCalendar(this.focusedDay.calendar);
         }
-        this._calendarFocusChanged.next();
+        this._focusOnCalendarChange.next();
     }
 
-    private _calendarChanged: Subject<void> = new Subject<void>();
+    private _displayedCalendarChange: Subject<void> = new Subject<void>();
 
-    get calendarChanged(): Observable<void> {
-        return this._calendarChanged.asObservable();
+    /**
+     * This observable lets the subscriber know that the displayed calendar has changed.
+     */
+    get displayedCalendarChange(): Observable<void> {
+        return this._displayedCalendarChange.asObservable();
     }
 
-    private _calendarFocusChanged: Subject<boolean> = new Subject<boolean>();
+    private _focusOnCalendarChange: Subject<void> = new Subject<void>();
 
-    get calendarFocusChanged(): Observable<boolean> {
-        return this._calendarFocusChanged.asObservable();
+    /**
+     * This observable lets the subscriber know that the focus should be applied on the calendar.
+     */
+    get focusOnCalendarChange(): Observable<void> {
+        return this._focusOnCalendarChange.asObservable();
     }
 
-    private _focusedDayChanged: Subject<void> = new Subject<void>();
+    private _focusedDayChange: Subject<void> = new Subject<void>();
 
-    get focusedDayChanged(): Observable<void> {
-        return this._focusedDayChanged.asObservable();
+    /**
+     * This observable lets the subscriber know that the focused day in the displayed calendar has changed.
+     */
+    get focusedDayChange(): Observable<void> {
+        return this._focusedDayChange.asObservable();
     }
 
     adjustCalendarFocusOnKeyDownEvent(event: KeyboardEvent) {

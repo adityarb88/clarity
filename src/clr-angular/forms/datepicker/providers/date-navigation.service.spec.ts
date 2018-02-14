@@ -232,7 +232,7 @@ export default function() {
 
             it("notifies when the calendar has changed", () => {
                 let count: number = 0;
-                const sub: Subscription = dateNavigationService.calendarChanged.subscribe(() => {
+                const sub: Subscription = dateNavigationService.displayedCalendarChange.subscribe(() => {
                     count++;
                 });
 
@@ -251,7 +251,7 @@ export default function() {
 
             it("notifies when the focus day has changed but remains in the same calendar", () => {
                 let count: number = 0;
-                const sub: Subscription = dateNavigationService.focusedDayChanged.subscribe(() => {
+                const sub: Subscription = dateNavigationService.focusedDayChange.subscribe(() => {
                     count++;
                 });
                 expect(count).toBe(0);
@@ -270,7 +270,7 @@ export default function() {
             it("notifies after processing a keyboard event or if the user clicks on the button to move to the current month",
                () => {
                    let count: number = 0;
-                   const sub: Subscription = dateNavigationService.calendarFocusChanged.subscribe(() => {
+                   const sub: Subscription = dateNavigationService.focusOnCalendarChange.subscribe(() => {
                        count++;
                    });
 
