@@ -10,12 +10,12 @@ import {
     ElementRef,
     EventEmitter,
     HostBinding,
-    HostListener,
+    HostListener, Inject,
     Input,
     OnDestroy,
     OnInit,
     Optional,
-    Output,
+    Output, PLATFORM_ID,
     Renderer2,
     Self,
     ViewContainerRef
@@ -29,6 +29,7 @@ import {ClrDateContainer} from "./date-container";
 import {DateIOService} from "./providers/date-io.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
+import {isPlatformBrowser} from "@angular/common";
 
 @Directive({selector: "[clrDate]", host: {"[class.date-input]": "true"}})
 export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
@@ -41,7 +42,8 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
                 private renderer: Renderer2, @Self() @Optional() private _ngControl: NgControl,
                 @Optional() private _dateIOService: DateIOService,
                 @Optional() private _dateNavigationService: DateNavigationService,
-                @Optional() private _datepickerEnabledService: DatepickerEnabledService) {
+                @Optional() private _datepickerEnabledService: DatepickerEnabledService,
+                @Inject(PLATFORM_ID) private platformId: Object) {
         super(ClrDateContainer, vcr);
     }
 
@@ -177,7 +179,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
      */
     @HostBinding("attr.type")
     get inputType(): string {
-        return this._datepickerEnabledService.isEnabled ? "text" : "date";
+        return (isPlatformBrowser(this.platformId) && this._datepickerEnabledService.isEnabled) ? "text" : "date";
     }
 
     /**
