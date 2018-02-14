@@ -37,12 +37,12 @@ export default function() {
         });
 
         describe("View Basics", () => {
-            it("projects the days", () => {
+            it("renders the days", () => {
                 const days: HTMLElement[] = context.clarityElement.querySelectorAll("clr-day");
                 expect(days.length).toBe(42);
             });
 
-            it("projects the weekdays", () => {
+            it("renders the weekdays", () => {
                 const days: HTMLElement[] = context.clarityElement.querySelectorAll(".weekdays .calendar-cell");
                 expect(days.length).toBe(7);
             });
@@ -70,7 +70,7 @@ export default function() {
                 expect(context.clarityDirective.today.year).toBe(date.getFullYear());
             });
 
-            it("has access to the calendar", () => {
+            it("has access to the CalendarModel", () => {
                 expect(context.clarityDirective.calendar.month).toBe(0);
                 expect(context.clarityDirective.calendar.year).toBe(2015);
             });

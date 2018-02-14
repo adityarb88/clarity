@@ -44,22 +44,20 @@ export default function() {
         });
 
         it("checks if a number is within the YearRange or not", () => {
-            expect(yearRangeModel.inRange(minYear)).toBe(true);
-            expect(yearRangeModel.inRange(maxYear)).toBe(true);
-            expect(yearRangeModel.inRange(startYear)).toBe(true);
-
+            testRange(yearRangeModel, minYear);
             expect(yearRangeModel.inRange(minYear - 1)).toBe(false);
             expect(yearRangeModel.inRange(maxYear + 1)).toBe(false);
-            expect(yearRangeModel.inRange(startYear + 100)).toBe(false);
         });
 
         it("returns the mid number in the Year Range", () => {
-            expect(yearRangeModel.midNumber).toBe(Math.floor(minYear + 5));
-            expect(yearRangeModel.midNumber).toBe(Math.floor(maxYear - 4));
+            expect(yearRangeModel.middleYear).toBe(minYear + 5);
+            expect(yearRangeModel.middleYear).toBe(maxYear - 4);
         });
 
         it("returns a new YearRangeModel for the next decade", () => {
             let testRangeModel: YearRangeModel = yearRangeModel.nextDecade();
+
+            expect(testRangeModel).not.toBe(yearRangeModel);
 
             testRange(testRangeModel, minYear + 10);
 
@@ -71,6 +69,8 @@ export default function() {
         it("returns a new YearRangeModel for the previous decade", () => {
             let testRangeModel: YearRangeModel = yearRangeModel.previousDecade();
 
+            expect(testRangeModel).not.toBe(yearRangeModel);
+
             testRange(testRangeModel, minYear - 10);
 
             testRangeModel = testRangeModel.previousDecade();
@@ -79,16 +79,15 @@ export default function() {
         });
 
         it("returns a new YearRangeModel for the current decade", () => {
-            let testRangeModel: YearRangeModel = yearRangeModel.previousDecade();
+            const oldRangeModel: YearRangeModel = new YearRangeModel(1988);
 
-            for (let i = 0; i < 4; i++) {
-                testRangeModel = testRangeModel.previousDecade();
-            }
+            const date: Date = new Date();
 
-            testRange(testRangeModel, minYear - 50);
-            testRangeModel = testRangeModel.currentDecade();
+            expect(oldRangeModel.inRange(date.getFullYear())).toBe(false);
 
-            testRange(testRangeModel, minYear);
+            const testRangeModel: YearRangeModel = oldRangeModel.currentDecade();
+
+            expect(testRangeModel.inRange(date.getFullYear())).toBe(true);
         });
     });
 }

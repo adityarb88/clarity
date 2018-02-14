@@ -16,7 +16,7 @@ export class YearRangeModel {
     /**
      * Gets the number in the middle of the range.
      */
-    get midNumber(): number {
+    get middleYear(): number {
         return this.yearRange[Math.floor(this.yearRange.length / 2)];
     }
 

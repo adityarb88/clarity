@@ -126,7 +126,7 @@ export class ClrYearpicker implements AfterViewInit {
         } else if (this.yearRangeModel.inRange(this.calendarYear)) {
             return this.calendarYear === year ? 0 : -1;
         } else {
-            return this.yearRangeModel.midNumber === year ? 0 : -1;
+            return this.yearRangeModel.middleYear === year ? 0 : -1;
         }
     }
 
