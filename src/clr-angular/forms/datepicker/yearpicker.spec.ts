@@ -19,13 +19,13 @@ import {ViewManagerService} from "./providers/view-manager.service";
 import {createKeyboardEvent} from "./utils/test-utils";
 import {ClrYearpicker} from "./yearpicker";
 
-export default function() {
+export default function () {
     describe("Yearpicker Component", () => {
         let context: TestContext<ClrYearpicker, TestComponent>;
         let dateNavigationService: DateNavigationService;
-        const selectedYear: number = 2005;
+        const selectedYear: number = 2003;
 
-        beforeEach(function() {
+        beforeEach(function () {
             dateNavigationService = new DateNavigationService();
             dateNavigationService.initializeCalendar();
             dateNavigationService.changeYear(selectedYear);
@@ -111,34 +111,34 @@ export default function() {
             });
 
             it("updates the tab indices correctly", async(() => {
-                   const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll(".year");
+                const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll(".year");
 
-                   expect(buttons[5].tabIndex).toBe(0);
+                expect(buttons[3].tabIndex).toBe(0);
 
-                   context.clarityElement.dispatchEvent(createKeyboardEvent(DOWN_ARROW, "keydown"));
-                   context.detectChanges();
+                context.clarityElement.dispatchEvent(createKeyboardEvent(DOWN_ARROW, "keydown"));
+                context.detectChanges();
 
-                   expect(buttons[5].tabIndex).toBe(-1);
-                   expect(buttons[6].tabIndex).toBe(0);
+                expect(buttons[3].tabIndex).toBe(-1);
+                expect(buttons[4].tabIndex).toBe(0);
 
-                   context.clarityElement.dispatchEvent(createKeyboardEvent(UP_ARROW, "keydown"));
-                   context.detectChanges();
+                context.clarityElement.dispatchEvent(createKeyboardEvent(UP_ARROW, "keydown"));
+                context.detectChanges();
 
-                   expect(buttons[6].tabIndex).toBe(-1);
-                   expect(buttons[5].tabIndex).toBe(0);
+                expect(buttons[4].tabIndex).toBe(-1);
+                expect(buttons[3].tabIndex).toBe(0);
 
-                   context.clarityElement.dispatchEvent(createKeyboardEvent(LEFT_ARROW, "keydown"));
-                   context.detectChanges();
+                context.clarityElement.dispatchEvent(createKeyboardEvent(RIGHT_ARROW, "keydown"));
+                context.detectChanges();
 
-                   expect(buttons[5].tabIndex).toBe(-1);
-                   expect(buttons[0].tabIndex).toBe(0);
+                expect(buttons[3].tabIndex).toBe(-1);
+                expect(buttons[8].tabIndex).toBe(0);
 
-                   context.clarityElement.dispatchEvent(createKeyboardEvent(RIGHT_ARROW, "keydown"));
-                   context.detectChanges();
+                context.clarityElement.dispatchEvent(createKeyboardEvent(LEFT_ARROW, "keydown"));
+                context.detectChanges();
 
-                   expect(buttons[0].tabIndex).toBe(-1);
-                   expect(buttons[5].tabIndex).toBe(0);
-               }));
+                expect(buttons[8].tabIndex).toBe(-1);
+                expect(buttons[3].tabIndex).toBe(0);
+            }));
         });
 
         describe("Typescript API", () => {
@@ -249,4 +249,5 @@ export default function() {
         <clr-yearpicker></clr-yearpicker>
     `
 })
-class TestComponent {}
+class TestComponent {
+}
