@@ -17,6 +17,8 @@ export const MIDDLE_ENDIAN_REGEX: RegExp = /m+.d+.y+/i;
 // No need for BIG_ENDIAN_REGEX because anything that doesn't satisfy the above 2
 // is automatically BIG_ENDIAN
 
+export const MOBILE_USERAGENT_REGEX: RegExp = /Mobi/i;
+
 export const YEAR: string = "YYYY";
 export const MONTH: string = "MM";
 export const DATE: string = "DD";

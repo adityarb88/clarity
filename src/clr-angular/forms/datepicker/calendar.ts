@@ -37,7 +37,7 @@ export class ClrCalendar implements OnDestroy {
     }
 
     get calendar(): CalendarModel {
-        return this._dateNavigationService.calendar;
+        return this._dateNavigationService.displayedCalendar;
     }
 
     get selectedDay(): DayModel {

@@ -24,25 +24,25 @@ export default function() {
             it("initializes the calendar to the current month and year if the selected date is not set", () => {
                 const date: Date = new Date();
 
-                expect(dateNavigationService.calendar).toBeUndefined();
+                expect(dateNavigationService.displayedCalendar).toBeUndefined();
 
                 dateNavigationService.initializeCalendar();
 
-                expect(dateNavigationService.calendar).not.toBeUndefined();
-                expect(dateNavigationService.calendar.month).toBe(date.getMonth());
-                expect(dateNavigationService.calendar.year).toBe(date.getFullYear());
+                expect(dateNavigationService.displayedCalendar).not.toBeUndefined();
+                expect(dateNavigationService.displayedCalendar.month).toBe(date.getMonth());
+                expect(dateNavigationService.displayedCalendar.year).toBe(date.getFullYear());
             });
 
             it("initializes the calendar to the selected date month and year, if the selected date is set", () => {
                 dateNavigationService.selectedDay = new DayModel(2016, 1, 1);
 
-                expect(dateNavigationService.calendar).toBeUndefined();
+                expect(dateNavigationService.displayedCalendar).toBeUndefined();
 
                 dateNavigationService.initializeCalendar();
 
-                expect(dateNavigationService.calendar).not.toBeUndefined();
-                expect(dateNavigationService.calendar.month).toBe(1);
-                expect(dateNavigationService.calendar.year).toBe(2016);
+                expect(dateNavigationService.displayedCalendar).not.toBeUndefined();
+                expect(dateNavigationService.displayedCalendar.month).toBe(1);
+                expect(dateNavigationService.displayedCalendar.year).toBe(2016);
             });
 
             it("provides access to todays date on calendar initialization", () => {
@@ -74,51 +74,51 @@ export default function() {
             it("provides a function to update the Calendar Month", () => {
                 dateNavigationService.selectedDay = new DayModel(2015, 1, 1);
                 dateNavigationService.initializeCalendar();
-                expect(dateNavigationService.calendar.month).toBe(1);
+                expect(dateNavigationService.displayedCalendar.month).toBe(1);
 
                 dateNavigationService.changeMonth(2);
-                expect(dateNavigationService.calendar.month).toBe(2);
+                expect(dateNavigationService.displayedCalendar.month).toBe(2);
             });
 
             it("provides a function to update the Calendar Year", () => {
                 dateNavigationService.selectedDay = new DayModel(2016, 1, 1);
                 dateNavigationService.initializeCalendar();
-                expect(dateNavigationService.calendar.year).toBe(2016);
+                expect(dateNavigationService.displayedCalendar.year).toBe(2016);
 
                 dateNavigationService.changeYear(2018);
-                expect(dateNavigationService.calendar.year).toBe(2018);
+                expect(dateNavigationService.displayedCalendar.year).toBe(2018);
             });
 
             it("provides a function to move to the next month", () => {
                 dateNavigationService.selectedDay = new DayModel(2016, 11, 1);
                 dateNavigationService.initializeCalendar();
 
-                expect(dateNavigationService.calendar.year).toBe(2016);
-                expect(dateNavigationService.calendar.month).toBe(11);
+                expect(dateNavigationService.displayedCalendar.year).toBe(2016);
+                expect(dateNavigationService.displayedCalendar.month).toBe(11);
 
                 dateNavigationService.moveToNextMonth();
-                expect(dateNavigationService.calendar.year).toBe(2017);
-                expect(dateNavigationService.calendar.month).toBe(0);
+                expect(dateNavigationService.displayedCalendar.year).toBe(2017);
+                expect(dateNavigationService.displayedCalendar.month).toBe(0);
 
                 dateNavigationService.moveToNextMonth();
-                expect(dateNavigationService.calendar.year).toBe(2017);
-                expect(dateNavigationService.calendar.month).toBe(1);
+                expect(dateNavigationService.displayedCalendar.year).toBe(2017);
+                expect(dateNavigationService.displayedCalendar.month).toBe(1);
             });
 
             it("provides a function to move to the previous month", () => {
                 dateNavigationService.selectedDay = new DayModel(2017, 0, 1);
                 dateNavigationService.initializeCalendar();
 
-                expect(dateNavigationService.calendar.year).toBe(2017);
-                expect(dateNavigationService.calendar.month).toBe(0);
+                expect(dateNavigationService.displayedCalendar.year).toBe(2017);
+                expect(dateNavigationService.displayedCalendar.month).toBe(0);
 
                 dateNavigationService.moveToPreviousMonth();
-                expect(dateNavigationService.calendar.year).toBe(2016);
-                expect(dateNavigationService.calendar.month).toBe(11);
+                expect(dateNavigationService.displayedCalendar.year).toBe(2016);
+                expect(dateNavigationService.displayedCalendar.month).toBe(11);
 
                 dateNavigationService.moveToPreviousMonth();
-                expect(dateNavigationService.calendar.year).toBe(2016);
-                expect(dateNavigationService.calendar.month).toBe(10);
+                expect(dateNavigationService.displayedCalendar.year).toBe(2016);
+                expect(dateNavigationService.displayedCalendar.month).toBe(10);
             });
 
             it("provides a function to move to the current year and month", () => {
@@ -126,12 +126,12 @@ export default function() {
                 dateNavigationService.initializeCalendar();
                 const date: Date = new Date();
 
-                expect(dateNavigationService.calendar.year).toBe(2017);
-                expect(dateNavigationService.calendar.month).toBe(0);
+                expect(dateNavigationService.displayedCalendar.year).toBe(2017);
+                expect(dateNavigationService.displayedCalendar.month).toBe(0);
 
                 dateNavigationService.moveToCurrentMonth();
-                expect(dateNavigationService.calendar.year).toBe(date.getFullYear());
-                expect(dateNavigationService.calendar.month).toBe(date.getMonth());
+                expect(dateNavigationService.displayedCalendar.year).toBe(date.getFullYear());
+                expect(dateNavigationService.displayedCalendar.month).toBe(date.getMonth());
             });
         });
 

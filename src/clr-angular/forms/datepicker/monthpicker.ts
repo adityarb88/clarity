@@ -33,7 +33,7 @@ export class ClrMonthpicker implements AfterViewInit {
     constructor(private _viewManagerService: ViewManagerService, private _localeHelperService: LocaleHelperService,
                 private _dateNavigationService: DateNavigationService,
                 private _datepickerViewService: DatepickerViewService, private _elRef: ElementRef) {
-        this._focusedMonthIndex = this._dateNavigationService.calendar.month;
+        this._focusedMonthIndex = this.calendarMonthIndex;
     }
 
     /**
@@ -53,7 +53,7 @@ export class ClrMonthpicker implements AfterViewInit {
      * Gets the month value of the Calendar.
      */
     get calendarMonthIndex(): number {
-        return this._dateNavigationService.calendar.month;
+        return this._dateNavigationService.displayedCalendar.month;
     }
 
     /**

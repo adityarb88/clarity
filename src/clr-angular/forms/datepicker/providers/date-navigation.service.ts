@@ -14,16 +14,16 @@ import {DayModel} from "../model/day.model";
 
 @Injectable()
 export class DateNavigationService {
-    private _calendar: CalendarModel;
+    private _displayedCalendar: CalendarModel;
 
-    get calendar(): CalendarModel {
-        return this._calendar;
+    get displayedCalendar(): CalendarModel {
+        return this._displayedCalendar;
     }
 
     // not a setter because i want this to remain private
-    private setCalendar(value: CalendarModel) {
-        if (!this._calendar.isEqual(value)) {
-            this._calendar = value;
+    private setDisplayedCalendar(value: CalendarModel) {
+        if (!this._displayedCalendar.isEqual(value)) {
+            this._displayedCalendar = value;
             this._calendarChanged.next();
         }
     }
@@ -31,9 +31,9 @@ export class DateNavigationService {
     initializeCalendar(): void {
         this.focusedDay = null;  // Can be removed later on the store focus
         if (this.selectedDay) {
-            this._calendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
+            this._displayedCalendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
         } else {
-            this._calendar = new CalendarModel(this.currentYear, this.currentMonth);
+            this._displayedCalendar = new CalendarModel(this.currentYear, this.currentMonth);
         }
         this.initializeTodaysDate();
     }
@@ -83,32 +83,32 @@ export class DateNavigationService {
     public focusedDay: DayModel;
 
     changeMonth(month: number): void {
-        this._calendar = new CalendarModel(this._calendar.year, month);
+        this._displayedCalendar = new CalendarModel(this._displayedCalendar.year, month);
     }
 
     changeYear(year: number): void {
-        this._calendar = new CalendarModel(year, this._calendar.month);
+        this._displayedCalendar = new CalendarModel(year, this._displayedCalendar.month);
     }
 
     moveToNextMonth(): void {
-        this.setCalendar(this._calendar.nextMonth());
+        this.setDisplayedCalendar(this._displayedCalendar.nextMonth());
     }
 
     moveToPreviousMonth(): void {
-        this.setCalendar(this._calendar.previousMonth());
+        this.setDisplayedCalendar(this._displayedCalendar.previousMonth());
     }
 
     moveToCurrentMonth(): void {
-        this.setCalendar(this._calendar.currentMonth());
+        this.setDisplayedCalendar(this._displayedCalendar.currentMonth());
         this._calendarFocusChanged.next();
     }
 
     private incrementFocusDay(value: number): void {
         this.focusedDay = this.focusedDay.incrementBy(value);
-        if (this._calendar.isDayInCalendar(this.focusedDay)) {
+        if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
             this._focusedDayChanged.next();
         } else {
-            this.setCalendar(this.focusedDay.calendar);
+            this.setDisplayedCalendar(this.focusedDay.calendar);
         }
         this._calendarFocusChanged.next();
     }

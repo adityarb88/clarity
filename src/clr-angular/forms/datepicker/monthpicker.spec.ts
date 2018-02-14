@@ -154,11 +154,11 @@ export default function() {
             it("updates the month value in the date navigation service", () => {
                 const dateNavService: DateNavigationService = context.getClarityProvider(DateNavigationService);
 
-                expect(dateNavService.calendar.month).toBe(1);
+                expect(dateNavService.displayedCalendar.month).toBe(1);
 
                 context.clarityDirective.changeMonth(4);
 
-                expect(dateNavService.calendar.month).toBe(4);
+                expect(dateNavService.displayedCalendar.month).toBe(4);
             });
 
             it("handles keyboard navigation", () => {

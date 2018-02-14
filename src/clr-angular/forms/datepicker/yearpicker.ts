@@ -63,7 +63,7 @@ export class ClrYearpicker implements AfterViewInit {
      * Gets the year which the user is currently on.
      */
     get calendarYear(): number {
-        return this._dateNavigationService.calendar.year;
+        return this._dateNavigationService.displayedCalendar.year;
     }
 
     /**

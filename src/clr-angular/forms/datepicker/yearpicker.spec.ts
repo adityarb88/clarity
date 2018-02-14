@@ -209,11 +209,11 @@ export default function () {
             it("updates year value in the date navigation service", () => {
                 const dateNavService: DateNavigationService = context.getClarityProvider(DateNavigationService);
 
-                expect(dateNavService.calendar.year).toBe(selectedYear);
+                expect(dateNavService.displayedCalendar.year).toBe(selectedYear);
 
                 context.clarityDirective.changeYear(2015);
 
-                expect(dateNavService.calendar.year).toBe(2015);
+                expect(dateNavService.displayedCalendar.year).toBe(2015);
             });
 
             it("handles keyboard navigation", () => {
