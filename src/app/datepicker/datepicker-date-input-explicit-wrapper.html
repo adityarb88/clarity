@@ -5,10 +5,10 @@
   -->
 
 <div>
-    <h6>ngModel Wrapper Present</h6>
+    <h6>With [clrDate]</h6>
     <p></p>
     <clr-date-container>
-        <input type="date" [(ngModel)]="model" clrDate>
+        <input type="date" [clrDate]="date" (clrDateChange)="dateChanged($event)">
     </clr-date-container>
 </div>
 
@@ -17,22 +17,14 @@
         <table class="table">
             <thead>
             <tr>
-                <th>[(model)]</th>
+                <th>[(clrDate)]</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>{{model}}</td>
+                <td>{{date}}</td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-
-<pre>
-    <code clr-code-highlight="language-html">
-        &lt;clr-date-container&gt;
-            &lt;input type=&quot;date&quot; [(ngModel)]="model" clrDate&gt;
-        &lt;/clr-date-container&gt;
-    </code>
-</pre>

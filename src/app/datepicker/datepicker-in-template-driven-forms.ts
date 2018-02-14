@@ -12,28 +12,8 @@ import {Component} from "@angular/core";
     templateUrl: "./datepicker-in-template-driven-forms.html"
 })
 export class DatepickerInTemplateDrivenFormsDemo {
-    buttonClick(): void {
-        console.log("Initiate Form Submission");
-    }
-
-    isSubmitted: boolean = false;
-
-    onSubmit(): void {
-        this.isSubmitted = true;
-        console.log("Form Submitted");
-    }
-
     date1: string = "";
     date2: string = "";
-
-    name: string = "";
-
-    reset(): void {
-        this.isSubmitted = false;
-        this.date1 = "";
-        this.date2 = "";
-        this.name = "";
-    }
 
     date1Changed(date: Date): void {
         console.log("Valid Date1 Entered", date);

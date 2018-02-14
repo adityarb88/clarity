@@ -11,25 +11,25 @@ import {ClarityModule} from "../../clr-angular";
 
 import {DatepickerCSSRegressionDemo} from "./css-regression";
 import {DatepickerDateInputDemo} from "./datepicker-date-input";
-import {DatepickerDateInputWrapperPresentDemo} from "./datepicker-date-input-wrapper-present";
+import {DatepickerDateInputExplicitWrapperDemo} from "./datepicker-date-input-explicit-wrapper";
 import {DatepickerInReactiveForms} from "./datepicker-in-reactive-forms";
-import {DatepickerInTemplateDrivenFormsDemo} from "./datepicker-in-template-driven-form";
+import {DatepickerInTemplateDrivenFormsDemo} from "./datepicker-in-template-driven-forms";
 import {DatepickerDemo} from "./datepicker.demo";
 import {ROUTING} from "./datepicker.demo.routing";
 import {NgModelAutoWrappedDatepickerDemo} from "./ngmodel-auto-wrapped";
-import {NgModelWrappedPresentDatepickerDemo} from "./ngmodel-wrapper-present";
+import {NgModelExplicitWrapperDemo} from "./ngmodel-wrapper-explicit-wrapper";
 
 @NgModule({
     imports: [CommonModule, ClarityModule, ROUTING, FormsModule, ReactiveFormsModule],
     declarations: [
         DatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms,
-        NgModelAutoWrappedDatepickerDemo, NgModelWrappedPresentDatepickerDemo, DatepickerDateInputDemo,
-        DatepickerDateInputWrapperPresentDemo, DatepickerCSSRegressionDemo
+        NgModelAutoWrappedDatepickerDemo, NgModelExplicitWrapperDemo, DatepickerDateInputDemo,
+        DatepickerDateInputExplicitWrapperDemo, DatepickerCSSRegressionDemo
     ],
     exports: [
         DatepickerDemo, DatepickerInTemplateDrivenFormsDemo, DatepickerInReactiveForms,
-        NgModelAutoWrappedDatepickerDemo, NgModelWrappedPresentDatepickerDemo, DatepickerDateInputDemo,
-        DatepickerDateInputWrapperPresentDemo, DatepickerCSSRegressionDemo
+        NgModelAutoWrappedDatepickerDemo, NgModelExplicitWrapperDemo, DatepickerDateInputDemo,
+        DatepickerDateInputExplicitWrapperDemo, DatepickerCSSRegressionDemo
     ]
 })
 export default class DatepickerDemoModule {}
