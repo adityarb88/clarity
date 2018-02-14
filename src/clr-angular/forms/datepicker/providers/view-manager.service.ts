@@ -6,37 +6,37 @@
 
 import {Injectable} from "@angular/core";
 
+const enum DatepickerViewEnum {
+    MONTHVIEW = "MONTHVIEW",
+    YEARVIEW = "YEARVIEW",
+    DAYVIEW = "DAYVIEW"
+}
+
 @Injectable()
 export class ViewManagerService {
-    private _monthView: boolean = false;
-    private _yearView: boolean = false;
-    private _dayView: boolean = true;
+    private _currentView: DatepickerViewEnum = DatepickerViewEnum.DAYVIEW;
 
-    get dayView(): boolean {
-        return this._dayView;
+    get isDayView(): boolean {
+        return this._currentView === DatepickerViewEnum.DAYVIEW;
     }
-    get yearView(): boolean {
-        return this._yearView;
+
+    get isYearView(): boolean {
+        return this._currentView === DatepickerViewEnum.YEARVIEW;
     }
-    get monthView(): boolean {
-        return this._monthView;
+
+    get isMonthView(): boolean {
+        return this._currentView === DatepickerViewEnum.MONTHVIEW;
     }
 
     changeToMonthView(): void {
-        this._yearView = false;
-        this._dayView = false;
-        this._monthView = true;
+        this._currentView = DatepickerViewEnum.MONTHVIEW;
     }
 
     changeToYearView(): void {
-        this._monthView = false;
-        this._dayView = false;
-        this._yearView = true;
+        this._currentView = DatepickerViewEnum.YEARVIEW;
     }
 
     changeToDayPickerView(): void {
-        this._dayView = true;
-        this._yearView = false;
-        this._monthView = false;
+        this._currentView = DatepickerViewEnum.DAYVIEW;
     }
 }

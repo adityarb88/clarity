@@ -36,21 +36,21 @@ export class ClrDatepickerViewManager extends AbstractPopover {
     /**
      * Returns if the current view is the monthpicker.
      */
-    get monthView(): boolean {
-        return this._viewManagerService.monthView;
+    get isMonthView(): boolean {
+        return this._viewManagerService.isMonthView;
     }
 
     /**
      * Returns if the current view is the yearpicker.
      */
-    get yearView(): boolean {
-        return this._viewManagerService.yearView;
+    get isYearView(): boolean {
+        return this._viewManagerService.isYearView;
     }
 
     /**
      * Returns if the current view is the daypicker.
      */
-    get dayView(): boolean {
-        return this._viewManagerService.dayView;
+    get isDayView(): boolean {
+        return this._viewManagerService.isDayView;
     }
 }

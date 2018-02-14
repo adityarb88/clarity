@@ -198,12 +198,12 @@ export default function () {
                 const viewManagerService: ViewManagerService = context.getClarityProvider(ViewManagerService);
 
                 viewManagerService.changeToYearView();
-                expect(viewManagerService.yearView).toBe(true);
+                expect(viewManagerService.isYearView).toBe(true);
 
                 context.clarityDirective.changeYear(2015);
 
-                expect(viewManagerService.yearView).toBe(false);
-                expect(viewManagerService.dayView).toBe(true);
+                expect(viewManagerService.isYearView).toBe(false);
+                expect(viewManagerService.isDayView).toBe(true);
             });
 
             it("updates year value in the date navigation service", () => {

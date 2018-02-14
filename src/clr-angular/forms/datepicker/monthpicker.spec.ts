@@ -143,12 +143,12 @@ export default function() {
                 const viewManagerService: ViewManagerService = context.getClarityProvider(ViewManagerService);
 
                 viewManagerService.changeToMonthView();
-                expect(viewManagerService.monthView).toBe(true);
+                expect(viewManagerService.isMonthView).toBe(true);
 
                 context.clarityDirective.changeMonth(0);
 
-                expect(viewManagerService.monthView).toBe(false);
-                expect(viewManagerService.dayView).toBe(true);
+                expect(viewManagerService.isMonthView).toBe(false);
+                expect(viewManagerService.isDayView).toBe(true);
             });
 
             it("updates the month value in the date navigation service", () => {
