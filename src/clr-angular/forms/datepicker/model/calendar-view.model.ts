@@ -38,7 +38,7 @@ export class CalendarViewModel {
         const prevMonthCalendar: CalendarModel = this.calendar.previousMonth();
         const nextMonthCalendar: CalendarModel = this.calendar.nextMonth();
         const daysFromPrevMonthInCalView: number
-            = this.noOfDaysFromPreviousMonthInCalendarView(this.calendar.year, this.calendar.month);
+            = this.numDaysFromPrevMonthInCalView(this.calendar.year, this.calendar.month);
         const daysFromNextMonthInCalView: number
             = TOTAL_DAYS_IN_DAYS_VIEW - (this.calendar.days.length + daysFromPrevMonthInCalView);
 
@@ -83,7 +83,7 @@ export class CalendarViewModel {
      * (this.getDay function would return 3 since
      * first day of the week is 0), we need the 3 days from the previous month.
      */
-    private noOfDaysFromPreviousMonthInCalendarView(currentYear: number, currentMonth: number): number {
+    private numDaysFromPrevMonthInCalView(currentYear: number, currentMonth: number): number {
         const firstDayOfCurrMonth: number = getDay(currentYear, currentMonth, 1);
 
         if (firstDayOfCurrMonth >= this.firstDayOfWeek) {

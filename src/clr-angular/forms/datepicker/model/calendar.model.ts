@@ -65,12 +65,4 @@ export class CalendarModel {
             return new CalendarModel(this.year, this.month + 1);
         }
     }
-
-    /**
-     * Returns CalendarModel of the current month.
-     */
-    currentMonth(): CalendarModel {
-        const date: Date = new Date();
-        return new CalendarModel(date.getFullYear(), date.getMonth());
-    }
 }

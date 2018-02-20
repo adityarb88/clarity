@@ -99,7 +99,7 @@ export class DateNavigationService {
     }
 
     moveToCurrentMonth(): void {
-        this.setDisplayedCalendar(this._displayedCalendar.currentMonth());
+        this.setDisplayedCalendar(new CalendarModel(this.currentYear, this.currentMonth));
         this._focusOnCalendarChange.next();
     }
 
