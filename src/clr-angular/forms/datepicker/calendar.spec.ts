@@ -8,7 +8,7 @@ import {Component} from "@angular/core";
 
 import {TestContext} from "../../data/datagrid/helpers.spec";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
-import {UP_ARROW} from "../../utils/key-codes/key-codes";
+import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 
 import {ClrCalendar} from "./calendar";
 import {DayModel} from "./model/day.model";
@@ -49,6 +49,12 @@ export default function() {
         });
 
         describe("Typescript API", () => {
+            function assertFocusedDay(year: number, month: number, day: number) {
+                expect(dateNavigationService.focusedDay.date).toBe(day);
+                expect(dateNavigationService.focusedDay.month).toBe(month);
+                expect(dateNavigationService.focusedDay.year).toBe(year);
+            }
+
             it("generates a CalendarViewModel on initialization", () => {
                 // Testing for the Jan 2015 calendar since that was the selected date in
                 // beforeEach before the calendar was initialized
@@ -86,10 +92,69 @@ export default function() {
                 expect(context.clarityDirective.localeDaysNarrow.length).toBe(7);
             });
 
-            it("delegates the keyboard event to the navigation service", () => {
-                spyOn(dateNavigationService, "adjustCalendarFocusOnKeyDownEvent");
-                context.clarityDirective.onKeyDown(createKeyboardEvent(UP_ARROW, "test"));
-                expect(dateNavigationService.adjustCalendarFocusOnKeyDownEvent).toHaveBeenCalled();
+            it("decrements the focused day by 7 on up arrow", () => {
+                dateNavigationService.selectedDay = new DayModel(2015, 0, 25);
+                dateNavigationService.initializeCalendar();
+                dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
+
+                const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW, "keydown");
+
+                context.clarityDirective.onKeyDown(upArrowEvent);
+
+                assertFocusedDay(2014, 11, 26);
+
+                context.clarityDirective.onKeyDown(upArrowEvent);
+
+                assertFocusedDay(2014, 11, 19);
+            });
+
+            it("increments the focused day by 7 on down arrow", () => {
+                dateNavigationService.selectedDay = new DayModel(2014, 11, 2);
+                dateNavigationService.initializeCalendar();
+                dateNavigationService.focusedDay = new DayModel(2014, 11, 25);
+
+                const downArrowEvent: KeyboardEvent = createKeyboardEvent(DOWN_ARROW, "keydown");
+
+                context.clarityDirective.onKeyDown(downArrowEvent);
+
+                assertFocusedDay(2015, 0, 1);
+
+                context.clarityDirective.onKeyDown(downArrowEvent);
+
+                assertFocusedDay(2015, 0, 8);
+            });
+
+            it("decrements the focused day by 1 on left arrow", () => {
+                dateNavigationService.selectedDay = new DayModel(2015, 0, 5);
+                dateNavigationService.initializeCalendar();
+                dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
+
+                const leftArrowEvent: KeyboardEvent = createKeyboardEvent(LEFT_ARROW, "keydown");
+
+                context.clarityDirective.onKeyDown(leftArrowEvent);
+
+
+                assertFocusedDay(2015, 0, 1);
+
+                context.clarityDirective.onKeyDown(leftArrowEvent);
+
+                assertFocusedDay(2014, 11, 31);
+            });
+
+            it("increments the focused day by 1 on right arrow", () => {
+                dateNavigationService.selectedDay = new DayModel(2014, 11, 2);
+                dateNavigationService.initializeCalendar();
+                dateNavigationService.focusedDay = new DayModel(2014, 11, 31);
+
+                const rightArrowEvent: KeyboardEvent = createKeyboardEvent(RIGHT_ARROW, "keydown");
+
+                context.clarityDirective.onKeyDown(rightArrowEvent);
+
+                assertFocusedDay(2015, 0, 1);
+
+                context.clarityDirective.onKeyDown(rightArrowEvent);
+
+                assertFocusedDay(2015, 0, 2);
             });
         });
     });

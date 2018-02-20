@@ -13,7 +13,7 @@ import {createKeyboardEvent} from "../utils/test-utils";
 import {DateNavigationService} from "./date-navigation.service";
 
 export default function() {
-    describe("Date Navigation Service", () => {
+    fdescribe("Date Navigation Service", () => {
         describe("Calendar Initialization", () => {
             let dateNavigationService: DateNavigationService;
 
@@ -49,9 +49,9 @@ export default function() {
                 dateNavigationService.initializeCalendar();
                 const date: Date = new Date();
 
-                expect(dateNavigationService.currentDate).toBe(date.getDate());
-                expect(dateNavigationService.currentMonth).toBe(date.getMonth());
-                expect(dateNavigationService.currentYear).toBe(date.getFullYear());
+                expect(dateNavigationService.today.date).toBe(date.getDate());
+                expect(dateNavigationService.today.month).toBe(date.getMonth());
+                expect(dateNavigationService.today.year).toBe(date.getFullYear());
             });
 
             it("provides access to todays day model on calendar initialization", () => {
@@ -142,81 +142,10 @@ export default function() {
                 dateNavigationService = new DateNavigationService();
             });
 
-            function assertFocusedDay(year: number, month: number, day: number) {
-                expect(dateNavigationService.focusedDay.date).toBe(day);
-                expect(dateNavigationService.focusedDay.month).toBe(month);
-                expect(dateNavigationService.focusedDay.year).toBe(year);
-            }
-
             it("supports the focused day property", () => {
                 expect(dateNavigationService.focusedDay).toBeUndefined();
                 dateNavigationService.focusedDay = new DayModel(2015, 2, 2);
                 expect(dateNavigationService.focusedDay).not.toBeUndefined();
-            });
-
-            it("decrements the focused day by 7 on up arrow", () => {
-                dateNavigationService.selectedDay = new DayModel(2015, 0, 25);
-                dateNavigationService.initializeCalendar();
-                dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
-
-                const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW, "keydown");
-
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(upArrowEvent);
-
-                assertFocusedDay(2014, 11, 26);
-
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(upArrowEvent);
-
-                assertFocusedDay(2014, 11, 19);
-            });
-
-            it("increments the focused day by 7 on down arrow", () => {
-                dateNavigationService.selectedDay = new DayModel(2014, 11, 2);
-                dateNavigationService.initializeCalendar();
-                dateNavigationService.focusedDay = new DayModel(2014, 11, 25);
-
-                const downArrowEvent: KeyboardEvent = createKeyboardEvent(DOWN_ARROW, "keydown");
-
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(downArrowEvent);
-
-                assertFocusedDay(2015, 0, 1);
-
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(downArrowEvent);
-
-                assertFocusedDay(2015, 0, 8);
-            });
-
-            it("decrements the focused day by 1 on left arrow", () => {
-                dateNavigationService.selectedDay = new DayModel(2015, 0, 5);
-                dateNavigationService.initializeCalendar();
-                dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
-
-                const leftArrowEvent: KeyboardEvent = createKeyboardEvent(LEFT_ARROW, "keydown");
-
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(leftArrowEvent);
-
-
-                assertFocusedDay(2015, 0, 1);
-
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(leftArrowEvent);
-
-                assertFocusedDay(2014, 11, 31);
-            });
-
-            it("increments the focused day by 1 on right arrow", () => {
-                dateNavigationService.selectedDay = new DayModel(2014, 11, 2);
-                dateNavigationService.initializeCalendar();
-                dateNavigationService.focusedDay = new DayModel(2014, 11, 31);
-
-                const rightArrowEvent: KeyboardEvent = createKeyboardEvent(RIGHT_ARROW, "keydown");
-
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(rightArrowEvent);
-
-                assertFocusedDay(2015, 0, 1);
-
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(rightArrowEvent);
-
-                assertFocusedDay(2015, 0, 2);
             });
         });
 
@@ -254,20 +183,31 @@ export default function() {
                 const sub: Subscription = dateNavigationService.focusedDayChange.subscribe(() => {
                     count++;
                 });
+
+                //Navigate in the Calendar
                 expect(count).toBe(0);
-                const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW, "keydown");
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(upArrowEvent);
+                dateNavigationService.incrementFocusDay(-7);
 
                 expect(count).toBe(1);
 
-                dateNavigationService.adjustCalendarFocusOnKeyDownEvent(upArrowEvent);
+                dateNavigationService.incrementFocusDay(-1);
 
                 expect(count).toBe(2);
+
+                dateNavigationService.incrementFocusDay(2);
+
+                expect(count).toBe(3);
+
+                //Navigate outside of the current calendar.
+                dateNavigationService.incrementFocusDay(31);
+
+                //Should expect no change
+                expect(count).toBe(3);
 
                 sub.unsubscribe();
             });
 
-            it("notifies after processing a keyboard event or if the user clicks on the button to move to the current month",
+            it("notifies to update focus on the calendar when the user navigates using the keyboard",
                () => {
                    let count: number = 0;
                    const sub: Subscription = dateNavigationService.focusOnCalendarChange.subscribe(() => {
@@ -275,17 +215,30 @@ export default function() {
                    });
 
                    expect(count).toBe(0);
-                   const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW, "keydown");
-                   dateNavigationService.adjustCalendarFocusOnKeyDownEvent(upArrowEvent);
+                   dateNavigationService.incrementFocusDay(1);
 
                    expect(count).toBe(1);
 
-                   dateNavigationService.moveToCurrentMonth();
+                   dateNavigationService.incrementFocusDay(7);
 
                    expect(count).toBe(2);
 
                    sub.unsubscribe();
                });
+
+            it("notifies to update focus on the calendar when the user moves to the current month", () => {
+                let count: number = 0;
+                const sub: Subscription = dateNavigationService.focusOnCalendarChange.subscribe(() => {
+                    count++;
+                });
+
+                expect(count).toBe(0);
+                dateNavigationService.moveToCurrentMonth();
+
+                expect(count).toBe(1);
+
+                sub.unsubscribe();
+            });
         });
     });
 }

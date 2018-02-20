@@ -12,6 +12,8 @@ import {DayModel} from "./model/day.model";
 import {DateNavigationService} from "./providers/date-navigation.service";
 import {DatepickerViewService} from "./providers/datepicker-view.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
+import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
+import {NO_OF_DAYS_IN_A_WEEK} from "./utils/constants";
 
 @Component({selector: "clr-calendar", templateUrl: "./calendar.html"})
 export class ClrCalendar implements OnDestroy {
@@ -86,7 +88,28 @@ export class ClrCalendar implements OnDestroy {
      */
     @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
-        this._dateNavigationService.adjustCalendarFocusOnKeyDownEvent(event);
+        if (event && this.focusedDay) {
+            switch (event.keyCode) {
+                case UP_ARROW:
+                    event.preventDefault();
+                    this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);
+                    break;
+                case DOWN_ARROW:
+                    event.preventDefault();
+                    this._dateNavigationService.incrementFocusDay(NO_OF_DAYS_IN_A_WEEK);
+                    break;
+                case LEFT_ARROW:
+                    event.preventDefault();
+                    this._dateNavigationService.incrementFocusDay(-1);
+                    break;
+                case RIGHT_ARROW:
+                    event.preventDefault();
+                    this._dateNavigationService.incrementFocusDay(1);
+                    break;
+                default:
+                    break;  // No default case. TSLint x-(
+            }
+        }
     }
 
     /**

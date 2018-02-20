@@ -7,8 +7,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
-
-import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../../utils/key-codes/key-codes";
 import {CalendarModel} from "../model/calendar.model";
 import {DayModel} from "../model/day.model";
 
@@ -28,16 +26,6 @@ export class DateNavigationService {
         }
     }
 
-    initializeCalendar(): void {
-        this.focusedDay = null;  // Can be removed later on the store focus
-        if (this.selectedDay) {
-            this._displayedCalendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
-        } else {
-            this._displayedCalendar = new CalendarModel(this.currentYear, this.currentMonth);
-        }
-        this.initializeTodaysDate();
-    }
-
     /**
      * Variable to store today's date.
      */
@@ -54,33 +42,22 @@ export class DateNavigationService {
         return this._today;
     }
 
-    /**
-     * Returns the current date.
-     * eg: 1, 2, 3, ... 31.
-     */
-    get currentDate(): number {
-        return this._todaysFullDate.getDate();
-    }
-
-    /**
-     * Returns the current month as a 0-based value.
-     * eg: 0, 1, 2, ... 12.
-     */
-    get currentMonth(): number {
-        return this._todaysFullDate.getMonth();
-    }
-
-    /**
-     * Returns the current year.
-     * eg: 2018
-     */
-    get currentYear(): number {
-        return this._todaysFullDate.getFullYear();
-    }
-
     public selectedDay: DayModel;
 
     public focusedDay: DayModel;
+
+    /**
+     * Initializes the calendar based on the selected day.
+     */
+    initializeCalendar(): void {
+        this.focusedDay = null;  // Can be removed later on the store focus
+        this.initializeTodaysDate();
+        if (this.selectedDay) {
+            this._displayedCalendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
+        } else {
+            this._displayedCalendar = new CalendarModel(this.today.year, this.today.month);
+        }
+    }
 
     changeMonth(month: number): void {
         this.setDisplayedCalendar(new CalendarModel(this._displayedCalendar.year, month));
@@ -90,20 +67,29 @@ export class DateNavigationService {
         this.setDisplayedCalendar(new CalendarModel(year, this._displayedCalendar.month));
     }
 
+    /**
+     * Moves the displayed calendar to the next month.
+     */
     moveToNextMonth(): void {
         this.setDisplayedCalendar(this._displayedCalendar.nextMonth());
     }
 
+    /**
+     * Moves the displayed calendar to the previous month.
+     */
     moveToPreviousMonth(): void {
         this.setDisplayedCalendar(this._displayedCalendar.previousMonth());
     }
 
+    /**
+     * Moves the displayed calendar to the current month and year.
+     */
     moveToCurrentMonth(): void {
-        this.setDisplayedCalendar(new CalendarModel(this.currentYear, this.currentMonth));
+        this.setDisplayedCalendar(new CalendarModel(this.today.year, this.today.month));
         this._focusOnCalendarChange.next();
     }
 
-    private incrementFocusDay(value: number): void {
+    incrementFocusDay(value: number): void {
         this.focusedDay = this.focusedDay.incrementBy(value);
         if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
             this._focusedDayChange.next();
@@ -138,30 +124,5 @@ export class DateNavigationService {
      */
     get focusedDayChange(): Observable<void> {
         return this._focusedDayChange.asObservable();
-    }
-
-    adjustCalendarFocusOnKeyDownEvent(event: KeyboardEvent) {
-        if (event && this.focusedDay) {
-            switch (event.keyCode) {
-                case UP_ARROW:
-                    event.preventDefault();
-                    this.incrementFocusDay(-7);
-                    break;
-                case DOWN_ARROW:
-                    event.preventDefault();
-                    this.incrementFocusDay(7);
-                    break;
-                case LEFT_ARROW:
-                    event.preventDefault();
-                    this.incrementFocusDay(-1);
-                    break;
-                case RIGHT_ARROW:
-                    event.preventDefault();
-                    this.incrementFocusDay(1);
-                    break;
-                default:
-                    break;  // No default case. TSLint x-(
-            }
-        }
     }
 }
