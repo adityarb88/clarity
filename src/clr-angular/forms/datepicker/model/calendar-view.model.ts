@@ -35,13 +35,17 @@ export class CalendarViewModel {
      * 7 columns because there are 7 days in a week :P :D
      */
     private initializeCalendarView(): void {
+        //Generate prev and next month calendar models.
         const prevMonthCalendar: CalendarModel = this.calendar.previousMonth();
         const nextMonthCalendar: CalendarModel = this.calendar.nextMonth();
+
+        //Get no of days from prev and next months.
         const daysFromPrevMonthInCalView: number
             = this.numDaysFromPrevMonthInCalView(this.calendar.year, this.calendar.month);
         const daysFromNextMonthInCalView: number
             = TOTAL_DAYS_IN_DAYS_VIEW - (this.calendar.days.length + daysFromPrevMonthInCalView);
 
+        //Generate prev, curr and next day view models
         let prevMonthDayViews: DayViewModel[] = [];
         let nextMonthDayViews: DayViewModel[] = [];
 
@@ -57,6 +61,7 @@ export class CalendarViewModel {
                 = this.generateDayViewModels(nextMonthCalendar.days.slice(0, daysFromNextMonthInCalView), true, false);
         }
 
+        //Generate calendar view and initialize flags
         this._calendarView = this.generateCalendarView(prevMonthDayViews, this.currMonthDayViews, nextMonthDayViews);
         this.initializeSelectedDay();
         this.initializeFocusableDay();
