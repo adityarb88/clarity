@@ -16,7 +16,7 @@ import {LocaleHelperService} from "./locale-helper.service";
 registerLocaleData(localeAk);
 
 export default function() {
-    fdescribe("Date IO Service", () => {
+    describe("Date IO Service", () => {
         let dateIOService: DateIOService;
         let localeHelperService: LocaleHelperService;
 
