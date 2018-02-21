@@ -92,7 +92,7 @@ export class DateNavigationService {
     incrementFocusDay(value: number): void {
         this.focusedDay = this.focusedDay.incrementBy(value);
         if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
-            this._focusedDayChange.next();
+            this._focusedDayChange.next(this.focusedDay);
         } else {
             this.setDisplayedCalendar(this.focusedDay.calendar);
         }
@@ -117,12 +117,12 @@ export class DateNavigationService {
         return this._focusOnCalendarChange.asObservable();
     }
 
-    private _focusedDayChange: Subject<void> = new Subject<void>();
+    private _focusedDayChange: Subject<DayModel> = new Subject<DayModel>();
 
     /**
      * This observable lets the subscriber know that the focused day in the displayed calendar has changed.
      */
-    get focusedDayChange(): Observable<void> {
+    get focusedDayChange(): Observable<DayModel> {
         return this._focusedDayChange.asObservable();
     }
 }
