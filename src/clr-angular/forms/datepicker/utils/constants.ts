@@ -19,6 +19,8 @@ export const MIDDLE_ENDIAN_REGEX: RegExp = /m+.d+.y+/i;
 
 export const MOBILE_USERAGENT_REGEX: RegExp = /Mobi/i;
 
+export const NON_NEGATIVE_NUMBER: RegExp = /^\d+$/;
+
 export const YEAR: string = "YYYY";
 export const MONTH: string = "MM";
 export const DATE: string = "DD";

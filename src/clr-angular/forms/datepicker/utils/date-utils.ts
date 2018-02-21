@@ -22,11 +22,14 @@ export function getDay(year: number, month: number, date: number): WeekDay {
 }
 
 /**
- * Takes in a 2 digit year and returns the corresponding 4 digit year.
+ * Takes in a year and if it is a 2 digit year, returns the corresponding 4 digit year.
  * Window of 80 years before and 20 years after the present year.
  * Credit: https://github.com/globalizejs/globalize/blob/e1b31cd6a4f1cff75b185b68b7a32220aac5196f/src/date/parse.js
  */
 export function parseToFourDigitYear(year: number): number {
+    if (year > 999) {
+        return year;
+    }
     if (year < 0 || year > 100) {
         return -1;
     }

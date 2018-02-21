@@ -132,7 +132,6 @@ export default function() {
 
         describe("Typescript API", function() {
             it("updates the selected day when a Date is selected", () => {
-                // let ifOpenService: IfOpenService;
                 const dateNavigationService: DateNavigationService = context.getClarityProvider(DateNavigationService);
                 const testDayView: DayViewModel =
                     new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
