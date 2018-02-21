@@ -165,12 +165,14 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
 
     @Output("clrDateChange") _dateUpdated: EventEmitter<Date> = new EventEmitter<Date>(false);
 
+    @Input() placeholder: string;
+
     /**
      * Returns the date format for the placeholder according to which the input should be entered by the user.
      */
     @HostBinding("attr.placeholder")
     get placeholderText(): string {
-        return this._dateIOService.placeholderText;
+        return this.placeholder ? this.placeholder : this._dateIOService.placeholderText;
     }
 
     /**

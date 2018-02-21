@@ -4,49 +4,50 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {Component, ElementRef, EventEmitter, NgZone} from "@angular/core";
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {Component, ElementRef, EventEmitter, NgZone, PLATFORM_ID} from "@angular/core";
+import {ComponentFixture, inject, TestBed} from "@angular/core/testing";
 import {DatepickerViewService} from "./datepicker-view.service";
 
-export default function() {
+export default function () {
     describe("Calendar View Service", () => {
-        let datepickerViewService: DatepickerViewService;
         let fixture: ComponentFixture<any>;
         let mockNgZone: MockNgZone;
 
         beforeEach(() => {
             mockNgZone = new MockNgZone();
-            datepickerViewService = new DatepickerViewService(mockNgZone);
-
             TestBed.configureTestingModule({declarations: [TestComponent]});
             fixture = TestBed.createComponent(TestComponent);
             fixture.detectChanges();
         });
 
-        it("Focuses on the button if the button has a tabindex of 0", () => {
-            const compInstance = fixture.debugElement.componentInstance;
+        it("Focuses on the button if the button has a tabindex of 0",
+            inject([PLATFORM_ID], (platformId) => {
+                const datepickerViewService: DatepickerViewService = new DatepickerViewService(mockNgZone, platformId);
+                const compInstance = fixture.debugElement.componentInstance;
 
-            datepickerViewService.focusCell(compInstance.elementRef);
+                datepickerViewService.focusCell(compInstance.elementRef);
 
-            mockNgZone.stabilizeZone();
+                mockNgZone.stabilizeZone();
 
-            expect(document.activeElement.innerHTML).toBe("Test Button");
-            expect(document.activeElement.id).toBe("1");
-        });
+                expect(document.activeElement.innerHTML).toBe("Test Button");
+                expect(document.activeElement.id).toBe("1");
+            }));
 
-        it("Does not focus on the button if the button does not have a tab index of 0", () => {
-            const compInstance = fixture.debugElement.componentInstance;
-            compInstance.tabIndex = "-1";
+        it("Does not focus on the button if the button does not have a tab index of 0",
+            inject([PLATFORM_ID], (platformId) => {
+                const datepickerViewService: DatepickerViewService = new DatepickerViewService(mockNgZone, platformId);
+                const compInstance = fixture.debugElement.componentInstance;
+                compInstance.tabIndex = "-1";
 
-            fixture.detectChanges();
+                fixture.detectChanges();
 
-            datepickerViewService.focusCell(compInstance.elementRef);
+                datepickerViewService.focusCell(compInstance.elementRef);
 
-            mockNgZone.stabilizeZone();
+                mockNgZone.stabilizeZone();
 
-            expect(document.activeElement.innerHTML).not.toBe("Test Button");
-            expect(document.activeElement.id).not.toBe("1");
-        });
+                expect(document.activeElement.innerHTML).not.toBe("Test Button");
+                expect(document.activeElement.id).not.toBe("1");
+            }));
     });
 }
 
@@ -72,7 +73,8 @@ class MockNgZone extends NgZone {
     `
 })
 class TestComponent {
-    constructor(public elementRef: ElementRef) {}
+    constructor(public elementRef: ElementRef) {
+    }
 
     tabIndex: string = "0";
 }

@@ -22,14 +22,14 @@ import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 import {MockDatepickerEnabledService} from "./providers/datepicker-enabled.service.mock";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 
-export default function() {
+export default function () {
     describe("Date Input Component", () => {
         let context: TestContext<ClrDateInput, TestComponent>;
         let enabledService: MockDatepickerEnabledService;
         let dateIOService: DateIOService;
 
         describe("Basics", () => {
-            beforeEach(function() {
+            beforeEach(function () {
                 TestBed.overrideComponent(ClrDateContainer, {
                     set: {
                         providers: [
@@ -51,7 +51,13 @@ export default function() {
             describe("Typescript API", () => {
                 it("gets the placeholder from the IO service", () => {
                     // since we are testing with en-US
-                    expect(context.clarityDirective.placeholderText).toBe("MM/DD/YYYY");
+                    expect(context.clarityDirective.placeholderText).toBe(dateIOService.placeholderText);
+                });
+
+                it("does not override placeholder provided by the user", () => {
+                    context.clarityDirective.placeholder = "Test";
+
+                    expect(context.clarityDirective.placeholderText).toBe("Test");
                 });
 
                 it("gets whether the datepicker is enabled or not", () => {
@@ -140,7 +146,7 @@ export default function() {
             let dateContainerDebugElement: DebugElement;
             let dateInputDebugElement: DebugElement;
 
-            beforeEach(function() {
+            beforeEach(function () {
                 TestBed.configureTestingModule(
                     {imports: [FormsModule, ClrFormsModule], declarations: [TestComponentWithNgModel]});
 
@@ -152,32 +158,13 @@ export default function() {
             });
 
             it("accepts user input", fakeAsync(() => {
-                   const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
-                   expect(ioService.date).toBeUndefined();
+                fixture.componentInstance.dateValue = "01/02/2015";
 
-                   fixture.componentInstance.dateValue = "01/02/2015";
+                fixture.detectChanges();
+                tick();
 
-                   fixture.detectChanges();
-                   tick();
-
-                   dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
-                   fixture.detectChanges();
-
-                   expect(ioService.date).not.toBeUndefined();
-                   expect(ioService.date.getFullYear()).toBe(2015);
-                   expect(ioService.date.getMonth()).toBe(0);
-                   expect(ioService.date.getDate()).toBe(2);
-
-                   fixture.componentInstance.dateValue = "01/02/201";
-
-                   fixture.detectChanges();
-                   tick();
-
-                   dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
-                   fixture.detectChanges();
-
-                   expect(ioService.date).toBeNull();
-               }));
+                expect(dateInputDebugElement.nativeElement.value).toBe("01/02/2015");
+            }));
 
             it("updates the input element value when the date is updated", () => {
                 const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
@@ -199,7 +186,7 @@ export default function() {
             let dateContainerDebugElement: DebugElement;
             let dateInputDebugElement: DebugElement;
 
-            beforeEach(function() {
+            beforeEach(function () {
                 TestBed.configureTestingModule(
                     {imports: [FormsModule, ClrFormsModule], declarations: [TestComponentWithClrDate]});
 
@@ -265,7 +252,8 @@ export default function() {
         <input type="date" clrDate>
     `
 })
-class TestComponent {}
+class TestComponent {
+}
 
 @Component({
     template: `

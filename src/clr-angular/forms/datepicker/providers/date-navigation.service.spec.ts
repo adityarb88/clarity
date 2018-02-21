@@ -13,9 +13,15 @@ import {createKeyboardEvent} from "../utils/test-utils";
 import {DateNavigationService} from "./date-navigation.service";
 
 export default function() {
-    fdescribe("Date Navigation Service", () => {
+    describe("Date Navigation Service", () => {
+        let dateNavigationService: DateNavigationService;
+
+        function initalizeCalendar(selectedDay: DayModel) {
+            dateNavigationService.selectedDay = selectedDay;
+            dateNavigationService.initializeCalendar();
+        }
+
         describe("Calendar Initialization", () => {
-            let dateNavigationService: DateNavigationService;
 
             beforeEach(() => {
                 dateNavigationService = new DateNavigationService();
@@ -23,10 +29,9 @@ export default function() {
 
             it("initializes the calendar to the current month and year if the selected date is not set", () => {
                 const date: Date = new Date();
-
                 expect(dateNavigationService.displayedCalendar).toBeUndefined();
 
-                dateNavigationService.initializeCalendar();
+                initalizeCalendar(null);
 
                 expect(dateNavigationService.displayedCalendar).not.toBeUndefined();
                 expect(dateNavigationService.displayedCalendar.month).toBe(date.getMonth());
@@ -34,11 +39,9 @@ export default function() {
             });
 
             it("initializes the calendar to the selected date month and year, if the selected date is set", () => {
-                dateNavigationService.selectedDay = new DayModel(2016, 1, 1);
-
                 expect(dateNavigationService.displayedCalendar).toBeUndefined();
 
-                dateNavigationService.initializeCalendar();
+                initalizeCalendar(new DayModel(2016, 1, 1));
 
                 expect(dateNavigationService.displayedCalendar).not.toBeUndefined();
                 expect(dateNavigationService.displayedCalendar.month).toBe(1);
@@ -46,7 +49,7 @@ export default function() {
             });
 
             it("provides access to todays date on calendar initialization", () => {
-                dateNavigationService.initializeCalendar();
+                initalizeCalendar(null);
                 const date: Date = new Date();
 
                 expect(dateNavigationService.today.date).toBe(date.getDate());
@@ -55,7 +58,7 @@ export default function() {
             });
 
             it("provides access to todays day model on calendar initialization", () => {
-                dateNavigationService.initializeCalendar();
+                initalizeCalendar(null);
                 const date: Date = new Date();
 
                 expect(dateNavigationService.today.date).toBe(date.getDate());
@@ -65,15 +68,13 @@ export default function() {
         });
 
         describe("Calendar Navigation API", () => {
-            let dateNavigationService: DateNavigationService;
 
             beforeEach(() => {
                 dateNavigationService = new DateNavigationService();
             });
 
             it("provides a function to update the Calendar Month", () => {
-                dateNavigationService.selectedDay = new DayModel(2015, 1, 1);
-                dateNavigationService.initializeCalendar();
+                initalizeCalendar(new DayModel(2015, 1, 1));
                 expect(dateNavigationService.displayedCalendar.month).toBe(1);
 
                 dateNavigationService.changeMonth(2);
@@ -81,8 +82,7 @@ export default function() {
             });
 
             it("provides a function to update the Calendar Year", () => {
-                dateNavigationService.selectedDay = new DayModel(2016, 1, 1);
-                dateNavigationService.initializeCalendar();
+                initalizeCalendar(new DayModel(2016, 1, 1));
                 expect(dateNavigationService.displayedCalendar.year).toBe(2016);
 
                 dateNavigationService.changeYear(2018);
@@ -90,8 +90,7 @@ export default function() {
             });
 
             it("provides a function to move to the next month", () => {
-                dateNavigationService.selectedDay = new DayModel(2016, 11, 1);
-                dateNavigationService.initializeCalendar();
+                initalizeCalendar(new DayModel(2016, 11, 1));
 
                 expect(dateNavigationService.displayedCalendar.year).toBe(2016);
                 expect(dateNavigationService.displayedCalendar.month).toBe(11);
@@ -106,8 +105,7 @@ export default function() {
             });
 
             it("provides a function to move to the previous month", () => {
-                dateNavigationService.selectedDay = new DayModel(2017, 0, 1);
-                dateNavigationService.initializeCalendar();
+                initalizeCalendar(new DayModel(2017, 0, 1));
 
                 expect(dateNavigationService.displayedCalendar.year).toBe(2017);
                 expect(dateNavigationService.displayedCalendar.month).toBe(0);
@@ -122,8 +120,7 @@ export default function() {
             });
 
             it("provides a function to move to the current year and month", () => {
-                dateNavigationService.selectedDay = new DayModel(2017, 0, 1);
-                dateNavigationService.initializeCalendar();
+                initalizeCalendar(new DayModel(2017, 0, 1));
                 const date: Date = new Date();
 
                 expect(dateNavigationService.displayedCalendar.year).toBe(2017);
@@ -136,7 +133,6 @@ export default function() {
         });
 
         describe("Handling Keyboard Events", () => {
-            let dateNavigationService: DateNavigationService;
 
             beforeEach(() => {
                 dateNavigationService = new DateNavigationService();
@@ -150,12 +146,10 @@ export default function() {
         });
 
         describe("Subscriptions", () => {
-            let dateNavigationService: DateNavigationService;
 
             beforeEach(() => {
                 dateNavigationService = new DateNavigationService();
-                dateNavigationService.selectedDay = new DayModel(2015, 0, 25);
-                dateNavigationService.initializeCalendar();
+                initalizeCalendar(new DayModel(2015, 0, 25));
                 dateNavigationService.focusedDay = new DayModel(2015, 0, 25);
             });
 
