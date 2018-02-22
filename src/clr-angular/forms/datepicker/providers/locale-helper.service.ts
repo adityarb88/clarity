@@ -15,6 +15,9 @@ import {
 } from "@angular/common";
 import {Inject, Injectable, LOCALE_ID} from "@angular/core";
 
+/**
+ * This service extracts the Angular CLDR data needed by the datepicker.
+ */
 @Injectable()
 export class LocaleHelperService {
     constructor(@Inject(LOCALE_ID) public locale: string) {

@@ -10,6 +10,12 @@ import {Subject} from "rxjs/Subject";
 import {CalendarModel} from "../model/calendar.model";
 import {DayModel} from "../model/day.model";
 
+/**
+ * This service is responsible for:
+ * 1. Initializing the displayed calendar.
+ * 2. Moving the calendar to the next, previous or current months
+ * 3. Managing the focused and selected day models.
+ */
 @Injectable()
 export class DateNavigationService {
     private _displayedCalendar: CalendarModel;

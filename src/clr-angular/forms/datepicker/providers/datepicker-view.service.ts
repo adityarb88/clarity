@@ -8,6 +8,9 @@ import {ElementRef, Inject, Injectable, NgZone, PLATFORM_ID} from "@angular/core
 import {first} from "rxjs/operator/first";
 import {isPlatformBrowser} from "@angular/common";
 
+/**
+ * This service focuses the day that is focusable in the calendar.
+ */
 @Injectable()
 export class DatepickerViewService {
     constructor(private _ngZone: NgZone, @Inject(PLATFORM_ID) private platformId: Object) {}

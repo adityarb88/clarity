@@ -22,7 +22,7 @@ import {DayModel} from "./model/day.model";
 import {ClrMonthpicker} from "./monthpicker";
 
 export default function () {
-    fdescribe("Yearpicker Component", () => {
+    describe("Yearpicker Component", () => {
         let context: TestContext<ClrYearpicker, TestComponent>;
         let dateNavigationService: DateNavigationService;
         const selectedYear: number = 2003;
@@ -162,12 +162,11 @@ export default function () {
             });
 
             it("generates a YearRangeModel based on the selected year on initialization", () => {
+                const testArr: number[] = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009];
                 expect(context.clarityDirective.yearRangeModel).not.toBeNull();
                 expect(context.clarityDirective.yearRangeModel.yearRange.length).toBe(10);
 
-                for (let i = 0; i < 10; i++) {
-                    expect(context.clarityDirective.yearRangeModel.yearRange[i]).toBe(2000 + i);
-                }
+                expect(context.clarityDirective.yearRangeModel.yearRange).toEqual(testArr);
             });
 
             it("updates the year range model when moving to the previous decade", () => {

@@ -12,6 +12,9 @@ const enum DatepickerViewEnum {
     DAYVIEW = "DAYVIEW"
 }
 
+/**
+ * This service manages which view is visible in the datepicker popover.
+ */
 @Injectable()
 export class ViewManagerService {
     private _currentView: DatepickerViewEnum = DatepickerViewEnum.DAYVIEW;

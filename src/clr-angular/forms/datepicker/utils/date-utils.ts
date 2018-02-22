@@ -27,11 +27,11 @@ export function getDay(year: number, month: number, date: number): WeekDay {
  * Credit: https://github.com/globalizejs/globalize/blob/e1b31cd6a4f1cff75b185b68b7a32220aac5196f/src/date/parse.js
  */
 export function parseToFourDigitYear(year: number): number {
+    if (year > 9999 || (year > 100 && year < 999) || year < 10) {
+        return -1;
+    }
     if (year > 999) {
         return year;
-    }
-    if (year < 0 || year > 100) {
-        return -1;
     }
     const currYear: number = (new Date()).getFullYear();
     const century: number = Math.floor(currYear / 100) * 100;
