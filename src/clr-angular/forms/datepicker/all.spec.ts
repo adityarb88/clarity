@@ -25,7 +25,7 @@ import LocaleHelperServiceSpecs from "./providers/locale-helper.service.spec";
 import ViewManagerServiceSpecs from "./providers/view-manager.service.spec";
 import YearpickerSpecs from "./yearpicker.spec";
 
-fdescribe("Datepicker", function() {
+describe("Datepicker", function() {
     addHelpers();
 
     describe("Model", function() {

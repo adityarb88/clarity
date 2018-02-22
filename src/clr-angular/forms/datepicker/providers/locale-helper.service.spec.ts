@@ -11,13 +11,13 @@ import {LocaleHelperService} from "./locale-helper.service";
 
 registerLocaleData(localeFr);
 
-export default function() {
-    describe("View Manager Service", () => {
+export default function () {
+    describe("Locale Helper Service", () => {
         let localeHelperServiceUS: LocaleHelperService;
         let localeHelperServiceFr: LocaleHelperService;
 
         const usDays: string[] = ["S", "M", "T", "W", "T", "F", "S"];
-        const frDays: string[] = ["D", "L", "M", "M", "J", "V", "S"];
+        const frDays: string[] = ["L", "M", "M", "J", "V", "S", "D"];
 
         beforeEach(() => {
             localeHelperServiceFr = new LocaleHelperService("fr");
@@ -45,13 +45,13 @@ export default function() {
         });
 
         it("returns the locale days in narrow format " +
-               "according to the first day of the week",
-           () => {
-               const a1: ReadonlyArray<string> = localeHelperServiceUS.localeDaysNarrow;
-               const a2: ReadonlyArray<string> = localeHelperServiceFr.localeDaysNarrow;
+            "according to the first day of the week",
+            () => {
+                const a1: ReadonlyArray<string> = localeHelperServiceUS.localeDaysNarrow;
+                const a2: ReadonlyArray<string> = localeHelperServiceFr.localeDaysNarrow;
 
-               expect(a1.length === usDays.length && a1.every((v, i) => v === usDays[i])).toBe(true);
-               expect(a2.length === usDays.length && a2.every((v, i) => v === frDays[i])).toBe(true);
-           });
+                expect(a1.length === usDays.length && a1.every((v, i) => v === usDays[i])).toBe(true);
+                expect(a2.length === usDays.length && a2.every((v, i) => v === frDays[i])).toBe(true);
+            });
     });
 }
