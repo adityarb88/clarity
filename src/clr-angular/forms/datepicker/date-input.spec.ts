@@ -12,7 +12,6 @@ import {By} from "@angular/platform-browser";
 import {TestContext} from "../../data/datagrid/helpers.spec";
 import {IfOpenService} from "../../utils/conditional/if-open.service";
 import {FormControlService} from "../common/form-control.service";
-import {ClrFormsModule} from "../forms.module";
 
 import {ClrDateContainer} from "./date-container";
 import {ClrDateInput} from "./date-input";
@@ -21,6 +20,7 @@ import {DateNavigationService} from "./providers/date-navigation.service";
 import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 import {MockDatepickerEnabledService} from "./providers/datepicker-enabled.service.mock";
 import {LocaleHelperService} from "./providers/locale-helper.service";
+import {ClrFormsModule} from "../../forms-deprecated";
 
 export default function() {
     describe("Date Input Component", () => {
