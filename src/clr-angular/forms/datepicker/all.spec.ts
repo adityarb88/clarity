@@ -20,7 +20,7 @@ import MonthpickerSpecs from "./monthpicker.spec";
 import DateIOServiceSpecs from "./providers/date-io.service.spec";
 import DateNavigationServiceSpecs from "./providers/date-navigation.service.spec";
 import DatepickerEnabledServiceSpecs from "./providers/datepicker-enabled.service.spec";
-import DatepickerViewServiceSpecs from "./providers/datepicker-view.service.spec";
+import DatepickerFocusServiceSpecs from "./providers/datepicker-focus.service.spec";
 import LocaleHelperServiceSpecs from "./providers/locale-helper.service.spec";
 import ViewManagerServiceSpecs from "./providers/view-manager.service.spec";
 import YearpickerSpecs from "./yearpicker.spec";
@@ -38,7 +38,7 @@ describe("Datepicker", function() {
     describe("Providers", function() {
         ViewManagerServiceSpecs();
         LocaleHelperServiceSpecs();
-        DatepickerViewServiceSpecs();
+        DatepickerFocusServiceSpecs();
         DateIOServiceSpecs();
         DateNavigationServiceSpecs();
         DatepickerEnabledServiceSpecs();

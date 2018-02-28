@@ -33,61 +33,6 @@ export class DateIOService {
         this.initializeLocaleDisplayFormat();
     }
 
-    private _inputDate: string;
-
-    get inputDate(): string {
-        return this._inputDate;
-    }
-
-    /**
-     * This setter is used for setting the inputDate when the user types in the input.
-     */
-    set inputDate(value: string) {
-        const date: Date = this.isValidInput(value);
-        if (date) {
-            this.setDate(date);
-            this._inputDate = value;
-        } else {
-            this._inputDate = "";
-            this.setDate(null);
-        }
-    }
-
-    /**
-     * Function to update the date and emit it to the dateChanged subscribers.
-     * This method is used when the user selects the date from the calendar.
-     */
-    updateDate(date: Date) {
-        this.inputDate = this.toLocaleDisplayFormatString(date);
-        this._dateStrUpdated.next(this.inputDate);
-    }
-
-    private _date: Date;
-
-    get date(): Date {
-        return this._date;
-    }
-
-    // Not a setter because I want to keep this private
-    private setDate(value: Date) {
-        // If both are null do not do anything.
-        if (!this._date && !value) {
-            return;
-        }
-        if (!this.areEqualDates(this.date, value)) {
-            this._date = value;
-            this._dateUpdated.next();
-        }
-    }
-
-    private areEqualDates(date1: Date, date2: Date) {
-        if (!date1 || !date2) {
-            return false;
-        }
-        return (date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() &&
-                date1.getFullYear() === date2.getFullYear());
-    }
-
     private initializeLocaleDisplayFormat(): void {
         const format: string = this.cldrLocaleDateFormat.toLocaleLowerCase();
         if (LITTLE_ENDIAN_REGEX.test(format)) {
@@ -102,6 +47,9 @@ export class DateIOService {
 
     toLocaleDisplayFormatString(date: Date): string {
         if (date) {
+            if (isNaN(date.getTime())) {
+                return "";
+            }
             const dateNo: number = date.getDate();
             const monthNo: number = date.getMonth() + 1;
             const dateStr: string = dateNo > 9 ? dateNo.toString() : "0" + dateNo;
@@ -189,7 +137,7 @@ export class DateIOService {
         */
 
         // Instead I have to write the logic like this x-(
-        let y: number = +year;
+        const y: number = +year;
         const m: number = +month - 1;  // month is 0 based
         const d: number = +date;
         if (!this.isValidMonth(m) || !this.isValidDate(y, m, d)) {
@@ -202,7 +150,7 @@ export class DateIOService {
     /**
      * Checks if the input provided by the user is valid.
      */
-    private isValidInput(date: string): Date {
+    isValidInput(date: string): Date {
         if (!date) {
             return null;
         }
@@ -225,20 +173,5 @@ export class DateIOService {
             // secondPart is month && thirdPart is date
             return this.validateAndGetDate(firstPart, secondPart, thirdPart);
         }
-    }
-
-    private _dateStrUpdated: Subject<string> = new Subject<string>();
-
-    /**
-     * Observable to let the subscribers know that the date has been updated.
-     */
-    get dateStrUpdated(): Observable<string> {
-        return this._dateStrUpdated.asObservable();
-    }
-
-    private _dateUpdated: Subject<void> = new Subject<void>();
-
-    get dateUpdated(): Observable<void> {
-        return this._dateUpdated.asObservable();
     }
 }

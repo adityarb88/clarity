@@ -88,7 +88,6 @@ export default function() {
                 context.clarityDirective.toggleDatepicker(fakeEvent);
                 context.detectChanges();
 
-                expect(flag).not.toBeUndefined();
                 expect(flag).toBe(true);
 
                 sub.unsubscribe();

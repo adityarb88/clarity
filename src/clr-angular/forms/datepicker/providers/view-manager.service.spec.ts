@@ -43,7 +43,7 @@ export default function() {
             expect(viewManagerService.isMonthView).toBe(true);
             expect(viewManagerService.isYearView).toBe(false);
 
-            viewManagerService.changeToDayPickerView();
+            viewManagerService.changeToDayView();
 
             expect(viewManagerService.isDayView).toBe(true);
             expect(viewManagerService.isMonthView).toBe(false);

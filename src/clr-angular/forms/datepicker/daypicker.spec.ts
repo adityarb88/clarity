@@ -14,7 +14,7 @@ import {ClrDaypicker} from "./daypicker";
 import {DayModel} from "./model/day.model";
 import {DateIOService} from "./providers/date-io.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {DatepickerFocusService} from "./providers/datepicker-focus.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {ViewManagerService} from "./providers/view-manager.service";
 
@@ -33,7 +33,7 @@ export default function() {
 
             context = this.create(ClrDaypicker, TestComponent, [
                 {provide: DateNavigationService, useValue: dateNavigationService}, DateIOService, IfOpenService,
-                ViewManagerService, LocaleHelperService, DatepickerViewService
+                ViewManagerService, LocaleHelperService, DatepickerFocusService
             ]);
             viewManagerService = context.getClarityProvider(ViewManagerService);
             localeHelperService = context.getClarityProvider(LocaleHelperService);

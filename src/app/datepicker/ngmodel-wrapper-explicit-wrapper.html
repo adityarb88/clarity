@@ -5,7 +5,7 @@
   -->
 
 <div>
-    <h6>ngModel Wrapper Present</h6>
+    <h6>ngModel Wrapper Explicit</h6>
     <p></p>
     <clr-date-container>
         <input type="date" [(ngModel)]="model" clrDate>
@@ -27,4 +27,8 @@
             </tbody>
         </table>
     </div>
+</div>
+
+<div>
+    <button class="btn" (click)="updateDate()">Update Date</button>
 </div>

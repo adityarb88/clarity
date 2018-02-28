@@ -15,7 +15,7 @@ import {DayModel} from "./model/day.model";
 import {ClrMonthpicker} from "./monthpicker";
 import {DateIOService} from "./providers/date-io.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {DatepickerFocusService} from "./providers/datepicker-focus.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {ViewManagerService} from "./providers/view-manager.service";
 import {createKeyboardEvent} from "./utils/test-utils";
@@ -38,7 +38,7 @@ export default function() {
                 initializeCalendar(selectedYear);
 
                 context = this.create(ClrYearpicker, TestComponent, [
-                    ViewManagerService, DatepickerViewService, IfOpenService,
+                    ViewManagerService, DatepickerFocusService, IfOpenService,
                     {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService,
                     DateIOService
                 ]);
@@ -153,7 +153,7 @@ export default function() {
                 initializeCalendar(selectedYear);
 
                 context = this.create(ClrYearpicker, TestComponent, [
-                    ViewManagerService, DatepickerViewService, IfOpenService,
+                    ViewManagerService, DatepickerFocusService, IfOpenService,
                     {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService,
                     DateIOService
                 ]);
@@ -245,7 +245,7 @@ export default function() {
                 initializeCalendar(selYear);
 
                 context = scope.create(ClrYearpicker, TestComponent, [
-                    ViewManagerService, DatepickerViewService, IfOpenService,
+                    ViewManagerService, DatepickerFocusService, IfOpenService,
                     {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService,
                     DateIOService
                 ]);

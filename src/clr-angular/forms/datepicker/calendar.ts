@@ -12,7 +12,7 @@ import {CalendarViewModel} from "./model/calendar-view.model";
 import {CalendarModel} from "./model/calendar.model";
 import {DayModel} from "./model/day.model";
 import {DateNavigationService} from "./providers/date-navigation.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {DatepickerFocusService} from "./providers/datepicker-focus.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {NO_OF_DAYS_IN_A_WEEK} from "./utils/constants";
 
@@ -22,7 +22,7 @@ export class ClrCalendar implements OnDestroy {
 
     constructor(private _localeHelperService: LocaleHelperService,
                 private _dateNavigationService: DateNavigationService,
-                private _datepickerViewService: DatepickerViewService, private _elRef: ElementRef) {
+                private _datepickerFocusService: DatepickerFocusService, private _elRef: ElementRef) {
         this.generateCalendarView();
         this.initializeSubscriptions();
     }
@@ -71,7 +71,7 @@ export class ClrCalendar implements OnDestroy {
         }));
 
         this._subs.push(this._dateNavigationService.focusOnCalendarChange.subscribe(() => {
-            this._datepickerViewService.focusCell(this._elRef);
+            this._datepickerFocusService.focusCell(this._elRef);
         }));
     }
 
@@ -116,7 +116,7 @@ export class ClrCalendar implements OnDestroy {
      * Focuses on the focusable day when the Calendar View is initialized.
      */
     ngAfterViewInit() {
-        this._datepickerViewService.focusCell(this._elRef);
+        this._datepickerFocusService.focusCell(this._elRef);
     }
 
     /**

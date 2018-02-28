@@ -12,7 +12,7 @@ import {first} from "rxjs/operator/first";
  * This service focuses the day that is focusable in the calendar.
  */
 @Injectable()
-export class DatepickerViewService {
+export class DatepickerFocusService {
     constructor(private _ngZone: NgZone, @Inject(PLATFORM_ID) private platformId: Object) {}
 
     // Credit: Material: https://github.com/angular/material2/blob/master/src/lib/datepicker/calendar.ts

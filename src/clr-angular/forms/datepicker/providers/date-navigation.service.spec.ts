@@ -128,30 +128,41 @@ export default function() {
                 expect(dateNavigationService.displayedCalendar.year).toBe(date.getFullYear());
                 expect(dateNavigationService.displayedCalendar.month).toBe(date.getMonth());
             });
-        });
-
-        describe("Handling Keyboard Events", () => {
-            beforeEach(() => {
-                dateNavigationService = new DateNavigationService();
-            });
 
             it("supports the focused day property", () => {
                 expect(dateNavigationService.focusedDay).toBeUndefined();
                 dateNavigationService.focusedDay = new DayModel(2015, 2, 2);
                 expect(dateNavigationService.focusedDay).not.toBeUndefined();
             });
+
+            it("provides a method to update the selectedDay", () => {
+                expect(dateNavigationService.notifySelectedDayChanged).toBeDefined();
+
+                expect(dateNavigationService.selectedDay).toBeUndefined();
+
+                const testDayModel: DayModel = new DayModel(2015, 1, 1);
+                expect(dateNavigationService.notifySelectedDayChanged(testDayModel));
+
+                expect(dateNavigationService.selectedDay).toEqual(testDayModel);
+            });
         });
 
         describe("Subscriptions", () => {
+            let sub: Subscription;
+
             beforeEach(() => {
                 dateNavigationService = new DateNavigationService();
                 initalizeCalendar(new DayModel(2015, 0, 25));
                 dateNavigationService.focusedDay = new DayModel(2015, 0, 25);
             });
 
+            afterEach(() => {
+                sub.unsubscribe();
+            });
+
             it("notifies when the calendar has changed", () => {
                 let count: number = 0;
-                const sub: Subscription = dateNavigationService.displayedCalendarChange.subscribe(() => {
+                sub = dateNavigationService.displayedCalendarChange.subscribe(() => {
                     count++;
                 });
 
@@ -164,13 +175,11 @@ export default function() {
                 dateNavigationService.moveToNextMonth();
 
                 expect(count).toBe(2);
-
-                sub.unsubscribe();
             });
 
             it("notifies when the focus day has changed but remains in the same calendar", () => {
                 let count: number = 0;
-                const sub: Subscription = dateNavigationService.focusedDayChange.subscribe(() => {
+                sub = dateNavigationService.focusedDayChange.subscribe(() => {
                     count++;
                 });
 
@@ -193,13 +202,11 @@ export default function() {
 
                 // Should expect no change
                 expect(count).toBe(3);
-
-                sub.unsubscribe();
             });
 
             it("notifies to update focus on the calendar when the user navigates using the keyboard", () => {
                 let count: number = 0;
-                const sub: Subscription = dateNavigationService.focusOnCalendarChange.subscribe(() => {
+                sub = dateNavigationService.focusOnCalendarChange.subscribe(() => {
                     count++;
                 });
 
@@ -211,13 +218,11 @@ export default function() {
                 dateNavigationService.incrementFocusDay(7);
 
                 expect(count).toBe(2);
-
-                sub.unsubscribe();
             });
 
             it("notifies to update focus on the calendar when the user moves to the current month", () => {
                 let count: number = 0;
-                const sub: Subscription = dateNavigationService.focusOnCalendarChange.subscribe(() => {
+                sub = dateNavigationService.focusOnCalendarChange.subscribe(() => {
                     count++;
                 });
 
@@ -225,8 +230,18 @@ export default function() {
                 dateNavigationService.moveToCurrentMonth();
 
                 expect(count).toBe(1);
+            });
 
-                sub.unsubscribe();
+            it("notifies the updated selectedDay", () => {
+                let dayModel: DayModel;
+                sub = dateNavigationService.selectedDayChange.subscribe((newDayModel: DayModel) => {
+                    dayModel = newDayModel;
+                });
+
+                const test: DayModel = new DayModel(2015, 1, 1);
+                dateNavigationService.notifySelectedDayChanged(test);
+
+                expect(dayModel).toEqual(test);
             });
         });
     });

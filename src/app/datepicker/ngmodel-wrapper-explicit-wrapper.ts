@@ -5,6 +5,9 @@
  */
 import {Component, LOCALE_ID} from "@angular/core";
 
+const DATE1: string = "01/02/2015";
+const DATE2: string = "05/05/2017";
+
 @Component({
     selector: "clr-ng-model-wrapped-present-datepicker-demo",
     // Note the .css extension here, not .scss. That's the best we can have at the moment.
@@ -19,4 +22,14 @@ import {Component, LOCALE_ID} from "@angular/core";
     // providers: [{provide: LOCALE_ID, useValue: "de"}]
     // Do not remove the above comments. They are present to make sure that we can test different locales easily.
 })
-export class NgModelExplicitWrapperDemo { model: string = "01/02/2015"; }
+export class NgModelExplicitWrapperDemo {
+    model: string = DATE1;
+
+    updateDate(): void {
+        if (this.model === DATE1) {
+            this.model = DATE2;
+        } else {
+            this.model = DATE1;
+        }
+    }
+}

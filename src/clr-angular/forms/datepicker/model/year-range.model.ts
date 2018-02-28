@@ -7,7 +7,7 @@
 const YEARS_TO_DISPLAY: number = 10;
 
 export class YearRangeModel {
-    constructor(private year: number) {
+    constructor(private readonly year: number) {
         this.generateYearRange();
     }
 

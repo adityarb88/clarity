@@ -24,8 +24,8 @@ import {DateNavigationService} from "./providers/date-navigation.service";
             [class.is-disabled]="dayView.isDisabled"
             [class.is-selected]="dayView.isSelected"
             [attr.tabindex]="dayView.tabIndex"
-            (click)="setDay(dayView)"
-            (focus)="onDayViewFocus(dayView)">
+            (click)="selectDay()"
+            (focus)="onDayViewFocus()">
             {{dayView.dayModel.date}}
         </button>
     `,
@@ -43,26 +43,16 @@ export class ClrDay {
     /**
      * Updates the focusedDay in the DateNavigationService when the ClrDay is focused.
      */
-    onDayViewFocus(dayView: DayViewModel) {
-        this._dateNavigationService.focusedDay = dayView.dayModel;
+    onDayViewFocus() {
+        this._dateNavigationService.focusedDay = this.dayView.dayModel;
     }
 
     /**
      * Updates the selectedDay when the ClrDay is selected and closes the datepicker popover.
      */
-    setDay(dayView: DayViewModel): void {
-        const day: DayModel = dayView.dayModel;
-        // TODO: As of now both date navigation service and
-        // date io service store the selected day.
-        // Only one should be responsible for managing this.
-        // Eudes and Jeremy mentioned that it should be the
-        // DateNavigationService but most of the logic for building up the selected date
-        // based on the user date is in the date io service.
-        // I will figure out a good plan
-        // to make this change.
-        // I don't have the time to do that right now.
-        this._dateNavigationService.selectedDay = day;
-        this._dateIOService.updateDate(day.toDate());
+    selectDay(): void {
+        const day: DayModel = this.dayView.dayModel;
+        this._dateNavigationService.notifySelectedDayChanged(day);
         this._ifOpenService.open = false;
     }
 }

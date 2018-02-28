@@ -209,12 +209,12 @@
         @include generate-calendar-focus-style();
 
         //Dimensions
-        width: 126px;
+        width: $clr-month-year-btn-width;
 
         //Other Props
         font-size: $clr-calendar-picker-btn-font-size;
         font-weight: $clr-calendar-picker-btn-font-weight;
-        outline-offset: -5px;
+        outline-offset: -5px; //needed for chrome
 
         &.is-selected {
             background: $clr-calendar-active-cell-background-color;

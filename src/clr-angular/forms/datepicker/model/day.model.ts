@@ -7,7 +7,7 @@
 import {CalendarModel} from "./calendar.model";
 
 export class DayModel {
-    constructor(public year: number, public month: number, public date: number) {}
+    constructor(public readonly year: number, public readonly month: number, public readonly date: number) {}
 
     /**
      * Returns the Calendar for the current DayModel.

@@ -58,23 +58,9 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy {
     }
 
     /**
-     * Converts the Date javascript object into a DayModel which will be used to initialize the Calendar.
-     */
-    private processUserInput(): void {
-        const date: Date = this._dateIOService.date;
-        if (date) {
-            const dayModel: DayModel = new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
-            this._dateNavigationService.selectedDay = dayModel;
-        } else {
-            this._dateNavigationService.selectedDay = null;
-        }
-    }
-
-    /**
      * Processes the user input and Initializes the Calendar everytime the datepicker popover is open.
      */
     private initializeCalendar(): void {
-        this.processUserInput();
         this._dateNavigationService.initializeCalendar();
     }
 

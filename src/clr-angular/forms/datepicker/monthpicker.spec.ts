@@ -15,7 +15,7 @@ import {DayModel} from "./model/day.model";
 import {ClrMonthpicker} from "./monthpicker";
 import {DateIOService} from "./providers/date-io.service";
 import {DateNavigationService} from "./providers/date-navigation.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {DatepickerFocusService} from "./providers/datepicker-focus.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {ViewManagerService} from "./providers/view-manager.service";
 import {createKeyboardEvent} from "./utils/test-utils";
@@ -39,14 +39,14 @@ export default function() {
                 initializeCalendar(new DayModel(2015, selectedMonth, 1));
 
                 context = this.create(ClrMonthpicker, TestComponent, [
-                    ViewManagerService, DatepickerViewService, IfOpenService,
+                    ViewManagerService, DatepickerFocusService, IfOpenService,
                     {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService,
                     DateIOService
                 ]);
                 localeHelperService = context.getClarityProvider(LocaleHelperService);
             });
 
-            it("projects the months correctly", () => {
+            it("renders the months correctly", () => {
                 const months: ReadonlyArray<string> = localeHelperService.localeMonthsWide;
                 const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll("button");
 
@@ -123,7 +123,7 @@ export default function() {
                 initializeCalendar(new DayModel(2015, selectedMonth, 1));
 
                 context = this.create(ClrMonthpicker, TestComponent, [
-                    ViewManagerService, DatepickerViewService, IfOpenService,
+                    ViewManagerService, DatepickerFocusService, IfOpenService,
                     {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService,
                     DateIOService
                 ]);
@@ -190,7 +190,7 @@ export default function() {
                 initializeCalendar(selectedDay);
 
                 context = scope.create(ClrMonthpicker, TestComponent, [
-                    ViewManagerService, DatepickerViewService, IfOpenService,
+                    ViewManagerService, DatepickerFocusService, IfOpenService,
                     {provide: DateNavigationService, useValue: dateNavigationService}, LocaleHelperService,
                     DateIOService
                 ]);

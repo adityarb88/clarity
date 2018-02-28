@@ -6,7 +6,7 @@
 
 import {Component, ElementRef, EventEmitter, NgZone, PLATFORM_ID} from "@angular/core";
 import {ComponentFixture, inject, TestBed} from "@angular/core/testing";
-import {DatepickerViewService} from "./datepicker-view.service";
+import {DatepickerFocusService} from "./datepicker-focus.service";
 
 export default function() {
     describe("Calendar View Service", () => {
@@ -21,7 +21,7 @@ export default function() {
         });
 
         it("Focuses on the button if the button has a tabindex of 0", inject([PLATFORM_ID], (platformId) => {
-               const datepickerViewService: DatepickerViewService = new DatepickerViewService(mockNgZone, platformId);
+               const datepickerViewService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
                const compInstance = fixture.debugElement.componentInstance;
 
                datepickerViewService.focusCell(compInstance.elementRef);
@@ -34,7 +34,7 @@ export default function() {
 
         it("Does not focus on the button if the button does not have a tab index of 0",
            inject([PLATFORM_ID], (platformId) => {
-               const datepickerViewService: DatepickerViewService = new DatepickerViewService(mockNgZone, platformId);
+               const datepickerViewService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
                const compInstance = fixture.debugElement.componentInstance;
                compInstance.tabIndex = "-1";
 

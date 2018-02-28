@@ -21,12 +21,14 @@ import {DatepickerEnabledService} from "./providers/datepicker-enabled.service";
 import {MockDatepickerEnabledService} from "./providers/datepicker-enabled.service.mock";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {ClrFormsModule} from "../../forms-deprecated";
+import {DayModel} from "./model/day.model";
 
 export default function() {
     describe("Date Input Component", () => {
         let context: TestContext<ClrDateInput, TestComponent>;
         let enabledService: MockDatepickerEnabledService;
         let dateIOService: DateIOService;
+        let dateNavigationService: DateNavigationService;
 
         describe("Basics", () => {
             beforeEach(function() {
@@ -46,6 +48,8 @@ export default function() {
                         .injector.get(DatepickerEnabledService);
                 dateIOService =
                     context.fixture.debugElement.query(By.directive(ClrDateContainer)).injector.get(DateIOService);
+                dateNavigationService =
+                    context.fixture.debugElement.query(By.directive(ClrDateContainer)).injector.get(DateNavigationService);
             });
 
             describe("Typescript API", () => {
@@ -56,7 +60,6 @@ export default function() {
 
                 it("does not override placeholder provided by the user", () => {
                     context.clarityDirective.placeholder = "Test";
-
                     expect(context.clarityDirective.placeholderText).toBe("Test");
                 });
 
@@ -68,50 +71,27 @@ export default function() {
                     expect(enabledService.isEnabled).toBe(false);
 
                     context.detectChanges();
-
                     expect(context.clarityDirective.inputType).toBe("date");
                 });
 
-                it("sets the inputDate if the value of the input is valid", () => {
+                it("sets the selectedDay if the value of the input is valid", () => {
                     const testEl: HTMLInputElement = <HTMLInputElement>document.createElement("INPUT");
                     testEl.value = "01/02/2015";
 
-                    expect(dateIOService.inputDate).toBeUndefined();
+                    expect(dateNavigationService.selectedDay).toBeNull(); //TestComponent is <input clrDate>. null Input
 
                     context.clarityDirective.onValueChange(testEl);
-
-                    expect(dateIOService.inputDate).not.toBeUndefined();
-                    expect(dateIOService.inputDate).toBe("01/02/2015");
+                    expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 0, 2));
                 });
 
-                it("sets the inputDate to an empty string if the value of the input is invalid", () => {
+                it("sets the selectedDay to a null if the value of the input is invalid", () => {
                     const testEl: HTMLInputElement = <HTMLInputElement>document.createElement("INPUT");
                     testEl.value = "01/02/201";
 
-                    expect(dateIOService.inputDate).toBeUndefined();
-
+                    expect(dateNavigationService.selectedDay).toBeNull();
                     context.clarityDirective.onValueChange(testEl);
 
-                    expect(dateIOService.inputDate).not.toBeUndefined();
-                    expect(dateIOService.inputDate).toBe("");
-                });
-
-                it("sets the date on the IOService", () => {
-                    const date: Date = new Date();
-
-                    expect(dateIOService.date).toBeUndefined();
-
-                    context.clarityDirective.date = date;
-
-                    expect(dateIOService.date).not.toBeUndefined();
-                    expect(dateIOService.date.getDate()).toBe(date.getDate());
-                    expect(dateIOService.date.getMonth()).toBe(date.getMonth());
-                    expect(dateIOService.date.getFullYear()).toBe(date.getFullYear());
-
-                    const inValidDate: Date = new Date("Test");
-
-                    context.clarityDirective.date = inValidDate;
-                    expect(dateIOService.date).toBeNull();
+                    expect(dateNavigationService.selectedDay).toBeNull();
                 });
             });
 
@@ -155,29 +135,47 @@ export default function() {
                 compiled = fixture.nativeElement;
                 dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
                 dateInputDebugElement = fixture.debugElement.query(By.directive(ClrDateInput));
+                dateNavigationService = dateContainerDebugElement.injector.get(DateNavigationService);
             });
 
-            it("accepts user input", fakeAsync(() => {
-                   fixture.componentInstance.dateValue = "01/02/2015";
+            it("updates the selectedDay when the app changes the ngModel value", fakeAsync(() => {
+                fixture.componentInstance.dateValue = "01/02/2015";
 
-                   fixture.detectChanges();
-                   tick();
+                fixture.detectChanges();
+                tick();
 
-                   expect(dateInputDebugElement.nativeElement.value).toBe("01/02/2015");
-               }));
+                expect(dateInputDebugElement.nativeElement.value).toBe("01/02/2015");
+                expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 0, 2));
 
-            it("updates the input element value when the date is updated", () => {
-                const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
+                fixture.componentInstance.dateValue = "05/05/2015";
 
+                fixture.detectChanges();
+                tick();
+
+                expect(dateInputDebugElement.nativeElement.value).toBe("05/05/2015");
+                expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 4, 5));
+            }));
+
+            it("updates the model and the input element when selectedDay updated notification is received", () => {
                 expect(fixture.componentInstance.dateValue).toBeUndefined();
 
-                const date = new Date(2015, 1, 1);
-                ioService.updateDate(date);
+                dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
 
                 fixture.detectChanges();
 
+                expect(dateInputDebugElement.nativeElement.value).toBe("02/01/2015");
                 expect(fixture.componentInstance.dateValue).toBe("02/01/2015");
             });
+
+            it("updates the model and the selectedDay when the changes the input field", fakeAsync(() => {
+                dateInputDebugElement.nativeElement.value = "01/02/2015";
+                dateInputDebugElement.nativeElement.dispatchEvent(new Event("change"));
+
+                fixture.detectChanges();
+                tick();
+
+                expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 0, 2));
+            }));
         });
 
         describe("Datepicker with clrDate", () => {
@@ -195,30 +193,35 @@ export default function() {
                 compiled = fixture.nativeElement;
                 dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
                 dateInputDebugElement = fixture.debugElement.query(By.directive(ClrDateInput));
+                dateNavigationService = dateContainerDebugElement.injector.get(DateNavigationService);
             });
 
             it("supports a clrDate Input", () => {
-                const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
-                expect(ioService.date).toBeUndefined();
-
                 const date: Date = new Date();
 
                 fixture.componentInstance.date = date;
 
                 fixture.detectChanges();
 
-                expect(ioService.date.getFullYear()).toBe(date.getFullYear());
-                expect(ioService.date.getMonth()).toBe(date.getMonth());
-                expect(ioService.date.getDate()).toBe(date.getDate());
+                expect(dateNavigationService.selectedDay.year).toBe(date.getFullYear());
+                expect(dateNavigationService.selectedDay.month).toBe(date.getMonth());
+                expect(dateNavigationService.selectedDay.date).toBe(date.getDate());
+
+                //Change the Date
+                fixture.componentInstance.date = new Date(2015, 1, 1);
+
+                fixture.detectChanges();
+
+                expect(dateNavigationService.selectedDay.year).toBe(2015);
+                expect(dateNavigationService.selectedDay.month).toBe(1);
+                expect(dateNavigationService.selectedDay.date).toBe(1);
             });
 
             it("emits the output date correctly", () => {
-                const ioService: DateIOService = dateContainerDebugElement.injector.get(DateIOService);
-                expect(ioService.date).toBeUndefined();
                 expect(fixture.componentInstance.date).toBeUndefined();
 
                 const date: Date = new Date();
-                ioService.updateDate(date);
+                dateNavigationService.notifySelectedDayChanged(new DayModel(date.getFullYear(), date.getMonth(), date.getDate()));
                 fixture.detectChanges();
 
                 expect(fixture.componentInstance.date.getFullYear()).toBe(date.getFullYear());

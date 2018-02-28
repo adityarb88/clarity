@@ -39,7 +39,7 @@ export class ViewManagerService {
         this._currentView = DatepickerViewEnum.YEARVIEW;
     }
 
-    changeToDayPickerView(): void {
+    changeToDayView(): void {
         this._currentView = DatepickerViewEnum.DAYVIEW;
     }
 }

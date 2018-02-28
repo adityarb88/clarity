@@ -9,7 +9,7 @@ import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-cod
 
 import {YearRangeModel} from "./model/year-range.model";
 import {DateNavigationService} from "./providers/date-navigation.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {DatepickerFocusService} from "./providers/datepicker-focus.service";
 import {ViewManagerService} from "./providers/view-manager.service";
 
 @Component({
@@ -44,7 +44,7 @@ import {ViewManagerService} from "./providers/view-manager.service";
 })
 export class ClrYearpicker implements AfterViewInit {
     constructor(private _dateNavigationService: DateNavigationService, private _viewManagerService: ViewManagerService,
-                private _datepickerViewService: DatepickerViewService, private _elRef: ElementRef) {
+                private _datepickerFocusService: DatepickerFocusService, private _elRef: ElementRef) {
         this.yearRangeModel = new YearRangeModel(this.calendarYear);
         this._focusedYear = this.calendarYear;
     }
@@ -79,7 +79,7 @@ export class ClrYearpicker implements AfterViewInit {
                 this.yearRangeModel = this.yearRangeModel.previousDecade();
             }
         }
-        this._datepickerViewService.focusCell(this._elRef);
+        this._datepickerFocusService.focusCell(this._elRef);
     }
 
     /**
@@ -88,7 +88,7 @@ export class ClrYearpicker implements AfterViewInit {
      */
     changeYear(year: number): void {
         this._dateNavigationService.changeYear(year);
-        this._viewManagerService.changeToDayPickerView();
+        this._viewManagerService.changeToDayView();
     }
 
     /**
@@ -105,7 +105,7 @@ export class ClrYearpicker implements AfterViewInit {
      */
     currentDecade(): void {
         this.yearRangeModel = this.yearRangeModel.currentDecade();
-        this._datepickerViewService.focusCell(this._elRef);
+        this._datepickerFocusService.focusCell(this._elRef);
     }
 
     /**
@@ -121,13 +121,14 @@ export class ClrYearpicker implements AfterViewInit {
      * Compares the year passed to the focused year and returns the tab index.
      */
     getTabIndex(year: number): number {
-        if (this.yearRangeModel.inRange(this._focusedYear)) {
-            return this._focusedYear === year ? 0 : -1;
-        } else if (this.yearRangeModel.inRange(this.calendarYear)) {
-            return this.calendarYear === year ? 0 : -1;
-        } else {
-            return this.yearRangeModel.middleYear === year ? 0 : -1;
+        if (!this.yearRangeModel.inRange(this._focusedYear)) {
+            if (this.yearRangeModel.inRange(this.calendarYear)) {
+                this._focusedYear = this.calendarYear;
+            } else {
+                this._focusedYear = this.yearRangeModel.middleYear;
+            }
         }
+        return this._focusedYear === year ? 0 : -1;
     }
 
     /**
@@ -160,6 +161,6 @@ export class ClrYearpicker implements AfterViewInit {
      * Focuses on the current calendar year when the View is initialized.
      */
     ngAfterViewInit() {
-        this._datepickerViewService.focusCell(this._elRef);
+        this._datepickerFocusService.focusCell(this._elRef);
     }
 }

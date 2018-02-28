@@ -50,6 +50,20 @@ export class DateNavigationService {
 
     public selectedDay: DayModel;
 
+    private _selectedDayChange: Subject<DayModel> = new Subject<DayModel>();
+
+    get selectedDayChange(): Observable<DayModel> {
+        return this._selectedDayChange.asObservable();
+    }
+
+    notifySelectedDayChanged(dayModel: DayModel) {
+        if (dayModel.isEqual(this.selectedDay)) {
+            return;
+        }
+        this.selectedDay = dayModel;
+        this._selectedDayChange.next(dayModel);
+    }
+
     public focusedDay: DayModel;
 
     /**

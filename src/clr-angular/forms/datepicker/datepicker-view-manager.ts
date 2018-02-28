@@ -9,13 +9,13 @@ import {Component, ElementRef, Injector, SkipSelf} from "@angular/core";
 import {AbstractPopover} from "../../popover/common/abstract-popover";
 import {Point} from "../../popover/common/popover";
 
-import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {DatepickerFocusService} from "./providers/datepicker-focus.service";
 import {ViewManagerService} from "./providers/view-manager.service";
 
 @Component({
     selector: "clr-datepicker-view-manager",
     templateUrl: "./datepicker-view-manager.html",
-    providers: [ViewManagerService, DatepickerViewService],
+    providers: [ViewManagerService, DatepickerFocusService],
     host: {"[class.datepicker]": "true"}
 })
 export class ClrDatepickerViewManager extends AbstractPopover {

@@ -96,13 +96,13 @@ export default function() {
             });
 
             it("updates the date when a button in the day component is clicked", () => {
-                spyOn(context.clarityDirective, "setDay");
+                spyOn(context.clarityDirective, "selectDay");
                 const button: HTMLButtonElement = context.clarityElement.children[0];
 
                 button.click();
                 context.detectChanges();
 
-                expect(context.clarityDirective.setDay).toHaveBeenCalled();
+                expect(context.clarityDirective.selectDay).toHaveBeenCalled();
             });
 
             it("updates the focusable date when a button is focused", () => {
@@ -138,7 +138,8 @@ export default function() {
 
                 expect(dateNavigationService.selectedDay).toBeUndefined();
 
-                context.clarityDirective.setDay(testDayView);
+                context.clarityDirective.dayView = testDayView;
+                context.clarityDirective.selectDay();
                 context.detectChanges();
 
                 expect(dateNavigationService.selectedDay).not.toBeUndefined();
@@ -147,19 +148,15 @@ export default function() {
                 expect(dateNavigationService.selectedDay.year).toBe(testDayView.dayModel.year);
             });
 
-            it("updates the date in the DateIOService when a Date is selected", () => {
-                const dateIOService: DateIOService = context.getClarityProvider(DateIOService);
-                expect(dateIOService.date).toBeUndefined();
+            it("notifies the DateNavigationService when the user selects a date", () => {
+                const dateNavigationService: DateNavigationService = context.getClarityProvider(DateNavigationService);
+                spyOn(dateNavigationService, "notifySelectedDayChanged");
 
-                const testDayView: DayViewModel =
-                    new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
-
-                context.clarityDirective.setDay(testDayView);
+                context.clarityDirective.dayView = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);;
+                context.clarityDirective.selectDay();
                 context.detectChanges();
 
-                expect(dateIOService.date.getDate()).toBe(testDayView.dayModel.date);
-                expect(dateIOService.date.getMonth()).toBe(testDayView.dayModel.month);
-                expect(dateIOService.date.getFullYear()).toBe(testDayView.dayModel.year);
+                expect(dateNavigationService.notifySelectedDayChanged).toHaveBeenCalledWith(context.clarityDirective.dayView.dayModel);
             });
 
             it("closes the popover when a Date is selected", () => {
@@ -169,7 +166,8 @@ export default function() {
                 const testDayView: DayViewModel =
                     new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
 
-                context.clarityDirective.setDay(testDayView);
+                context.clarityDirective.dayView = testDayView;
+                context.clarityDirective.selectDay();
                 context.detectChanges();
 
                 expect(ifOpenService.open).toBe(false);
@@ -182,7 +180,8 @@ export default function() {
 
                 expect(dateNavigationService.focusedDay).toBeUndefined();
 
-                context.clarityDirective.onDayViewFocus(testDayView);
+                context.clarityDirective.dayView = testDayView;
+                context.clarityDirective.onDayViewFocus();
                 context.detectChanges();
 
                 expect(dateNavigationService.focusedDay).not.toBeUndefined();

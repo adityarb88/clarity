@@ -8,7 +8,7 @@ import {AfterViewInit, Component, ElementRef, HostListener} from "@angular/core"
 import {DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW} from "../../utils/key-codes/key-codes";
 
 import {DateNavigationService} from "./providers/date-navigation.service";
-import {DatepickerViewService} from "./providers/datepicker-view.service";
+import {DatepickerFocusService} from "./providers/datepicker-focus.service";
 import {LocaleHelperService} from "./providers/locale-helper.service";
 import {ViewManagerService} from "./providers/view-manager.service";
 
@@ -32,7 +32,7 @@ import {ViewManagerService} from "./providers/view-manager.service";
 export class ClrMonthpicker implements AfterViewInit {
     constructor(private _viewManagerService: ViewManagerService, private _localeHelperService: LocaleHelperService,
                 private _dateNavigationService: DateNavigationService,
-                private _datepickerViewService: DatepickerViewService, private _elRef: ElementRef) {
+                private _datepickerFocusService: DatepickerFocusService, private _elRef: ElementRef) {
         this._focusedMonthIndex = this.calendarMonthIndex;
     }
 
@@ -62,7 +62,7 @@ export class ClrMonthpicker implements AfterViewInit {
      */
     changeMonth(monthIndex: number) {
         this._dateNavigationService.changeMonth(monthIndex);
-        this._viewManagerService.changeToDayPickerView();
+        this._viewManagerService.changeToDayView();
     }
 
     /**
@@ -85,19 +85,19 @@ export class ClrMonthpicker implements AfterViewInit {
             if (keyCode === UP_ARROW && this._focusedMonthIndex > 0) {
                 event.preventDefault();
                 this._focusedMonthIndex--;
-                this._datepickerViewService.focusCell(this._elRef);
+                this._datepickerFocusService.focusCell(this._elRef);
             } else if (keyCode === DOWN_ARROW && this._focusedMonthIndex < 11) {
                 event.preventDefault();
                 this._focusedMonthIndex++;
-                this._datepickerViewService.focusCell(this._elRef);
+                this._datepickerFocusService.focusCell(this._elRef);
             } else if (keyCode === RIGHT_ARROW && this._focusedMonthIndex < 6) {
                 event.preventDefault();
                 this._focusedMonthIndex = this._focusedMonthIndex + 6;
-                this._datepickerViewService.focusCell(this._elRef);
+                this._datepickerFocusService.focusCell(this._elRef);
             } else if (keyCode === LEFT_ARROW && this._focusedMonthIndex > 5) {
                 event.preventDefault();
                 this._focusedMonthIndex = this._focusedMonthIndex - 6;
-                this._datepickerViewService.focusCell(this._elRef);
+                this._datepickerFocusService.focusCell(this._elRef);
             }
         }
     }
@@ -106,6 +106,6 @@ export class ClrMonthpicker implements AfterViewInit {
      * Focuses on the current calendar month when the View is initialized.
      */
     ngAfterViewInit() {
-        this._datepickerViewService.focusCell(this._elRef);
+        this._datepickerFocusService.focusCell(this._elRef);
     }
 }
