@@ -18,6 +18,7 @@
             <button
                 class="btn btn-outline"
                 (click)="e.start()"
+                [attr.name]="e.title"
                 [ngClass]="e.demoId">Show</button></p>
     </div>
     <div class="col-xs-12 col-lg-4">
